@@ -1,0 +1,12 @@
+beautifulsoup4
+tqdm
+requests
+cloudscraper
+numpy
+pandas
+librosa
+scipy
+scikit-learn
+Pillow
+matplotlib
+seaborn
