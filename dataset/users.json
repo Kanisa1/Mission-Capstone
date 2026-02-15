@@ -14,7 +14,7 @@
     "password": "admin123",
     "role": "admin",
     "created_at": "2026-02-13T01:25:00.162111",
-    "updated_at": "2026-02-15T12:16:12.123509"
+    "updated_at": "2026-02-15T21:28:22.915341"
   },
   {
     "id": "6",
@@ -23,5 +23,29 @@
     "password": "Donii@123",
     "role": "regulator",
     "created_at": "2026-02-13T01:25:46.429226"
+  },
+  {
+    "id": "7",
+    "email": "Ayen@gmail.com",
+    "name": "Ayen",
+    "password": "Ayen123",
+    "role": "regulator",
+    "created_at": "2026-02-15T21:05:59.325576"
+  },
+  {
+    "id": "8",
+    "email": "John@gmail.com",
+    "name": "John",
+    "password": "John123",
+    "role": "inspector",
+    "created_at": "2026-02-15T21:18:00.138839"
+  },
+  {
+    "id": "9",
+    "email": "Mary@gmail.com",
+    "name": "Mary",
+    "password": "Mary123",
+    "role": "regulator",
+    "created_at": "2026-02-15T21:27:26.491608"
   }
 ]

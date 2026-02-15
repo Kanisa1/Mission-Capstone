@@ -154,8 +154,42 @@ python test_optional_modalities.py
 - **History**: Scan history and saved results
 
 ### Screenshots
-- App screenshots available in `UI/assets/` directory
-- Figma mockups: [Link to your Figma project]
+
+#### 1. Welcome/Onboarding Screen
+![Onboarding Screen](docs/screenshots/01-onboarding.png)
+*AI-Powered Mineral Traceability System - Track and verify conflict minerals from South Sudan using advanced geoacoustic fingerprinting technology*
+
+#### 2. Login Screen
+![Login Screen](docs/screenshots/02-login.png)
+*Secure authentication with email and password for system access*
+
+#### 3. Dashboard
+![Dashboard](docs/screenshots/03-dashboard.png)
+*Main dashboard showing key metrics: Total Scans (12), Verified (11), Not Verified (0), and Mineral Types (3). Includes recent activity table with sample IDs, timestamps, sites, minerals, officers, and verification status*
+
+#### 4. Verifications
+![Verifications](docs/screenshots/04-verifications.png)
+*Comprehensive verification list with search functionality, showing Sample ID, Timestamp, Site (Central_Equatoria, Yei_River, Kapoeta_East), Mineral type, Officer name, Status, and Confidence percentage (up to 100.0%)*
+
+#### 5. Audit Trail
+![Audit Trail](docs/screenshots/05-audit-trail.png)
+*Immutable log of all system activities including verification requests, site registrations, and user actions with timestamps and unique IDs*
+
+#### 6. Sites & Minerals
+![Sites & Minerals](docs/screenshots/06-sites-minerals.png)
+*Mining site management interface showing registered sites (Site A - Central Equatoria, Site B - Kapoeta East) with their associated minerals (Gold, Hematite, Chalcopyrite). Includes "Register Mining Site" dialog for adding new locations*
+
+#### 7. Users & Roles
+![Users & Roles](docs/screenshots/07-users-roles.png)
+*User management system displaying role distribution (2 Inspectors, 3 Regulators, 1 Admin) with user list showing names, emails, roles, and action buttons. Users include Kanisa (Inspector), Admin (Admin), Donii (Regulator), Ayen (Regulator), John (Inspector), and Mary (Regulator)*
+
+#### 8. API Console
+![API Console](docs/screenshots/08-api-console.png)
+*Testing interface for image and audio upload with chemistry data input fields (Au, Cu, Fe, S, O) and fingerprint metadata for mineral verification*
+
+#### 9. Profile Page
+![Profile Page](docs/screenshots/09-profile.png)
+*User profile displaying personal information including full name and email address with Administrator role badge*
 
 ### System Architecture
 - **Frontend**: Flutter (Dart)
