@@ -120,7 +120,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -138,7 +138,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           _buildRecentActivityTable(),
         ],
       ),
@@ -156,14 +156,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
               children: [
                 Icon(icon, color: color, size: 32),
                 const Spacer(),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.trending_up, color: color, size: 20),
-                ),
+                const Icon(Icons.trending_up, color: Colors.green, size: 20),
               ],
             ),
             const SizedBox(height: 16),
@@ -178,9 +171,9 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
             const SizedBox(height: 4),
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: Colors.grey.shade600,
               ),
             ),
           ],
@@ -191,12 +184,12 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
 
   Widget _buildRecentActivityTable() {
     if (_recentVerifications == null || _recentVerifications!.isEmpty) {
-      return Card(
+      return const Card(
         child: Padding(
-          padding: const EdgeInsets.all(48),
+          padding: EdgeInsets.all(48),
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 Icon(Icons.inbox_outlined, size: 64, color: Colors.grey),
                 SizedBox(height: 16),
                 Text(
@@ -220,8 +213,9 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                 0: FlexColumnWidth(2),
                 1: FlexColumnWidth(2),
                 2: FlexColumnWidth(2),
-                3: FlexColumnWidth(1),
-                4: FlexColumnWidth(1),
+                3: FlexColumnWidth(1.5),
+                4: FlexColumnWidth(1.5),
+                5: FlexColumnWidth(1),
               },
               children: [
                 TableRow(
@@ -247,6 +241,10 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.all(12),
+                      child: Text('Officer', style: TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(12),
                       child: Text('Status', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ],
@@ -256,6 +254,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                   final timestamp = v['timestamp']?.toString() ?? 'N/A';
                   final site = v['site']?.toString() ?? 'N/A';
                   final mineral = v['mineral']?.toString() ?? 'N/A';
+                  final userName = v['user_name']?.toString() ?? 'Unknown';
                   final status = v['status']?.toString() ?? 'verified';
                   
                   return _buildTableRow(
@@ -263,7 +262,8 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                     _formatTimestamp(timestamp),
                     site,
                     mineral,
-                    status == 'verified',
+                    userName,
+                    status,
                   );
                 }).toList(),
               ],
@@ -280,19 +280,43 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
       final now = DateTime.now();
       final diff = now.difference(dt);
 
+      // For very recent times (< 1 hour), show relative time
       if (diff.inMinutes < 60) {
-        return '${diff.inMinutes} minutes ago';
-      } else if (diff.inHours < 24) {
-        return '${diff.inHours} hours ago';
-      } else {
-        return '${diff.inDays} days ago';
+        return '${diff.inMinutes} min ago';
+      } 
+      // For today, show time
+      else if (diff.inHours < 24 && dt.day == now.day) {
+        final hour = dt.hour.toString().padLeft(2, '0');
+        final minute = dt.minute.toString().padLeft(2, '0');
+        return '$hour:$minute';
+      } 
+      // For older dates, show full date and time
+      else {
+        final month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dt.month - 1];
+        final hour = dt.hour.toString().padLeft(2, '0');
+        final minute = dt.minute.toString().padLeft(2, '0');
+        return '$month ${dt.day}, $hour:$minute';
       }
     } catch (e) {
       return timestamp;
     }
   }
 
-  TableRow _buildTableRow(String sampleId, String time, String site, String mineral, bool verified) {
+  TableRow _buildTableRow(String sampleId, String time, String site, String mineral, String officer, String status) {
+    // Determine status color and text
+    Color statusColor;
+    String statusText;
+    if (status == 'verified') {
+      statusColor = AppColors.success;
+      statusText = 'Verified';
+    } else if (status == 'pending') {
+      statusColor = Colors.orange;
+      statusText = 'Pending';
+    } else {
+      statusColor = AppColors.error;
+      statusText = 'Not Verified';
+    }
+    
     return TableRow(
       children: [
         Padding(
@@ -313,17 +337,21 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
         ),
         Padding(
           padding: const EdgeInsets.all(12),
+          child: Text(officer),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: verified ? AppColors.success.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
+              color: statusColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
-              verified ? 'Verified' : 'Failed',
+              statusText,
               style: TextStyle(
                 fontSize: 12,
-                color: verified ? AppColors.success : AppColors.error,
+                color: statusColor,
                 fontWeight: FontWeight.bold,
               ),
             ),

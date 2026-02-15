@@ -1,12 +1,70 @@
-beautifulsoup4
-tqdm
-requests
-cloudscraper
-numpy
-pandas
-librosa
-scipy
-scikit-learn
-Pillow
-matplotlib
+# Web Framework & API
+fastapi==0.129.0
+uvicorn==0.40.0
+python-multipart==0.0.22
+starlette==0.52.1
+python-dotenv==1.2.1
+
+# Machine Learning & Deep Learning
+torch==2.9.0
+torchvision==0.24.0
+scikit-learn==1.7.2
+numba==0.63.1
+
+# Audio Processing
+librosa==0.11.0
+soundfile==0.13.1
+audioread==3.1.0
+soxr==1.0.0
+audioop-lts==0.2.2
+
+# Image Processing
+Pillow==12.0.0
+opencv-python==4.12.0.88
+
+# Data Processing & Scientific Computing
+numpy==2.3.5
+pandas==2.3.3
+scipy==1.16.3
+
+# Visualization
+matplotlib==3.10.7
 seaborn
+
+# Web Scraping (for mineral data)
+beautifulsoup4
+requests==2.32.5
+cloudscraper
+
+# Utilities
+tqdm==4.67.1
+joblib==1.5.2
+PyYAML==6.0.3
+click==8.3.0
+
+# Type Checking
+pydantic==2.12.5
+pydantic_core==2.41.5
+typing_extensions==4.15.0
+
+# ASGI Server
+h11==0.16.0
+anyio==4.12.1
+
+# File Handling
+filelock==3.20.0
+fsspec==2025.10.0
+
+# Network & HTTP
+certifi==2025.11.12
+urllib3==2.6.2
+charset-normalizer==3.4.4
+idna==3.11
+
+# Other Dependencies
+colorama==0.4.6
+python-dateutil==2.9.0.post0
+pytz==2025.2
+networkx==3.5
+sympy==1.14.0
+packaging==25.0

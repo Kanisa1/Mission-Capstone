@@ -139,6 +139,8 @@ class _ApiFormWidgetState extends State<ApiFormWidget> {
         sampleId: sampleId,
         site: site,
         mineral: mineral,
+        userId: 'api_console',
+        userName: 'API Console User',
       ),
     );
   }

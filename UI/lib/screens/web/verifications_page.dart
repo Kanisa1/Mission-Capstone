@@ -73,10 +73,10 @@ class _VerificationsPageState extends State<VerificationsPage> {
     }
 
     if (_verifications == null || _verifications!.isEmpty) {
-      return Center(
+      return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(Icons.inbox_outlined, size: 64, color: Colors.grey),
             SizedBox(height: 16),
             Text(
@@ -143,6 +143,7 @@ class _VerificationsPageState extends State<VerificationsPage> {
                   DataColumn(label: Text('Timestamp')),
                   DataColumn(label: Text('Site')),
                   DataColumn(label: Text('Mineral')),
+                  DataColumn(label: Text('Officer')),
                   DataColumn(label: Text('Status')),
                   DataColumn(label: Text('Confidence')),
                 ],
@@ -151,9 +152,23 @@ class _VerificationsPageState extends State<VerificationsPage> {
                   final timestamp = record['timestamp']?.toString() ?? '';
                   final site = record['site']?.toString() ?? 'N/A';
                   final mineral = record['mineral']?.toString() ?? 'N/A';
+                  final userName = record['user_name']?.toString() ?? 'Unknown';
                   final status = record['status']?.toString() ?? 'verified';
-                  final confidence = (record['confidence'] as num?)?.toDouble() ?? 0.95;
-                  final isVerified = status == 'verified';
+                  final confidence = record['confidence'] as num?;
+                  
+                  // Determine status color and text
+                  Color statusColor;
+                  String statusText;
+                  if (status == 'verified') {
+                    statusColor = AppColors.success;
+                    statusText = 'Verified';
+                  } else if (status == 'pending') {
+                    statusColor = Colors.orange;
+                    statusText = 'Pending';
+                  } else {
+                    statusColor = AppColors.error;
+                    statusText = 'Not Verified';
+                  }
 
                   return DataRow(
                     cells: [
@@ -161,31 +176,30 @@ class _VerificationsPageState extends State<VerificationsPage> {
                       DataCell(Text(_formatTimestamp(timestamp))),
                       DataCell(Text(site)),
                       DataCell(Text(mineral)),
+                      DataCell(Text(userName)),
                       DataCell(
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: isVerified
-                                ? AppColors.success.withOpacity(0.1)
-                                : AppColors.error.withOpacity(0.1),
+                            color: statusColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            isVerified ? 'Verified' : 'Failed',
+                            statusText,
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: isVerified ? AppColors.success : AppColors.error,
+                              color: statusColor,
                             ),
                           ),
                         ),
                       ),
                       DataCell(
                         Text(
-                          '${(confidence * 100).toStringAsFixed(1)}%',
+                          confidence != null ? '${(confidence * 100).toStringAsFixed(1)}%' : 'N/A',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: isVerified ? AppColors.success : AppColors.error,
+                            color: confidence != null && confidence >= 0.8 ? AppColors.success : Colors.orange,
                           ),
                         ),
                       ),

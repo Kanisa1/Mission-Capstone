@@ -196,11 +196,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _buildPage(OnboardingContent content) {
     final isFirstPage = _pages.indexOf(content) == 0;
     
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
           // Logo or gradient circle with icon
           if (isFirstPage)
             Container(
@@ -217,11 +218,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(40),
-                child: Image.asset(
-                  'assets/logo.png',
-                  fit: BoxFit.contain,
+              child: ClipOval(
+                child: Container(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(40),
+                    child: Image.asset(
+                      'assets/logo.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
               ),
             )
@@ -272,6 +278,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

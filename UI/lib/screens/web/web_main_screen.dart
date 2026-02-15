@@ -7,6 +7,7 @@ import 'audit_trail_page.dart';
 import 'mining_sites_minerals_page.dart';
 import 'users_roles_page.dart';
 import 'api_console_page.dart';
+import 'web_profile_page.dart';
 
 class WebMainScreen extends StatefulWidget {
   final User user;
@@ -64,7 +65,23 @@ class _WebMainScreenState extends State<WebMainScreen> {
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Column(
                 children: [
-                  Image.asset('assets/logo.png', height: 50),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: ClipOval(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Image.asset(
+                          'assets/logo.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   if (MediaQuery.of(context).size.width > 1200)
                     const Text(
@@ -121,11 +138,24 @@ class _WebMainScreenState extends State<WebMainScreen> {
                         backgroundColor: AppColors.accent,
                       ),
                       const SizedBox(width: 16),
-                      CircleAvatar(
-                        backgroundColor: AppColors.primary,
-                        child: Text(
-                          widget.user.name[0],
-                          style: const TextStyle(color: Colors.white),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => WebProfilePage(user: widget.user),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Tooltip(
+                          message: 'Edit Profile',
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.primary,
+                            child: Text(
+                              widget.user.name[0],
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
                     ],

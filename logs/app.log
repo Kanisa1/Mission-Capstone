@@ -1,0 +1,7 @@
+2026-02-14 12:00:44,915 - app - INFO - Model loaded on cpu
+2026-02-14 12:03:06,161 - app - INFO - Model loaded on cpu
+2026-02-14 12:04:52,886 - app - INFO - Model loaded on cpu
+2026-02-14 12:05:35,788 - app - INFO - Prediction request with modalities: {'image': True, 'audio': True, 'chemical': True}
+2026-02-14 12:06:03,993 - app - INFO - Prediction request with modalities: {'image': True, 'audio': False, 'chemical': True}
+2026-02-14 12:06:04,305 - app - INFO - Prediction request with modalities: {'image': False, 'audio': True, 'chemical': True}
+2026-02-14 12:06:04,335 - app - INFO - Prediction request with modalities: {'image': False, 'audio': False, 'chemical': True}

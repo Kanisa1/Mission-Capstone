@@ -4,6 +4,7 @@ import pandas as pd
 from PIL import Image
 import librosa
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 
 MINERAL_TO_LABEL = {
@@ -29,6 +30,13 @@ class MultiModalDataset(Dataset):
         self.audio_sr = audio_sr
         self.n_mfcc = n_mfcc
         self.transform = transform
+        
+        # ✅ FIX: Normalize chemical features to handle different scales
+        # Au: 0-100, Cu: 0-50, Fe: 0-40, S/O: 0-30
+        self.chem_scaler = StandardScaler()
+        chem_data = self.df[['Au', 'Cu', 'Fe', 'S', 'O']].values
+        self.chem_scaler.fit(chem_data)
+        print(f"✅ Chemical features normalized for {csv_file}")
 
     def __len__(self):
         return len(self.df)
@@ -59,7 +67,7 @@ class MultiModalDataset(Dataset):
         return torch.tensor(mfcc, dtype=torch.float32)
 
     def load_chemical(self, row):
-
+        # Get raw chemical values
         chem = [
             row["Au"],
             row["Cu"],
@@ -67,8 +75,11 @@ class MultiModalDataset(Dataset):
             row["S"],
             row["O"]
         ]
-
-        return torch.tensor(chem, dtype=torch.float32)
+        
+        # ✅ FIX: Normalize using StandardScaler (CRITICAL for accuracy!)
+        chem_normalized = self.chem_scaler.transform([chem])[0]
+        
+        return torch.tensor(chem_normalized, dtype=torch.float32)
 
     def __getitem__(self, idx):
 

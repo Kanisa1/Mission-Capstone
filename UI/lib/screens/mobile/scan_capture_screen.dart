@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
 import 'dart:typed_data';
 import '../../constants/app_theme.dart';
 import '../../models/user.dart';
@@ -211,11 +209,13 @@ class _ScanCaptureScreenState extends State<ScanCaptureScreen> {
 
   void _handleNext() {
     if (_formKey.currentState!.validate()) {
-      if (!_imageAttached || !_audioRecorded) {
+      // At least one modality must be present (image OR audio)
+      if (!_imageAttached && !_audioRecorded) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please capture image and record audio'),
+            content: Text('Please provide at least image or audio (or both)'),
             backgroundColor: AppColors.error,
+            duration: Duration(seconds: 3),
           ),
         );
         return;

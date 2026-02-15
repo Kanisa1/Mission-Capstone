@@ -4,6 +4,7 @@ import '../../models/user.dart';
 import '../api_form_screen.dart';
 import 'scan_capture_screen.dart';
 import 'verification_history_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final User user;
@@ -15,6 +16,19 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: 'Profile',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(user: user),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -23,71 +37,105 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-              Image.asset(
-                'assets/logo.png',
-                height: 100,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Mineral Traceability\nSystem',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
-                  height: 1.2,
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.2),
+                        blurRadius: 20,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Image.asset(
+                        'assets/logo.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 48),
-              _buildActionCard(
-                context,
-                title: 'Start New Scan',
-                subtitle: 'Capture and verify mineral sample',
-                icon: Icons.camera_alt_outlined,
-                color: AppColors.primary,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ScanCaptureScreen(user: user),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildActionCard(
-                context,
-                title: 'View History',
-                subtitle: 'Review past verifications',
-                icon: Icons.history,
-                color: AppColors.accent,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const VerificationHistoryScreen(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildActionCard(
-                context,
-                title: 'API Console',
-                subtitle: 'Send Swagger-style requests',
-                icon: Icons.cloud_upload_outlined,
-                color: AppColors.primary,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ApiFormScreen(),
-                    ),
-                  );
-                },
-              ),
-            ],
+                const SizedBox(height: 24),
+                const Text(
+                  'Mineral Traceability\nSystem',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 48),
+                _buildActionCard(
+                  context,
+                  title: 'Start New Scan',
+                  subtitle: 'Capture and verify mineral sample',
+                  icon: Icons.camera_alt_outlined,
+                  color: AppColors.primary,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ScanCaptureScreen(user: user),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildActionCard(
+                  context,
+                  title: 'View History',
+                  subtitle: 'Review past verifications',
+                  icon: Icons.history,
+                  color: AppColors.accent,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const VerificationHistoryScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildActionCard(
+                  context,
+                  title: 'API Console',
+                  subtitle: 'Send Swagger-style requests',
+                  icon: Icons.cloud_upload_outlined,
+                  color: AppColors.primary,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ApiFormScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildActionCard(
+                  context,
+                  title: 'My Profile',
+                  subtitle: 'Edit your account details',
+                  icon: Icons.account_circle_outlined,
+                  color: Colors.teal,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(user: user),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }

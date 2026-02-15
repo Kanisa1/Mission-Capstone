@@ -1,0 +1,4 @@
+2026-02-15 08:54:35,217 - ERROR - ScanEventLogger.log_scan_event() got an unexpected keyword argument 'modalities': {'endpoint': '/fingerprint', 'sample_id': '1771138474271'}
+None
+2026-02-15 08:54:50,759 - ERROR - ScanEventLogger.log_scan_event() got an unexpected keyword argument 'modalities': {'endpoint': '/fingerprint', 'sample_id': '1771138490509'}
+None

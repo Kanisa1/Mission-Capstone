@@ -31,21 +31,30 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> predictSample({
-    required PlatformFile image,
-    required PlatformFile audio,
+    PlatformFile? image,
+    PlatformFile? audio,
     required double au,
     required double cu,
     required double fe,
     required double s,
     required double o,
   }) async {
+    // At least one modality must be provided
+    if (image == null && audio == null) {
+      throw ArgumentError('At least image or audio must be provided');
+    }
+
     final request = http.MultipartRequest(
       'POST',
       Uri.parse('$baseUrl/predict'),
     );
 
-    request.files.add(await _multipartFileFromPlatformFile('image', image));
-    request.files.add(await _multipartFileFromPlatformFile('audio', audio));
+    if (image != null) {
+      request.files.add(await _multipartFileFromPlatformFile('image', image));
+    }
+    if (audio != null) {
+      request.files.add(await _multipartFileFromPlatformFile('audio', audio));
+    }
     request.fields.addAll(_chemicalFields(au: au, cu: cu, fe: fe, s: s, o: o));
 
     final response = await _client.send(request);
@@ -53,8 +62,8 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> generateFingerprint({
-    required PlatformFile image,
-    required PlatformFile audio,
+    PlatformFile? image,
+    PlatformFile? audio,
     required double au,
     required double cu,
     required double fe,
@@ -63,18 +72,31 @@ class ApiService {
     required String sampleId,
     required String site,
     required String mineral,
+    required String userId,
+    required String userName,
   }) async {
+    // At least one modality must be provided
+    if (image == null && audio == null) {
+      throw ArgumentError('At least image or audio must be provided');
+    }
+
     final request = http.MultipartRequest(
       'POST',
       Uri.parse('$baseUrl/fingerprint'),
     );
 
-    request.files.add(await _multipartFileFromPlatformFile('image', image));
-    request.files.add(await _multipartFileFromPlatformFile('audio', audio));
+    if (image != null) {
+      request.files.add(await _multipartFileFromPlatformFile('image', image));
+    }
+    if (audio != null) {
+      request.files.add(await _multipartFileFromPlatformFile('audio', audio));
+    }
     request.fields.addAll(_chemicalFields(au: au, cu: cu, fe: fe, s: s, o: o));
     request.fields['sample_id'] = sampleId;
     request.fields['site'] = site;
     request.fields['mineral'] = mineral;
+    request.fields['user_id'] = userId;
+    request.fields['user_name'] = userName;
 
     final response = await _client.send(request);
     return _decodeResponse(response);
@@ -118,6 +140,18 @@ class ApiService {
 
   Future<Map<String, dynamic>> getStats() async {
     final uri = Uri.parse('$baseUrl/stats');
+    final response = await _client.get(uri);
+    return _decodeRegularResponse(response);
+  }
+
+  Future<Map<String, dynamic>> getMetrics() async {
+    final uri = Uri.parse('$baseUrl/metrics');
+    final response = await _client.get(uri);
+    return _decodeRegularResponse(response);
+  }
+
+  Future<Map<String, dynamic>> getHealth() async {
+    final uri = Uri.parse('$baseUrl/health');
     final response = await _client.get(uri);
     return _decodeRegularResponse(response);
   }
@@ -179,6 +213,27 @@ class ApiService {
     final uri = Uri.parse('$baseUrl/users/$userId');
     final response = await _client.delete(uri);
     return _decodeRegularResponse(response);
+  }
+
+  Future<Map<String, dynamic>> updateProfile({
+    required String userId,
+    String? name,
+    String? email,
+    String? currentPassword,
+    String? newPassword,
+  }) async {
+    final request = http.MultipartRequest(
+      'PUT',
+      Uri.parse('$baseUrl/profile/$userId'),
+    );
+
+    if (name != null) request.fields['name'] = name;
+    if (email != null) request.fields['email'] = email;
+    if (currentPassword != null) request.fields['current_password'] = currentPassword;
+    if (newPassword != null) request.fields['new_password'] = newPassword;
+
+    final response = await _client.send(request);
+    return _decodeResponse(response);
   }
 
   Future<http.MultipartFile> _multipartFileFromPlatformFile(

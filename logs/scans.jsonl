@@ -1,0 +1,1 @@
+{"timestamp": "2026-02-15T07:08:43.551662", "event_type": "scan", "sample_id": "1771139322371", "user_id": "3", "site": "Yei_River", "modalities": {"image": true, "audio": false, "chemical": true}, "modality_count": 2, "claimed_mineral": "Gold", "predicted_mineral": "gold", "confidence": 1.0, "status": "verified", "match": true}

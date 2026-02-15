@@ -75,37 +75,33 @@ class _ReviewSubmitScreenState extends State<ReviewSubmitScreen> {
             final response = await http.get(Uri.parse(widget.audioPath!));
             audioBytes = response.bodyBytes;
           } catch (e) {
-            // If fetching fails, create mock audio
-            audioBytes = Uint8List.fromList(List<int>.filled(1024, 0));
+            // If fetching fails, skip audio
+            audioBytes = Uint8List(0);
           }
         } else {
           final audioFile = File(widget.audioPath!);
           audioBytes = await audioFile.readAsBytes();
         }
-        audioPlatformFile = PlatformFile(
-          name: widget.audioPath!.split('/').last.split('\\').last,
-          size: audioBytes.length,
-          bytes: audioBytes,
-        );
-      } else {
-        // Create mock audio file if no audio was recorded
-        final mockAudioBytes = Uint8List.fromList(List<int>.filled(1024, 0));
-        audioPlatformFile = PlatformFile(
-          name: 'audio_sample.wav',
-          size: mockAudioBytes.length,
-          bytes: mockAudioBytes,
-        );
+        
+        if (audioBytes.isNotEmpty) {
+          audioPlatformFile = PlatformFile(
+            name: widget.audioPath!.split('/').last.split('\\').last,
+            size: audioBytes.length,
+            bytes: audioBytes,
+          );
+        }
+      }
+
+      // Ensure at least one modality is present
+      if (imagePlatformFile == null && audioPlatformFile == null) {
+        throw Exception('At least image or audio must be provided');
       }
 
       // Default chemical composition values (mobile UI doesn't collect these)
       // You can customize these defaults based on mineral type if needed
       final chemicalValues = _getDefaultChemicalValues(widget.mineralType);
 
-      if (imagePlatformFile == null) {
-        throw Exception('Image file is required');
-      }
-
-      // Call the API
+      // Call the API with optional files
       final response = await _apiService.generateFingerprint(
         image: imagePlatformFile,
         audio: audioPlatformFile,
@@ -117,7 +113,26 @@ class _ReviewSubmitScreenState extends State<ReviewSubmitScreen> {
         sampleId: DateTime.now().millisecondsSinceEpoch.toString(),
         site: widget.miningSite,
         mineral: _getMineralName(widget.mineralType),
+        userId: widget.user.id,
+        userName: widget.user.name,
       );
+
+      // Determine verification status based on ML prediction
+      final predictedMineral = response['predicted_mineral']?.toString().toLowerCase() ?? '';
+      final userClaimedMineral = _getMineralName(widget.mineralType).toLowerCase();
+      final confidence = response['confidence']?.toDouble() ?? 0.0;
+      
+      VerificationStatus verificationStatus;
+      if (predictedMineral == userClaimedMineral && confidence >= 0.80) {
+        // ML agrees with user claim AND high confidence
+        verificationStatus = VerificationStatus.verified;
+      } else if (confidence < 0.60) {
+        // Low confidence - needs manual review
+        verificationStatus = VerificationStatus.pending;
+      } else {
+        // Prediction mismatch OR medium confidence
+        verificationStatus = VerificationStatus.notVerified;
+      }
 
       // Create record with API response
       final record = VerificationRecord(
@@ -128,8 +143,8 @@ class _ReviewSubmitScreenState extends State<ReviewSubmitScreen> {
         mineralType: widget.mineralType,
         location: widget.location,
         miningSite: widget.miningSite,
-        status: VerificationStatus.verified,
-        confidenceScore: response['confidence']?.toDouble() ?? 0.93,
+        status: verificationStatus,
+        confidenceScore: confidence,
         notes: widget.notes.isEmpty ? null : widget.notes,
       );
 

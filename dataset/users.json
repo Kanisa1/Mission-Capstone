@@ -3,6 +3,7 @@
     "id": "3",
     "email": "Kanisa@gmail.com",
     "name": "Kanisa",
+    "password": "Kanisa@123",
     "role": "inspector",
     "created_at": "2026-02-13T01:17:59.446620"
   },
@@ -10,13 +11,16 @@
     "id": "5",
     "email": "admin@gmail.com",
     "name": "Admin",
+    "password": "admin123",
     "role": "admin",
-    "created_at": "2026-02-13T01:25:00.162111"
+    "created_at": "2026-02-13T01:25:00.162111",
+    "updated_at": "2026-02-15T12:16:12.123509"
   },
   {
     "id": "6",
     "email": "Donii@gmail.com",
     "name": "Donii",
+    "password": "Donii@123",
     "role": "regulator",
     "created_at": "2026-02-13T01:25:46.429226"
   }
