@@ -13,7 +13,8 @@ The solution includes a mobile application built with Flutter, a REST API backen
 
 ## 🔗 GitHub Repository
 
-**Repository Link**: [https://github.com/yourusername/Mission-Capstone](https://github.com/yourusername/Mission-Capstone)
+**Repository Link**: [https://github.com/Kanisa1/Mission-Capstone.git](https://github.com/Kanisa1/Mission-Capstone.git)
+**Video Link**: [https://drive.google.com/drive/folders/1KC0v2hzOp7aRtW1xYXqLRPu3endTTd_o?usp=drive_link](https://drive.google.com/drive/folders/1KC0v2hzOp7aRtW1xYXqLRPu3endTTd_o?usp=drive_link)
 
 ---
 
@@ -204,7 +205,7 @@ python test_optional_modalities.py
 
 ### Phase 1: Development (Current)
 - ✅ ML model training and validation
-- ✅ REST API development
+- ✅ FAST API development
 - ✅ Flutter mobile app development
 - ✅ Local testing and debugging
 
@@ -232,7 +233,7 @@ python test_optional_modalities.py
 
 ## 📹 Video Demonstration
 
-**Demo Video Link**: [YouTube/Drive Link - 5-10 minutes]
+**Demo Video Link**: 
 
 ### Demo Content (5-10 minutes):
 1. **App Launch & Authentication** (1 min)
@@ -292,17 +293,6 @@ Mission-Capstone/
 
 ---
 
-## 📦 Submission Package
-
-### Zip File Contents
-1. ✅ **README.md** (this file)
-2. ✅ **Complete GitHub Repository**
-3. ✅ **Code Files** (API, ML models, Flutter app)
-4. ✅ **Designs** (screenshots, mockups, architecture diagrams)
-5. ✅ **Video Demo** (5-10 minutes)
-6. ✅ **Documentation** (setup guides, API docs)
-
----
 
 ## 🛠️ Technologies Used
 
@@ -314,18 +304,3 @@ Mission-Capstone/
 
 ---
 
-## 📄 License
-
-[Your License Here]
-
----
-
-## 👥 Contributors
-
-[Your Name/Team Names]
-
----
-
-## 📧 Contact
-
-For questions or support, please contact: [your-email@example.com]
