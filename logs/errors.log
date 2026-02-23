@@ -2,3 +2,163 @@
 None
 2026-02-15 08:54:50,759 - ERROR - ScanEventLogger.log_scan_event() got an unexpected keyword argument 'modalities': {'endpoint': '/fingerprint', 'sample_id': '1771138490509'}
 None
+2026-02-22 14:47:51,523 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBD280>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:47:55,599 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBD880>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:48:47,893 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBDBC0>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:49:58,898 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBF840>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:51:28,315 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBCCC0>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:51:58,887 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBC540>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:52:28,875 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBCA00>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:52:58,879 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBDF40>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:53:24,222 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBE140>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:53:33,294 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBC6C0>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:53:43,383 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBE700>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:53:57,183 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBCA40>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:54:10,215 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBD640>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:54:40,879 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBFEC0>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:55:02,274 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBE100>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:55:32,878 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBC280>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:55:34,744 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBD240>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:56:29,247 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BBC2C0>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:57:17,360 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BD0740>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-22 14:58:10,397 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x0000020AB9BD0D40>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1290, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-23 14:17:22,706 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x00000184D5C40240>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1305, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-23 14:17:53,758 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x00000184D5CC1580>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1305, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-23 14:18:23,767 - ERROR - Exception: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given | Context: {"endpoint": "/metrics"}
+(<class 'TypeError'>, TypeError('MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given'), <traceback object at 0x00000184D5CC1BC0>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1305, in get_metrics
+    metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+TypeError: MetricsCalculator.calculate_metrics() takes 1 positional argument but 3 were given
+2026-02-23 14:24:15,606 - ERROR - Exception: 'str' object has no attribute 'exists' | Context: {"endpoint": "/metrics"}
+(<class 'AttributeError'>, AttributeError("'str' object has no attribute 'exists'"), <traceback object at 0x000002C84EC07600>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1305, in get_metrics
+    metrics = metrics_calc.calculate_metrics()
+  File "C:\Users\HP\Mission-Capstone\dataset\metrics_calculator.py", line 39, in calculate_metrics
+    records = self.load_records()
+  File "C:\Users\HP\Mission-Capstone\dataset\metrics_calculator.py", line 22, in load_records
+    if not self.fingerprints_file.exists():
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'exists'
+2026-02-23 14:24:28,965 - ERROR - Exception: 'str' object has no attribute 'exists' | Context: {"endpoint": "/metrics"}
+(<class 'AttributeError'>, AttributeError("'str' object has no attribute 'exists'"), <traceback object at 0x000002C84E8D4B80>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1305, in get_metrics
+    metrics = metrics_calc.calculate_metrics()
+  File "C:\Users\HP\Mission-Capstone\dataset\metrics_calculator.py", line 39, in calculate_metrics
+    records = self.load_records()
+  File "C:\Users\HP\Mission-Capstone\dataset\metrics_calculator.py", line 22, in load_records
+    if not self.fingerprints_file.exists():
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'exists'

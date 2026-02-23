@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Mineral Traceability</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="../assets/logo.png" alt="Geoacoustic Fingerprinting" class="logo-img">
+                <span>MineralTrace</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Management</span>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="verifications.html" class="nav-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Verifications</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="scans.html" class="nav-item">
+                    <i class="fas fa-fingerprint"></i>
+                    <span>Scans</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Settings</span>
+                <a href="audit-trail.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Audit Trail</span>
+                </a>
+                <a href="sites.html" class="nav-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Sites</span>
+                </a>
+                <a href="users.html" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="reports.html" class="nav-item active">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Reports</span>
+                </a>
+            </div>
+        </nav>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search reports...">
+            </div>
+            
+            <div class="top-bar-actions">
+                <div class="stat-pill">
+                    <span class="label">Period:</span>
+                    <span class="value" id="reportPeriod">Last 30 Days</span>
+                </div>
+                
+                <button class="btn-notification">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" style="display: none;">0</span>
+                </button>
+                
+                <div class="user-menu" title="Admin User">
+                    <div class="user-avatar-small">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Reports & Export</h1>
+                <p class="page-subtitle">Generate comprehensive reports and export data</p>
+            </div>
+        </div>
+
+        <!-- Report Templates -->
+        <div class="stats-grid">
+            <div class="card report-card" onclick="reportsPage.generateReport('summary')">
+                <div class="report-icon" style="background: rgba(77, 208, 206, 0.1); color: var(--primary);">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3>Summary Report</h3>
+                <p>Overview of all operations, scans, and verifications</p>
+                <button class="action-btn secondary">
+                    <i class="fas fa-download"></i>
+                    Generate
+                </button>
+            </div>
+
+            <div class="card report-card" onclick="reportsPage.generateReport('performance')">
+                <div class="report-icon" style="background: rgba(0, 184, 148, 0.1); color: var(--success);">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Performance Report</h3>
+                <p>Model accuracy metrics and site performance analysis</p>
+                <button class="action-btn secondary">
+                    <i class="fas fa-download"></i>
+                    Generate
+                </button>
+            </div>
+
+            <div class="card report-card" onclick="reportsPage.generateReport('verification')">
+                <div class="report-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Verification Report</h3>
+                <p>Detailed verification records by site and mineral</p>
+                <button class="action-btn secondary">
+                    <i class="fas fa-download"></i>
+                    Generate
+                </button>
+            </div>
+
+            <div class="card report-card" onclick="reportsPage.generateReport('user-activity')">
+                <div class="report-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>User Activity Report</h3>
+                <p>User scan history and activity metrics</p>
+                <button class="action-btn secondary">
+                    <i class="fas fa-download"></i>
+                    Generate
+                </button>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="card" style="margin-top: 2rem;">
+            <h3><i class="fas fa-file-export"></i> Export Data</h3>
+            <div class="export-options">
+                <div class="export-option">
+                    <div>
+                        <h4>Export All Fingerprints</h4>
+                        <p>Download complete fingerprint database in JSON format</p>
+                    </div>
+                    <button class="action-btn primary" onclick="reportsPage.exportData('fingerprints')">
+                        <i class="fas fa-download"></i>
+                        Export JSON
+                    </button>
+                </div>
+                <div class="export-option">
+                    <div>
+                        <h4>Export Verifications</h4>
+                        <p>Download verification records in CSV format</p>
+                    </div>
+                    <button class="action-btn primary" onclick="reportsPage.exportData('verifications')">
+                        <i class="fas fa-file-csv"></i>
+                        Export CSV
+                    </button>
+                </div>
+                <div class="export-option">
+                    <div>
+                        <h4>Export Model Metrics</h4>
+                        <p>Download performance metrics and analytics data</p>
+                    </div>
+                    <button class="action-btn primary" onclick="reportsPage.exportData('metrics')">
+                        <i class="fas fa-chart-bar"></i>
+                        Export JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Summary -->
+        <div class="card" style="margin-top: 2rem;">
+            <h3><i class="fas fa-clipboard-list"></i> Current Period Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <i class="fas fa-fingerprint" style="color: var(--primary);"></i>
+                    <div>
+                        <div class="summary-label">Total Scans</div>
+                        <div class="summary-value" id="summaryScans">0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    <div>
+                        <div class="summary-label">Verified</div>
+                        <div class="summary-value" id="summaryVerified">0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-bullseye" style="color: #F59E0B;"></i>
+                    <div>
+                        <div class="summary-label">Accuracy</div>
+                        <div class="summary-value" id="summaryAccuracy">0%</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-map-marker-alt" style="color: #8B5CF6;"></i>
+                    <div>
+                        <div class="summary-label">Active Sites</div>
+                        <div class="summary-value" id="summarySites">3</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-gem" style="color: #F59E0B;"></i>
+                    <div>
+                        <div class="summary-label">Gold Detected</div>
+                        <div class="summary-value" id="summaryGold">0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-gem" style="color: #EA580C;"></i>
+                    <div>
+                        <div class="summary-label">Chalcopyrite</div>
+                        <div class="summary-value" id="summaryChalco">0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-gem" style="color: #DC2626;"></i>
+                    <div>
+                        <div class="summary-label">Hematite</div>
+                        <div class="summary-value" id="summaryHematite">0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-users" style="color: var(--primary);"></i>
+                    <div>
+                        <div class="summary-label">Active Users</div>
+                        <div class="summary-value" id="summaryUsers">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Generating report...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script type="module">
+        import { NotificationManager } from './js/notifications.js';
+        window.notificationManager = new NotificationManager();
+        notificationManager.init();
+    </script>
+    <script src="js/reports.js"></script>
+</body>
+</html>

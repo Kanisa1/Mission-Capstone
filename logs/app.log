@@ -5,3 +5,5 @@
 2026-02-14 12:06:03,993 - app - INFO - Prediction request with modalities: {'image': True, 'audio': False, 'chemical': True}
 2026-02-14 12:06:04,305 - app - INFO - Prediction request with modalities: {'image': False, 'audio': True, 'chemical': True}
 2026-02-14 12:06:04,335 - app - INFO - Prediction request with modalities: {'image': False, 'audio': False, 'chemical': True}
+2026-02-15 23:03:11,562 - app - INFO - Scan 1771189389148: Hematite -> hematite (100.00%) - Status: verified
+2026-02-15 23:15:34,406 - app - INFO - Scan 1771190132373: Hematite -> hematite (100.00%) - Status: verified

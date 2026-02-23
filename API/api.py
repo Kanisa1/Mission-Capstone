@@ -9,11 +9,43 @@ import torch
 import numpy as np
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
 from PIL import Image
 import librosa
 import torchvision.transforms as T
 from sklearn.preprocessing import StandardScaler
+from pydantic import BaseModel
+
+
+# -------------------------------------------------
+# Pydantic Request Models
+# -------------------------------------------------
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class RegisterRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+    role: str
+    organization: Optional[str] = None
+
+class GoogleSignInRequest(BaseModel):
+    id_token: str
+    access_token: str
+    name: str
+    email: str
+    photo_url: Optional[str] = None
+
+class ApprovalRequest(BaseModel):
+    user_id: str
+
+class DenyRequest(BaseModel):
+    user_id: str
+    reason: Optional[str] = None
 
 
 # -------------------------------------------------
@@ -143,6 +175,18 @@ app.add_middleware(
 )
 
 
+# Serve the web frontend static files from the `webapp` directory
+WEBAPP_DIR = str(BASE_DIR / "webapp")
+try:
+    # Mounting moved to the end of the file so API routes are registered first.
+    # This avoids StaticFiles capturing API endpoints and returning 404s.
+    pass
+except Exception:
+    pass
+
+    
+
+
 # -------------------------------------------------
 # Helpers
 # -------------------------------------------------
@@ -218,7 +262,10 @@ def load_users():
                 "email": "inspector@example.com",
                 "name": "John Inspector",
                 "password": "inspector123",
-                "role": "inspector",
+                "role": "operator",
+                "organization": "South Sudan Mining Authority",
+                "approval_status": "approved",
+                "photo_url": None,
                 "created_at": datetime.utcnow().isoformat()
             },
             {
@@ -226,7 +273,10 @@ def load_users():
                 "email": "regulator@example.com",
                 "name": "Sarah Regulator",
                 "password": "regulator123",
-                "role": "regulator",
+                "role": "verifier",
+                "organization": "Regulatory Commission",
+                "approval_status": "approved",
+                "photo_url": None,
                 "created_at": datetime.utcnow().isoformat()
             },
             {
@@ -235,6 +285,9 @@ def load_users():
                 "name": "Admin User",
                 "password": "admin123",
                 "role": "admin",
+                "organization": "MineralTrace HQ",
+                "approval_status": "approved",
+                "photo_url": None,
                 "created_at": datetime.utcnow().isoformat()
             }
         ]
@@ -255,11 +308,11 @@ def save_users(users):
 
 
 # -------------------------------------------------
-# Authentication endpoint
+# Authentication endpoints
 # -------------------------------------------------
 
 @app.post("/login")
-async def login(email: str = Form(...), password: str = Form(...)):
+async def login(request: LoginRequest):
     """
     Authenticate user with email and password
     """
@@ -269,7 +322,7 @@ async def login(email: str = Form(...), password: str = Form(...)):
         # Find user by email
         user = None
         for u in users:
-            if u['email'].lower() == email.lower():
+            if u['email'].lower() == request.email.lower():
                 user = u
                 break
         
@@ -277,8 +330,13 @@ async def login(email: str = Form(...), password: str = Form(...)):
             raise HTTPException(status_code=401, detail="Invalid email or password")
         
         # Check password (in production, use proper password hashing)
-        if user.get('password') != password:
+        if user.get('password') != request.password:
             raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Check approval status
+        approval_status = user.get('approval_status', 'approved')
+        if approval_status != 'approved':
+            raise HTTPException(status_code=403, detail=f"Account is {approval_status}")
         
         # Return user info without password
         return {
@@ -287,8 +345,268 @@ async def login(email: str = Form(...), password: str = Form(...)):
                 "id": user['id'],
                 "email": user['email'],
                 "name": user['name'],
-                "role": user['role']
+                "role": user['role'],
+                "photo_url": user.get('photo_url'),
+                "organization": user.get('organization')
             }
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/auth/register")
+async def register(request: RegisterRequest):
+    """
+    Register new user with email and password (requires admin approval)
+    """
+    try:
+        users = load_users()
+        
+        # Check if email already exists
+        for u in users:
+            if u['email'].lower() == request.email.lower():
+                raise HTTPException(status_code=400, detail="Email already registered")
+        
+        # Generate new unique user ID
+        existing_ids = [int(u['id']) for u in users if u['id'].isdigit()]
+        user_id = str(max(existing_ids, default=0) + 1)
+        
+        # Create new user with pending approval
+        new_user = {
+            "id": user_id,
+            "email": request.email,
+            "name": request.name,
+            "password": request.password,  # In production, hash this!
+            "role": request.role,
+            "organization": request.organization,
+            "approval_status": "pending",
+            "created_at": datetime.utcnow().isoformat(),
+            "photo_url": None
+        }
+        
+        users.append(new_user)
+        save_users(users)
+        
+        return {
+            "success": True,
+            "message": "Registration successful. Awaiting admin approval.",
+            "user": {
+                "id": user_id,
+                "email": request.email,
+                "name": request.name,
+                "role": request.role,
+                "approval_status": "pending"
+            }
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/auth/google")
+async def google_signin(request: GoogleSignInRequest):
+    """
+    Sign in or register with Google (requires admin approval for new users)
+    """
+    try:
+        users = load_users()
+        
+        # Check if user already exists
+        existing_user = None
+        for u in users:
+            if u['email'].lower() == request.email.lower():
+                existing_user = u
+                break
+        
+        if existing_user:
+            # Existing user - check approval status
+            approval_status = existing_user.get('approval_status', 'approved')
+            if approval_status != 'approved':
+                raise HTTPException(status_code=403, detail=f"Account is {approval_status}")
+            
+            # Update photo URL if changed
+            if request.photo_url and existing_user.get('photo_url') != request.photo_url:
+                existing_user['photo_url'] = request.photo_url
+                save_users(users)
+            
+            return {
+                "success": True,
+                "user": {
+                    "id": existing_user['id'],
+                    "email": existing_user['email'],
+                    "name": existing_user['name'],
+                    "role": existing_user['role'],
+                    "photo_url": existing_user.get('photo_url'),
+                    "organization": existing_user.get('organization')
+                }
+            }
+        else:
+            # New user - create with pending approval
+            existing_ids = [int(u['id']) for u in users if u['id'].isdigit()]
+            user_id = str(max(existing_ids, default=0) + 1)
+            new_user = {
+                "id": user_id,
+                "email": request.email,
+                "name": request.name,
+                "password": "",  # No password for Google users
+                "role": "operator",  # Default role
+                "organization": None,
+                "approval_status": "pending",
+                "created_at": datetime.utcnow().isoformat(),
+                "photo_url": request.photo_url,
+                "auth_provider": "google"
+            }
+            
+            users.append(new_user)
+            save_users(users)
+            
+            return {
+                "success": True,
+                "message": "Registration successful. Awaiting admin approval.",
+                "user": {
+                    "id": user_id,
+                    "email": request.email,
+                    "name": request.name,
+                    "role": "operator",
+                    "approval_status": "pending"
+                }
+            }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/auth/approval-status")
+async def check_approval_status(email: str):
+    """
+    Check user approval status by email
+    """
+    try:
+        users = load_users()
+        
+        user = None
+        for u in users:
+            if u['email'].lower() == email.lower():
+                user = u
+                break
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        approval_status = user.get('approval_status', 'approved')
+        
+        return {
+            "success": True,
+            "approval_status": approval_status,
+            "denied_reason": user.get('denied_reason')
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# -------------------------------------------------
+# Admin endpoints
+# -------------------------------------------------
+
+@app.get("/api/admin/pending-users")
+async def get_pending_users():
+    """
+    Get all users pending approval (admin only)
+    """
+    try:
+        users = load_users()
+        
+        pending_users = [
+            {
+                "id": u['id'],
+                "name": u['name'],
+                "email": u['email'],
+                "role": u['role'],
+                "organization": u.get('organization'),
+                "photo_url": u.get('photo_url'),
+                "created_at": u.get('created_at'),
+                "approval_status": u.get('approval_status', 'approved')
+            }
+            for u in users
+            if u.get('approval_status') == 'pending'
+        ]
+        
+        return {
+            "success": True,
+            "users": pending_users
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/admin/approve-user")
+async def approve_user(request: ApprovalRequest):
+    """
+    Approve a pending user (admin only)
+    """
+    try:
+        users = load_users()
+        
+        user_found = False
+        for u in users:
+            if u['id'] == request.user_id:
+                u['approval_status'] = 'approved'
+                u['approved_at'] = datetime.utcnow().isoformat()
+                user_found = True
+                break
+        
+        if not user_found:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        save_users(users)
+        
+        return {
+            "success": True,
+            "message": "User approved successfully"
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/admin/deny-user")
+async def deny_user(request: DenyRequest):
+    """
+    Deny a pending user (admin only)
+    """
+    try:
+        users = load_users()
+        
+        user_found = False
+        for u in users:
+            if u['id'] == request.user_id:
+                u['approval_status'] = 'denied'
+                u['denied_at'] = datetime.utcnow().isoformat()
+                u['denied_reason'] = request.reason or "No reason provided"
+                user_found = True
+                break
+        
+        if not user_found:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        save_users(users)
+        
+        return {
+            "success": True,
+            "message": "User denied successfully"
         }
     
     except HTTPException:
@@ -402,7 +720,11 @@ async def fingerprint(
     Cu: float = Form(...),
     Fe: float = Form(...),
     S: float  = Form(...),
-    O: float  = Form(...)
+    O: float  = Form(...),
+    
+    # GPS coordinates (optional)
+    latitude: Optional[float] = Form(None),
+    longitude: Optional[float] = Form(None)
 ):
     """
     Generate and store fingerprint
@@ -481,6 +803,13 @@ async def fingerprint(
             "fingerprint": fingerprint_vector,
             "timestamp": datetime.utcnow().isoformat()
         }
+        
+        # Add GPS coordinates if provided
+        if latitude is not None and longitude is not None:
+            record["gps"] = {
+                "latitude": round(latitude, 6),
+                "longitude": round(longitude, 6)
+            }
 
         save_fingerprint(record)
         
@@ -972,8 +1301,8 @@ async def get_metrics():
                 "total_samples": len(records)
             }
         
-        # Calculate metrics
-        metrics = metrics_calc.calculate_metrics(y_true, y_pred)
+        # Calculate metrics (MetricsCalculator loads from file, doesn't take args)
+        metrics = metrics_calc.calculate_metrics()
         
         # Add modality statistics
         modality_stats = {}
@@ -1010,5 +1339,12 @@ if __name__ == "__main__":
     print(f"💡 For mobile device access, use your computer's local IP address")
     print(f"   Example: http://192.168.1.100:{port}")
     print("=" * 80 + "\n")
-    
-    uvicorn.run(app, host=host, port=port, reload=True)
+    # Mount static webapp here so API routes are already defined and take precedence.
+    WEBAPP_DIR = str(BASE_DIR / "webapp")
+    try:
+        app.mount("/", StaticFiles(directory=WEBAPP_DIR, html=True), name="webapp")
+        print(f"✅ Mounted static webapp from: {WEBAPP_DIR}")
+    except Exception as _e:
+        print(f"⚠️  Could not mount webapp static files: {WEBAPP_DIR} -> {_e}")
+
+    uvicorn.run("API.api:app", host=host, port=port, reload=True)

@@ -63,14 +63,16 @@ def main():
 
                 sample_id = f"S{sample_counter:05d}"
 
-                # find any chemical row of same mineral
-                # (your chemical vectors are mineral-level)
-                chem_row = None
-                for r in chemical.values():
-                    if r["mineral"] == mineral:
-                        chem_row = r
-                        break
-
+                # Find the specific chemical composition for this sample_id
+                chem_row = chemical.get(sample_id)
+                
+                if chem_row is None:
+                    # Fallback: find any chemical row of same mineral
+                    for r in chemical.values():
+                        if r["mineral"] == mineral:
+                            chem_row = r
+                            break
+                
                 if chem_row is None:
                     continue
 

@@ -14,7 +14,7 @@ class MetricsCalculator:
     Calculate classification metrics from verification records
     """
     def __init__(self, fingerprints_file: Path):
-        self.fingerprints_file = fingerprints_file
+        self.fingerprints_file = Path(fingerprints_file) if not isinstance(fingerprints_file, Path) else fingerprints_file
         self.mineral_labels = ["gold", "chalcopyrite", "hematite"]
     
     def load_records(self) -> List[Dict]:

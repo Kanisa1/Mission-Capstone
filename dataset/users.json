@@ -30,7 +30,10 @@
     "name": "Ayen",
     "password": "Ayen123",
     "role": "regulator",
-    "created_at": "2026-02-15T21:05:59.325576"
+    "created_at": "2026-02-15T21:05:59.325576",
+    "approval_status": "denied",
+    "denied_at": "2026-02-22T12:57:48.356833",
+    "denied_reason": "No reason provided"
   },
   {
     "id": "8",
@@ -38,7 +41,9 @@
     "name": "John",
     "password": "John123",
     "role": "inspector",
-    "created_at": "2026-02-15T21:18:00.138839"
+    "created_at": "2026-02-15T21:18:00.138839",
+    "approval_status": "approved",
+    "approved_at": "2026-02-22T12:59:06.612499"
   },
   {
     "id": "9",
@@ -47,5 +52,17 @@
     "password": "Mary123",
     "role": "regulator",
     "created_at": "2026-02-15T21:27:26.491608"
+  },
+  {
+    "id": "11",
+    "email": "k.thiak@alustudent.com",
+    "name": "Kanisa Thiak",
+    "password": "Kanisa@123",
+    "role": "operator",
+    "organization": null,
+    "approval_status": "approved",
+    "created_at": "2026-02-22T12:47:04.764315",
+    "photo_url": null,
+    "approved_at": "2026-02-22T13:22:19.165616"
   }
 ]
