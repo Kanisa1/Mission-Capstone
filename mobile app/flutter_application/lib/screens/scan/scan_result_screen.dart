@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import '../../config/theme.dart';
 import '../../config/constants.dart';
 import '../../models/prediction_result.dart';
+import '../../services/api_service.dart';
+import 'verification_result_screen.dart';
 
 class ScanResultScreen extends StatelessWidget {
   final PredictionResult result;
@@ -243,6 +245,42 @@ class ScanResultScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 16),
+
+              // Chemical composition used
+              if (result.chemicalUsed != null)
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Chemical Composition Used',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      ...['Au', 'Cu', 'Fe', 'S', 'O'].map((el) {
+                        final val = result.chemicalUsed![el];
+                        return _buildDetailRow(el, val != null ? val.toString() : 'N/A');
+                      }).toList(),
+                    ],
+                  ),
+                ),
               
               const SizedBox(height: 24),
               
@@ -266,8 +304,78 @@ class ScanResultScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () {
-                        // TODO: Navigate to verification
+                      onPressed: () async {
+                        // Show progress dialog
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const AlertDialog(
+                            content: SizedBox(
+                              height: 60,
+                              child: Center(child: CircularProgressIndicator()),
+                            ),
+                          ),
+                        );
+
+                        try {
+                          final api = ApiService();
+
+                          // Prepare chemical data in expected order [Au, Cu, Fe, S, O]
+                          List<double>? chemicalList;
+                          if (result.chemicalUsed != null) {
+                            chemicalList = [
+                              result.chemicalUsed!['Au'] ?? 0.0,
+                              result.chemicalUsed!['Cu'] ?? 0.0,
+                              result.chemicalUsed!['Fe'] ?? 0.0,
+                              result.chemicalUsed!['S'] ?? 0.0,
+                              result.chemicalUsed!['O'] ?? 0.0,
+                            ];
+                          }
+
+                          if ((result.fingerprintId == null || result.fingerprintId!.isEmpty) && chemicalList == null) {
+                            Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Verification'),
+                                content: const Text('No verification data available'),
+                                actions: [
+                                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+                                ],
+                              ),
+                            );
+                            return;
+                          }
+
+                          final verification = await api.verify(
+                            fingerprintId: result.fingerprintId,
+                            chemicalData: chemicalList,
+                          );
+
+                          Navigator.of(context).pop(); // remove progress
+
+                          // Navigate to dedicated verification result screen
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => VerificationResultScreen(
+                                verification: verification,
+                                prediction: result,
+                              ),
+                            ),
+                          );
+                        } catch (e) {
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Verification Error'),
+                              content: Text(e.toString()),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+                              ],
+                            ),
+                          );
+                        }
                       },
                       icon: const Icon(Icons.verified_outlined),
                       label: const Text('Verify'),

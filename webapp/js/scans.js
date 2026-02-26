@@ -215,6 +215,9 @@ class ScansPage {
                 <button class="btn-icon" onclick="scansPage.viewDetails('${scan.sample_id}')" title="View Details">
                     <i class="fas fa-eye"></i>
                 </button>
+                <button class="btn-icon" onclick="scansPage.verifyScan('${scan.sample_id}')" title="Verify">
+                    <i class="fas fa-check-circle"></i>
+                </button>
             </td>
         `;
 
@@ -306,6 +309,32 @@ class ScansPage {
                 gpsInfo +
                 `Timestamp: ${new Date(scan.timestamp).toLocaleString()}`
             );
+        }
+    }
+
+    // Verify a scan via API
+    async verifyScan(sampleId) {
+        try {
+            this.showLoading(true);
+            const response = await fetch(`${API_BASE_URL}/verify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fingerprint_id: sampleId })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.detail || 'Verification request failed');
+            }
+            alert(
+                `Authentic: ${data.is_authentic}` +
+                `\nScore: ${data.match_score}` +
+                `\nMessage: ${data.message || ''}`
+            );
+        } catch (err) {
+            console.error('Verification error:', err);
+            this.showError('Verification error: ' + (err.message || err));
+        } finally {
+            this.showLoading(false);
         }
     }
 

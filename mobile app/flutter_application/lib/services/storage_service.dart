@@ -106,4 +106,24 @@ class StorageService {
   Future<void> removeProfilePicture() async {
     await _prefs.remove('profile_picture');
   }
+
+  // Scan ID persistence
+  Future<void> addScanId(String scanId) async {
+    final list = _prefs.getStringList(AppConstants.scanIdsKey) ?? <String>[];
+    // prepend latest
+    list.insert(0, scanId);
+    await _prefs.setStringList(AppConstants.scanIdsKey, list);
+    await _prefs.setString(AppConstants.lastScanIdKey, scanId);
+  }
+
+  List<String> getScanIds() {
+    return _prefs.getStringList(AppConstants.scanIdsKey) ?? <String>[];
+  }
+
+  String? getLastScanId() => _prefs.getString(AppConstants.lastScanIdKey);
+
+  Future<void> clearScanIds() async {
+    await _prefs.remove(AppConstants.scanIdsKey);
+    await _prefs.remove(AppConstants.lastScanIdKey);
+  }
 }

@@ -264,10 +264,21 @@ class ApiService {
         );
       }
 
-      // Add form fields
-      if (chemicalData != null && chemicalData.isNotEmpty) {
-        request.fields['chemical'] = jsonEncode(chemicalData);
+      // Add chemical form fields (API expects individual element fields)
+      // chemicalData order: [Au, Cu, Fe, S, O]
+      double au = 0.0, cu = 0.0, fe = 0.0, s = 0.0, o = 0.0;
+      if (chemicalData != null && chemicalData.length >= 5) {
+        au = chemicalData[0];
+        cu = chemicalData[1];
+        fe = chemicalData[2];
+        s = chemicalData[3];
+        o = chemicalData[4];
       }
+      request.fields['Au'] = au.toString();
+      request.fields['Cu'] = cu.toString();
+      request.fields['Fe'] = fe.toString();
+      request.fields['S'] = s.toString();
+      request.fields['O'] = o.toString();
 
       if (siteId != null) {
         request.fields['site_id'] = siteId;
@@ -325,10 +336,21 @@ class ApiService {
         );
       }
 
-      // Add form fields
-      if (chemicalData != null && chemicalData.isNotEmpty) {
-        request.fields['chemical'] = jsonEncode(chemicalData);
+
+      // Add chemical form fields (API expects individual element fields)
+      double au2 = 0.0, cu2 = 0.0, fe2 = 0.0, s2 = 0.0, o2 = 0.0;
+      if (chemicalData != null && chemicalData.length >= 5) {
+        au2 = chemicalData[0];
+        cu2 = chemicalData[1];
+        fe2 = chemicalData[2];
+        s2 = chemicalData[3];
+        o2 = chemicalData[4];
       }
+      request.fields['Au'] = au2.toString();
+      request.fields['Cu'] = cu2.toString();
+      request.fields['Fe'] = fe2.toString();
+      request.fields['S'] = s2.toString();
+      request.fields['O'] = o2.toString();
 
       if (fingerprintId != null) {
         request.fields['fingerprint_id'] = fingerprintId;
@@ -375,6 +397,51 @@ class ApiService {
     }
   }
 
+  // Register a scan record on the server (useful when client generated a scan_id)
+  Future<Scan> registerScan({
+    required String scanId,
+    required String mineral,
+    required double confidence,
+    String? location,
+    required String userId,
+    DateTime? timestamp,
+    String? fingerprintId,
+    Map<String, double>? chemicalUsed,
+    double? latitude,
+    double? longitude,
+  }) async {
+    try {
+      final uri = Uri.parse('$baseUrl${AppConstants.scansEndpoint}');
+      final body = {
+        'scan_id': scanId,
+        'predicted_mineral': mineral,
+        'confidence': confidence,
+        if (location != null) 'site_id': location,
+        'user_id': userId,
+        'timestamp': (timestamp ?? DateTime.now()).toIso8601String(),
+        if (fingerprintId != null) 'fingerprint_id': fingerprintId,
+        if (chemicalUsed != null) 'chemical_used': chemicalUsed,
+        if (latitude != null) 'latitude': latitude,
+        if (longitude != null) 'longitude': longitude,
+      };
+
+      final response = await http.post(
+        uri,
+        headers: _getHeaders(),
+        body: jsonEncode(body),
+      ).timeout(AppConstants.apiTimeout);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        return Scan.fromJson(data);
+      } else {
+        throw Exception('Register scan failed: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Register scan error: $e');
+    }
+  }
+
   // Get metrics
   Future<Map<String, dynamic>> getMetrics() async {
     try {
@@ -410,6 +477,75 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Get users error: $e');
+    }
+  }
+
+  // Extract and store fingerprint
+  Future<Map<String, dynamic>> extractFingerprint({
+    required String sampleId,
+    required String site,
+    required String mineral,
+    required String userId,
+    required String userName,
+    File? imageFile,
+    File? audioFile,
+    Map<String, double>? chemicalUsed,
+    double? latitude,
+    double? longitude,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseUrl/fingerprint'),
+      );
+
+      // Required form fields
+      request.fields['sample_id'] = sampleId;
+      request.fields['site'] = site;
+      request.fields['mineral'] = mineral;
+      request.fields['user_id'] = userId;
+      request.fields['user_name'] = userName;
+
+      // Add files
+      if (imageFile != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image', imageFile.path),
+        );
+      }
+
+      if (audioFile != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('audio', audioFile.path),
+        );
+      }
+
+      // Add chemical fields
+      if (chemicalUsed != null) {
+        request.fields['Au'] = (chemicalUsed['Au'] ?? 0.0).toString();
+        request.fields['Cu'] = (chemicalUsed['Cu'] ?? 0.0).toString();
+        request.fields['Fe'] = (chemicalUsed['Fe'] ?? 0.0).toString();
+        request.fields['S'] = (chemicalUsed['S'] ?? 0.0).toString();
+        request.fields['O'] = (chemicalUsed['O'] ?? 0.0).toString();
+      }
+
+      // Add GPS coordinates
+      if (latitude != null) {
+        request.fields['latitude'] = latitude.toString();
+      }
+      if (longitude != null) {
+        request.fields['longitude'] = longitude.toString();
+      }
+
+      final streamedResponse = await request.send().timeout(AppConstants.scanTimeout);
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Fingerprint extraction failed: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Fingerprint extraction error: $e');
     }
   }
 

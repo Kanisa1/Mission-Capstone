@@ -16,6 +16,15 @@ import librosa
 import torchvision.transforms as T
 from sklearn.preprocessing import StandardScaler
 from pydantic import BaseModel
+import csv
+
+# Email utilities
+from email_utils import (
+    send_registration_confirmation,
+    send_admin_approval_notification,
+    send_approval_email,
+    send_denial_email
+)
 
 
 # -------------------------------------------------
@@ -82,77 +91,79 @@ logger = ScanEventLogger(LOGS_DIR)
 metrics_calc = MetricsCalculator(fingerprints_file=str(FINGERPRINT_DB))
 
 
-# -------------------------------------------------
-# Load trained model
-# -------------------------------------------------
 
-model = MultiModalNet(num_classes=3)
+# NOTE: heavy resources (model, scaler, transforms) are loaded at application
+# startup instead of import time to avoid issues with the Uvicorn reload
+# mechanism on Windows (multiprocessing spawn + pickling of large objects).
+# We'll initialize these globals in the FastAPI startup event below.
 
-model_path = BASE_DIR / "dataset" / "multimodal_model.pt"
-model.load_state_dict(
-    torch.load(model_path, map_location=DEVICE)
-)
-
-model.to(DEVICE)
-model.eval()
-
-print(f"✅ Model loaded from: {model_path}")
-print(f"✅ Device: {DEVICE}")
-
+model = None
+chem_scaler = None
+img_transform = None
 
 # -------------------------------------------------
-# Load Chemical Scaler
+# Chemical dataset stats (per-mineral means)
 # -------------------------------------------------
 
-scaler_path = BASE_DIR / "dataset" / "chemical_scaler.pkl"
-if scaler_path.exists():
-    with open(scaler_path, "rb") as f:
-        chem_scaler = pickle.load(f)
-    print(f"✅ Chemical scaler loaded from: {scaler_path}")
-else:
-    print(f"⚠️  Chemical scaler not found at {scaler_path}")
-    print(f"   Creating default scaler with training data statistics...")
-    # Fallback: use approximate statistics from training
-    chem_scaler = StandardScaler()
-    chem_scaler.mean_ = np.array([0.36794582, 0.33860045, 0.9255079, 0.6772009, 0.88036117])
-    chem_scaler.scale_ = np.array([0.48224651, 0.47323375, 0.80984596, 0.94646751, 1.36603357])
-    print(f"✅ Default scaler initialized")
+CHEMICAL_CSV = BASE_DIR / "dataset" / "chemical.csv"
+chemical_means = {}
+chemical_overall_mean = None
+
+def load_chemical_means():
+    global chemical_means, chemical_overall_mean
+    if not CHEMICAL_CSV.exists():
+        chemical_means = {}
+        chemical_overall_mean = None
+        return
+
+    sums = {}
+    counts = {}
+
+    with open(CHEMICAL_CSV, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            mineral = row.get('mineral', '').strip().lower()
+            try:
+                au = float(row.get('Au', 0.0))
+                cu = float(row.get('Cu', 0.0))
+                fe = float(row.get('Fe', 0.0))
+                s = float(row.get('S', 0.0))
+                o = float(row.get('O', 0.0))
+            except Exception:
+                continue
+
+            if mineral not in sums:
+                sums[mineral] = [0.0, 0.0, 0.0, 0.0, 0.0]
+                counts[mineral] = 0
+
+            sums[mineral][0] += au
+            sums[mineral][1] += cu
+            sums[mineral][2] += fe
+            sums[mineral][3] += s
+            sums[mineral][4] += o
+            counts[mineral] += 1
+
+    for mineral, total in sums.items():
+        cnt = counts.get(mineral, 1)
+        chemical_means[mineral] = [v / cnt for v in total]
+
+    # overall mean across all minerals
+    all_totals = [0.0, 0.0, 0.0, 0.0, 0.0]
+    all_count = 0
+    for mineral, vals in sums.items():
+        all_totals = [x + y for x, y in zip(all_totals, vals)]
+        all_count += counts.get(mineral, 0)
+
+    if all_count > 0:
+        chemical_overall_mean = [v / all_count for v in all_totals]
+    else:
+        chemical_overall_mean = [0.0, 0.0, 0.0, 0.0, 0.0]
 
 
-# -------------------------------------------------
-# Image preprocessing (ImageNet normalization)
-# -------------------------------------------------
-
-img_transform = T.Compose([
-    T.Resize((224, 224)),
-    T.ToTensor(),
-    T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
-])
-
-print("✅ Image preprocessing configured with ImageNet normalization")
+load_chemical_means()
 
 
-# -------------------------------------------------
-# Image preprocessing (ImageNet normalization)
-# -------------------------------------------------
-
-img_transform = T.Compose([
-    T.Resize((224, 224)),
-    T.ToTensor(),
-    T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
-])
-
-print("✅ Image preprocessing configured with ImageNet normalization")
-
-print("\n" + "=" * 80)
-print("  🎯 GEOACOUSTIC MINERAL TRACEABILITY API v2.0")
-print("  Professional Model - 88.5% Accuracy")
-print("=" * 80)
-print(f"✅ Model: Multimodal CNN (ResNet18 + Audio CNN + Chemical MLP)")
-print(f"✅ Classes: Gold, Chalcopyrite, Hematite")
-print(f"✅ Preprocessing: ImageNet normalization + Chemical StandardScaler")
-print(f"✅ Features: Optional modalities, Logging, Metrics, Verification")
-print("=" * 80 + "\n")
+# Image preprocessing and startup banner are configured during app startup
 
 
 # -------------------------------------------------
@@ -183,6 +194,66 @@ try:
     pass
 except Exception:
     pass
+
+
+# -------------------------------------------------
+# Startup: load heavy resources here (model, scaler, transforms)
+# -------------------------------------------------
+
+@app.on_event("startup")
+async def startup_event():
+    global model, chem_scaler, img_transform, chemical_means, chemical_overall_mean
+
+    print("Loading model and resources...")
+
+    # Load trained model
+    try:
+        model_local = MultiModalNet(num_classes=3)
+        model_path = BASE_DIR / "dataset" / "multimodal_model.pt"
+        state = torch.load(model_path, map_location=DEVICE)
+        model_local.load_state_dict(state)
+        model_local.to(DEVICE)
+        model_local.eval()
+        model = model_local
+        print(f" Model loaded from: {model_path}")
+        print(f" Device: {DEVICE}")
+    except Exception as _e:
+        print(f" Failed to load model: {_e}")
+        model = None
+
+    # Load chemical scaler (safe fallback if missing)
+    try:
+        scaler_path = BASE_DIR / "dataset" / "chemical_scaler.pkl"
+        if scaler_path.exists():
+            with open(scaler_path, "rb") as f:
+                chem_scaler = pickle.load(f)
+            print(f" Chemical scaler loaded from: {scaler_path}")
+        else:
+            print(f"  Chemical scaler not found at {scaler_path}")
+            print(f"   Creating default scaler with training data statistics...")
+            chem_scaler = StandardScaler()
+            chem_scaler.mean_ = np.array([0.36794582, 0.33860045, 0.9255079, 0.6772009, 0.88036117])
+            chem_scaler.scale_ = np.array([0.48224651, 0.47323375, 0.80984596, 0.94646751, 1.36603357])
+            print(f" Default scaler initialized")
+    except Exception as _e:
+        print(f" Failed to load/create chemical scaler: {_e}")
+        chem_scaler = StandardScaler()
+
+    # Image preprocessing
+    img_transform = T.Compose([
+        T.Resize((224, 224)),
+        T.ToTensor(),
+        T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+    print(" Image preprocessing configured with ImageNet normalization")
+
+    # Load chemical means from CSV (if present)
+    try:
+        load_chemical_means()
+    except Exception as _e:
+        print(f" Failed to load chemical means: {_e}")
+
+    print("Startup complete")
 
     
 
@@ -390,9 +461,17 @@ async def register(request: RegisterRequest):
         users.append(new_user)
         save_users(users)
         
+        # Step 1: Send confirmation email to user
+        send_registration_confirmation(request.name, request.email)
+        
+        # Step 2: Get all pending users and notify admin
+        pending_users = [u for u in users if u.get('approval_status') == 'pending']
+        if pending_users:
+            send_admin_approval_notification(len(pending_users), pending_users)
+        
         return {
             "success": True,
-            "message": "Registration successful. Awaiting admin approval.",
+            "message": "Registration successful. Check your email for confirmation. Awaiting admin approval.",
             "user": {
                 "id": user_id,
                 "email": request.email,
@@ -558,22 +637,25 @@ async def approve_user(request: ApprovalRequest):
     try:
         users = load_users()
         
-        user_found = False
+        user = None
         for u in users:
             if u['id'] == request.user_id:
+                user = u
                 u['approval_status'] = 'approved'
                 u['approved_at'] = datetime.utcnow().isoformat()
-                user_found = True
                 break
         
-        if not user_found:
+        if user is None:
             raise HTTPException(status_code=404, detail="User not found")
         
         save_users(users)
         
+        # Send approval email to user
+        send_approval_email(user['name'], user['email'])
+        
         return {
             "success": True,
-            "message": "User approved successfully"
+            "message": "User approved successfully. Notification email sent."
         }
     
     except HTTPException:
@@ -590,23 +672,26 @@ async def deny_user(request: DenyRequest):
     try:
         users = load_users()
         
-        user_found = False
+        user = None
         for u in users:
             if u['id'] == request.user_id:
+                user = u
                 u['approval_status'] = 'denied'
                 u['denied_at'] = datetime.utcnow().isoformat()
                 u['denied_reason'] = request.reason or "No reason provided"
-                user_found = True
                 break
         
-        if not user_found:
+        if user is None:
             raise HTTPException(status_code=404, detail="User not found")
         
         save_users(users)
         
+        # Send denial email to user
+        send_denial_email(user['name'], user['email'], request.reason or "")
+        
         return {
             "success": True,
-            "message": "User denied successfully"
+            "message": "User denied successfully. Notification email sent."
         }
     
     except HTTPException:
@@ -624,11 +709,12 @@ async def predict(
     image: Optional[UploadFile] = File(None),
     audio: Optional[UploadFile] = File(None),
 
-    Au: float = Form(...),
-    Cu: float = Form(...),
-    Fe: float = Form(...),
-    S: float  = Form(...),
-    O: float  = Form(...)
+    # Make chemical inputs optional. If missing, we'll fallback to dataset-derived means
+    Au: Optional[float] = Form(None),
+    Cu: Optional[float] = Form(None),
+    Fe: Optional[float] = Form(None),
+    S: Optional[float]  = Form(None),
+    O: Optional[float]  = Form(None)
 ):
     """
     Predict mineral type from multimodal inputs
@@ -655,18 +741,36 @@ async def predict(
         if aud is not None:
             aud = aud.to(DEVICE)
 
-        # Normalize chemical features using the same scaler as training
-        chem_raw = np.array([[Au, Cu, Fe, S, O]])
-        chem_normalized = chem_scaler.transform(chem_raw)
-        chem = torch.tensor(
-            chem_normalized,
-            dtype=torch.float32
-        ).to(DEVICE)
-
+        # Initial pass: predict using image only (ignore audio and chemistry)
         with torch.no_grad():
-            logits = model(image=img, audio=aud, chemical=chem)
-            probs = torch.softmax(logits, dim=1)
+            logits_init = model(image=img, audio=None, chemical=None)
+            probs_init = torch.softmax(logits_init, dim=1)
+            pred_init = probs_init.argmax(dim=1).item()
+            conf_init = probs_init[0, pred_init].item()
 
+        predicted_label_init = MINERAL_LABELS.get(pred_init, '').lower()
+
+        # Lookup per-mineral mean chemistry for the predicted label
+        mean_for_pred = chemical_means.get(predicted_label_init, chemical_overall_mean)
+        if mean_for_pred is None:
+            mean_for_pred = [0.0, 0.0, 0.0, 0.0, 0.0]
+
+        # Build used chemical vector: prefer dataset mean (system-driven)
+        used_chem = [
+            mean_for_pred[0],
+            mean_for_pred[1],
+            mean_for_pred[2],
+            mean_for_pred[3],
+            mean_for_pred[4]
+        ]
+
+        # Final pass: run model with image, optional audio, and the chosen chemical vector
+        chem_raw = np.array([used_chem])
+        chem_normalized = chem_scaler.transform(chem_raw)
+        chem_tensor = torch.tensor(chem_normalized, dtype=torch.float32).to(DEVICE)
+        with torch.no_grad():
+            logits = model(image=img, audio=aud, chemical=chem_tensor)
+            probs = torch.softmax(logits, dim=1)
             pred = probs.argmax(dim=1).item()
             confidence = probs[0, pred].item()
 
@@ -688,7 +792,14 @@ async def predict(
             "predicted_mineral": MINERAL_LABELS[pred],
             "prediction": MINERAL_LABELS[pred],  # alias for compatibility
             "confidence": round(float(confidence), 4),
-            "modalities_used": modalities_used
+            "modalities_used": modalities_used,
+            "chemical_used": {
+                "Au": used_chem[0],
+                "Cu": used_chem[1],
+                "Fe": used_chem[2],
+                "S": used_chem[3],
+                "O": used_chem[4]
+            }
         }
 
     except HTTPException:
@@ -697,6 +808,108 @@ async def predict(
         logger.log_error(e, {"endpoint": "/predict"})
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# -------------------------------------------------
+# Verification endpoint (new)
+# -------------------------------------------------
+
+@app.post("/verify")
+async def verify(
+    image: Optional[UploadFile] = File(None),
+    audio: Optional[UploadFile] = File(None),
+    
+    # chemistry fields
+    Au: Optional[float] = Form(None),
+    Cu: Optional[float] = Form(None),
+    Fe: Optional[float] = Form(None),
+    S: Optional[float]  = Form(None),
+    O: Optional[float]  = Form(None),
+    
+    # allow direct lookup by fingerprint id
+    fingerprint_id: Optional[str] = Form(None)
+):
+    """
+    Verify a sample either by providing a known fingerprint ID or by
+    submitting new modalities/chemical data.  The mobile client currently
+    sends only `fingerprint_id` or `chemical` values, so this endpoint
+    must exist to avoid 404 errors.
+
+    For now we implement a simple lookup when `fingerprint_id` is given
+    and otherwise return a placeholder response indicating verification is
+    unavailable.  In future this could compute a full vector similarity
+    against the fingerprint database.
+    """
+    try:
+        # direct ID lookup
+        if fingerprint_id:
+            records = load_fingerprints()
+            match = None
+            for r in records:
+                # sample_id is used as the primary key when storing
+                if r.get("sample_id") == fingerprint_id or r.get("fingerprint_id") == fingerprint_id:
+                    match = r
+                    break
+
+            if match:
+                return {
+                    "is_authentic": True,
+                    "match_score": 1.0,
+                    "matched_fingerprint_id": fingerprint_id,
+                    "message": "Fingerprint record found",
+                    "details": match,
+                }
+            else:
+                # not found -> still 200 so client can handle gracefully
+                return {
+                    "is_authentic": False,
+                    "match_score": 0.0,
+                    "message": "Fingerprint ID not found",
+                }
+
+        # if chemical data provided, attempt a direct lookup against
+        # stored records by comparing the five-element vector. this is a
+        # very basic approach but gives the client something useful.
+        if Au is not None and Cu is not None and Fe is not None and S is not None and O is not None:
+            records = load_fingerprints()
+            for r in records:
+                chem = r.get("chemical") or {}
+                try:
+                    cAu = float(chem.get("Au", 0.0))
+                    cCu = float(chem.get("Cu", 0.0))
+                    cFe = float(chem.get("Fe", 0.0))
+                    cS = float(chem.get("S", 0.0))
+                    cO = float(chem.get("O", 0.0))
+                except Exception:
+                    continue
+                if (abs(cAu - Au) < 1e-6 and
+                    abs(cCu - Cu) < 1e-6 and
+                    abs(cFe - Fe) < 1e-6 and
+                    abs(cS - S) < 1e-6 and
+                    abs(cO - O) < 1e-6):
+                    return {
+                        "is_authentic": True,
+                        "match_score": 1.0,
+                        "matched_fingerprint_id": r.get("sample_id"),
+                        "message": "Exact chemical match",
+                        "details": r,
+                    }
+            # no exact match found
+            return {
+                "is_authentic": False,
+                "match_score": 0.0,
+                "message": "No matching chemical composition found",
+            }
+
+        # fallback if we reach here (shouldn't happen)
+        return {
+            "is_authentic": False,
+            "match_score": 0.0,
+            "message": "Verification not implemented for provided inputs",
+        }
+    except Exception as e:
+        # log and convert to HTTP exception
+        logger.log_error(e, {"endpoint": "/verify"})
+        raise HTTPException(status_code=500, detail=str(e))
 
 # -------------------------------------------------
 # Fingerprint extraction + storage endpoint
@@ -716,11 +929,11 @@ async def fingerprint(
     audio: Optional[UploadFile] = File(None),
 
     # chemistry
-    Au: float = Form(...),
-    Cu: float = Form(...),
-    Fe: float = Form(...),
-    S: float  = Form(...),
-    O: float  = Form(...),
+    Au: Optional[float] = Form(None),
+    Cu: Optional[float] = Form(None),
+    Fe: Optional[float] = Form(None),
+    S: Optional[float]  = Form(None),
+    O: Optional[float]  = Form(None),
     
     # GPS coordinates (optional)
     latitude: Optional[float] = Form(None),
@@ -751,25 +964,46 @@ async def fingerprint(
         if aud is not None:
             aud = aud.to(DEVICE)
 
-        # Normalize chemical features using the same scaler as training
-        chem_raw = np.array([[Au, Cu, Fe, S, O]])
-        chem_normalized = chem_scaler.transform(chem_raw)
-        chem = torch.tensor(
-            chem_normalized,
-            dtype=torch.float32
-        ).to(DEVICE)
+        # If chemical inputs missing, do initial prediction with overall mean,
+        # then use predicted mineral's dataset mean to extract fingerprint.
 
-        with torch.no_grad():
-            # Extract features and create fingerprint using new API
-            fingerprint_tensor, modalities_used = model.extract_fingerprint(
-                image=img, audio=aud, chemical=chem
-            )
-            
-            # Also run prediction to get confidence score
-            logits = model(image=img, audio=aud, chemical=chem)
-            probs = torch.softmax(logits, dim=1)
-            pred = probs.argmax(dim=1).item()
-            confidence = probs[0, pred].item()
+        initial_chem = chemical_overall_mean or [0.0, 0.0, 0.0, 0.0, 0.0]
+        all_provided = None not in (Au, Cu, Fe, S, O)
+
+        def run_model(chem_values):
+            chem_raw = np.array([chem_values])
+            chem_normalized = chem_scaler.transform(chem_raw)
+            chem_tensor = torch.tensor(chem_normalized, dtype=torch.float32).to(DEVICE)
+            with torch.no_grad():
+                fingerprint_tensor, modalities_used = model.extract_fingerprint(
+                    image=img, audio=aud, chemical=chem_tensor
+                )
+                logits = model(image=img, audio=aud, chemical=chem_tensor)
+                probs = torch.softmax(logits, dim=1)
+                pred_idx = probs.argmax(dim=1).item()
+                confidence_val = probs[0, pred_idx].item()
+            return fingerprint_tensor, modalities_used, pred_idx, confidence_val
+
+        # For fingerprint endpoint: initial predict using image only
+        # (we already have img and aud variables in scope)
+        # We'll use the same approach: predict with image only, then use per-mineral mean
+        # chemistry to extract the fingerprint.
+
+        _, _, pred_init, _ = run_model(initial_chem)
+        predicted_label_init = MINERAL_LABELS.get(pred_init, '').lower()
+        mean_for_pred = chemical_means.get(predicted_label_init, chemical_overall_mean)
+        if mean_for_pred is None:
+            mean_for_pred = [0.0, 0.0, 0.0, 0.0, 0.0]
+
+        used_chem = [
+            mean_for_pred[0],
+            mean_for_pred[1],
+            mean_for_pred[2],
+            mean_for_pred[3],
+            mean_for_pred[4],
+        ]
+
+        fingerprint_tensor, modalities_used, pred, confidence = run_model(used_chem)
 
         fingerprint_vector = fingerprint_tensor.squeeze(0).cpu().numpy().tolist()
         predicted_mineral = MINERAL_LABELS[pred]
@@ -1332,19 +1566,19 @@ if __name__ == "__main__":
     port = int(os.getenv("API_PORT", "8000"))
     
     print("\n" + "=" * 80)
-    print("🚀 Starting Geoacoustic Mineral Fingerprinting API...")
+    print(" Starting Geoacoustic Mineral Fingerprinting API...")
     print("=" * 80)
-    print(f"📡 API running at: http://{host}:{port}")
-    print(f"📚 API docs at: http://127.0.0.1:{port}/docs")
-    print(f"💡 For mobile device access, use your computer's local IP address")
+    print(f" API running at: http://{host}:{port}")
+    print(f" API docs at: http://127.0.0.1:{port}/docs")
+    print(f" For mobile device access, use your computer's local IP address")
     print(f"   Example: http://192.168.1.100:{port}")
     print("=" * 80 + "\n")
     # Mount static webapp here so API routes are already defined and take precedence.
     WEBAPP_DIR = str(BASE_DIR / "webapp")
     try:
         app.mount("/", StaticFiles(directory=WEBAPP_DIR, html=True), name="webapp")
-        print(f"✅ Mounted static webapp from: {WEBAPP_DIR}")
+        print(f" Mounted static webapp from: {WEBAPP_DIR}")
     except Exception as _e:
-        print(f"⚠️  Could not mount webapp static files: {WEBAPP_DIR} -> {_e}")
+        print(f"  Could not mount webapp static files: {WEBAPP_DIR} -> {_e}")
 
     uvicorn.run("API.api:app", host=host, port=port, reload=True)

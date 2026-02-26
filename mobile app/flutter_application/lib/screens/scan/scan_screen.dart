@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../config/theme.dart';
 import '../../services/api_service.dart';
+import '../../models/prediction_result.dart';
 import '../../services/storage_service.dart';
 import 'scan_result_screen.dart';
 
@@ -116,23 +118,82 @@ class _ScanScreenState extends State<ScanScreen> {
 
     try {
       final userId = _storageService.getUserId();
+      final userName = _storageService.getUserName() ?? 'Unknown';
 
+      // Step 1: Predict mineral type
       final result = await _apiService.predict(
         imageFile: _imageFile,
         audioFile: _audioFile,
-        chemicalData: null, // Chemical data handled automatically by system
+        chemicalData: null,
         siteId: _detectedLocation,
         userId: userId,
         latitude: _currentPosition?.latitude,
         longitude: _currentPosition?.longitude,
       );
 
-      if (mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ScanResultScreen(result: result),
-          ),
+      // Generate scan ID if not already present
+      String scanId = result.scanId ?? 'scan_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(900000)}';
+
+      // Step 2: Extract and store fingerprint with predicted mineral
+      try {
+        final fingerprintResponse = await _apiService.extractFingerprint(
+          sampleId: scanId,
+          site: _detectedLocation ?? 'Unknown',
+          mineral: result.predictedMineral,
+          userId: userId ?? '',
+          userName: userName,
+          imageFile: _imageFile,
+          audioFile: _audioFile,
+          chemicalUsed: result.chemicalUsed,
+          latitude: _currentPosition?.latitude,
+          longitude: _currentPosition?.longitude,
         );
+
+        // Use the returned sample_id as fingerprint ID
+        final fingerprintId = fingerprintResponse['sample_id'] ?? scanId;
+        final resultWithFingerprint = PredictionResult(
+          predictedMineral: result.predictedMineral,
+          confidence: result.confidence,
+          probabilities: result.probabilities,
+          chemicalUsed: result.chemicalUsed,
+          scanId: scanId,
+          timestamp: result.timestamp,
+          fingerprintId: fingerprintId,
+        );
+
+        // Persist scan ID locally
+        try {
+          await _storageService.addScanId(scanId);
+        } catch (_) {}
+
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ScanResultScreen(result: resultWithFingerprint),
+            ),
+          );
+        }
+      } catch (fpError) {
+        // If fingerprint storage fails, still show results but warn user
+        _showError('Warning: Fingerprint storage failed. Verification may not work.');
+        
+        final resultWithId = PredictionResult(
+          predictedMineral: result.predictedMineral,
+          confidence: result.confidence,
+          probabilities: result.probabilities,
+          chemicalUsed: result.chemicalUsed,
+          scanId: scanId,
+          timestamp: result.timestamp,
+          fingerprintId: null,
+        );
+
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ScanResultScreen(result: resultWithId),
+            ),
+          );
+        }
       }
     } catch (e) {
       _showError('Scan failed: $e');
