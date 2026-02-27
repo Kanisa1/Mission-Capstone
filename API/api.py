@@ -23,7 +23,8 @@ from email_utils import (
     send_registration_confirmation,
     send_admin_approval_notification,
     send_approval_email,
-    send_denial_email
+    send_denial_email,
+    send_admin_created_account_email
 )
 
 
@@ -1262,7 +1263,8 @@ async def create_user(
     name: str = Form(...),
     email: str = Form(...),
     role: str = Form(...),
-    password: str = Form(...)  # In production, hash the password
+    password: str = Form(...),  # In production, hash the password
+    organization: Optional[str] = Form(None)
 ):
     """
     Create a new user
@@ -1270,8 +1272,9 @@ async def create_user(
     try:
         users = load_users()
         
-        # Check if email already exists
-        if any(u['email'] == email for u in users):
+        # Check if email already exists (case-insensitive)
+        normalized_email = email.strip().lower()
+        if any(u.get('email', '').strip().lower() == normalized_email for u in users):
             raise HTTPException(status_code=400, detail="Email already exists")
         
         # Generate new user ID
@@ -1279,19 +1282,27 @@ async def create_user(
         
         new_user = {
             "id": new_id,
-            "email": email,
-            "name": name,
+            "email": normalized_email,
+            "name": name.strip(),
             "password": password,  # In production, hash this
             "role": role.lower(),
+            "organization": organization.strip() if organization else None,
+            "approval_status": "approved",
+            "photo_url": None,
             "created_at": datetime.utcnow().isoformat()
         }
         
         users.append(new_user)
         save_users(users)
+
+        # Notify the newly created user that their account is active
+        send_admin_created_account_email(new_user['name'], new_user['email'])
         
+        user_data = {k: v for k, v in new_user.items() if k != 'password'}
+
         return {
             "success": True,
-            "user": new_user
+            "user": user_data
         }
     
     except HTTPException:
@@ -1359,6 +1370,9 @@ async def update_profile(
     user_id: str,
     name: Optional[str] = Form(None),
     email: Optional[str] = Form(None),
+    organization: Optional[str] = Form(None),
+    photo_url: Optional[str] = Form(None),
+    remove_photo: Optional[str] = Form(None),
     current_password: Optional[str] = Form(None),
     new_password: Optional[str] = Form(None)
 ):
@@ -1390,12 +1404,21 @@ async def update_profile(
         
         # Update other fields
         if name:
-            users[user_index]['name'] = name
+            users[user_index]['name'] = name.strip()
         if email:
+            normalized_email = email.strip().lower()
             # Check if new email already exists for another user
-            if any(u['email'] == email and u['id'] != user_id for u in users):
+            if any(u.get('email', '').strip().lower() == normalized_email and u['id'] != user_id for u in users):
                 raise HTTPException(status_code=400, detail="Email already exists")
-            users[user_index]['email'] = email
+            users[user_index]['email'] = normalized_email
+        if organization is not None:
+            users[user_index]['organization'] = organization.strip() if organization.strip() else None
+
+        remove_photo_flag = str(remove_photo).lower() in ["1", "true", "yes", "on"] if remove_photo is not None else False
+        if remove_photo_flag:
+            users[user_index]['photo_url'] = None
+        elif photo_url is not None:
+            users[user_index]['photo_url'] = photo_url.strip() if photo_url.strip() else None
         
         users[user_index]['updated_at'] = datetime.utcnow().isoformat()
         

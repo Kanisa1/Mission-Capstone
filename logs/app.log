@@ -8,3 +8,5 @@
 2026-02-15 23:03:11,562 - app - INFO - Scan 1771189389148: Hematite -> hematite (100.00%) - Status: verified
 2026-02-15 23:15:34,406 - app - INFO - Scan 1771190132373: Hematite -> hematite (100.00%) - Status: verified
 2026-02-26 14:04:30,791 - app - INFO - Scan scan_1772107470205_546642: gold -> gold (100.00%) - Status: verified
+2026-02-27 13:45:14,988 - app - INFO - Scan scan_1772192714502_462864: gold -> gold (100.00%) - Status: verified
+2026-02-27 20:00:52,250 - app - INFO - Scan scan_1772215252123_793686: chalcopyrite -> gold (100.00%) - Status: notVerified

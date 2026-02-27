@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../../config/theme.dart';
 import '../../services/api_service.dart';
 import '../../models/prediction_result.dart';
@@ -20,6 +23,21 @@ class _ScanScreenState extends State<ScanScreen> {
   final _apiService = ApiService();
   final _storageService = StorageService();
   final _imagePicker = ImagePicker();
+
+  static const List<_KnownPlace> _knownPlaces = [
+    _KnownPlace(
+      name: 'African Leadership University',
+      latitude: -1.9439,
+      longitude: 30.0928,
+      radiusMeters: 3000,
+    ),
+    _KnownPlace(
+      name: 'Kagarama',
+      latitude: -1.9958,
+      longitude: 30.1174,
+      radiusMeters: 2500,
+    ),
+  ];
   
   File? _imageFile;
   File? _audioFile;
@@ -27,6 +45,191 @@ class _ScanScreenState extends State<ScanScreen> {
   Position? _currentPosition;
   bool _isScanning = false;
   bool _isLoadingLocation = false;
+
+  String? _resolveKnownPlaceByCoordinates(Position position) {
+    for (final place in _knownPlaces) {
+      final distance = Geolocator.distanceBetween(
+        position.latitude,
+        position.longitude,
+        place.latitude,
+        place.longitude,
+      );
+
+      if (distance <= place.radiusMeters) {
+        return place.name;
+      }
+    }
+    return null;
+  }
+
+  String? _resolveKnownPlaceByText(String? value) {
+    final normalized = (value ?? '').trim().toLowerCase();
+    if (normalized.isEmpty) {
+      return null;
+    }
+
+    if (normalized.contains('african leadership university') ||
+        normalized.contains('kigali innovation city')) {
+      return 'African Leadership University';
+    }
+
+    if (normalized.contains('kagarama')) {
+      return 'Kagarama';
+    }
+
+    return null;
+  }
+
+  String _friendlyLocationFromPlacemark(Placemark place) {
+    final knownFromText = _resolveKnownPlaceByText(
+      [
+        place.name,
+        place.street,
+        place.subLocality,
+        place.locality,
+        place.subAdministrativeArea,
+        place.administrativeArea,
+      ].where((v) => (v ?? '').trim().isNotEmpty).join(', '),
+    );
+
+    if (knownFromText != null) {
+      return knownFromText;
+    }
+
+    if ((place.subLocality ?? '').trim().isNotEmpty) {
+      return place.subLocality!.trim();
+    }
+
+    if ((place.locality ?? '').trim().isNotEmpty) {
+      return place.locality!.trim();
+    }
+
+    if ((place.subAdministrativeArea ?? '').trim().isNotEmpty) {
+      return place.subAdministrativeArea!.trim();
+    }
+
+    if ((place.administrativeArea ?? '').trim().isNotEmpty) {
+      return place.administrativeArea!.trim();
+    }
+
+    return 'Unknown Location';
+  }
+
+  String _friendlyLocationFromApiText(String value) {
+    final knownFromText = _resolveKnownPlaceByText(value);
+    if (knownFromText != null) {
+      return knownFromText;
+    }
+
+    final chunks = value
+        .split(',')
+        .map((part) => part.trim())
+        .where((part) => part.isNotEmpty)
+        .toList();
+
+    if (chunks.isEmpty) {
+      return 'Unknown Location';
+    }
+
+    return chunks.first;
+  }
+
+  String _formatCoordinates(Position position) {
+    return '${position.latitude.toStringAsFixed(6)}, ${position.longitude.toStringAsFixed(6)}';
+  }
+
+  Future<String?> _resolveLocationNameFromMapApi(Position position) async {
+    try {
+      final url = Uri.parse(
+        'https://nominatim.openstreetmap.org/reverse'
+        '?format=jsonv2'
+        '&lat=${position.latitude}'
+        '&lon=${position.longitude}'
+        '&zoom=14',
+      );
+
+      final response = await http.get(
+        url,
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'MineralTrace/1.0 (admin@mineraltrace.local)'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return null;
+      }
+
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final address = (data['address'] as Map<String, dynamic>?) ?? {};
+
+      final locality =
+          (address['city'] ?? address['town'] ?? address['village'] ?? address['suburb'] ?? address['county'])?.toString();
+      final region = (address['state'] ?? address['region'])?.toString();
+      final country = address['country']?.toString();
+
+      final parts = <String>[
+        if ((locality ?? '').trim().isNotEmpty) locality!.trim(),
+        if ((region ?? '').trim().isNotEmpty) region!.trim(),
+        if ((country ?? '').trim().isNotEmpty) country!.trim(),
+      ];
+
+      if (parts.isNotEmpty) {
+        return parts.join(', ');
+      }
+
+      final displayName = data['display_name']?.toString();
+      if ((displayName ?? '').trim().isNotEmpty) {
+        return displayName!.trim();
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<String> _resolveLocationName(Position position) async {
+    final knownByCoordinates = _resolveKnownPlaceByCoordinates(position);
+    if (knownByCoordinates != null) {
+      return knownByCoordinates;
+    }
+
+    try {
+      final placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isEmpty) {
+        final fromApi = await _resolveLocationNameFromMapApi(position);
+        if (fromApi != null && fromApi.trim().isNotEmpty) {
+          return _friendlyLocationFromApiText(fromApi);
+        }
+        return _formatCoordinates(position);
+      }
+
+      final place = placemarks.first;
+      final friendly = _friendlyLocationFromPlacemark(place);
+      if (friendly != 'Unknown Location') {
+        return friendly;
+      }
+
+      final fromApi = await _resolveLocationNameFromMapApi(position);
+      if (fromApi != null) {
+        return _friendlyLocationFromApiText(fromApi);
+      }
+
+      return _formatCoordinates(position);
+    } catch (_) {
+      final fromApi = await _resolveLocationNameFromMapApi(position);
+      if (fromApi != null) {
+        return _friendlyLocationFromApiText(fromApi);
+      }
+
+      return _formatCoordinates(position);
+    }
+  }
 
   @override
   void dispose() {
@@ -67,9 +270,11 @@ class _ScanScreenState extends State<ScanScreen> {
         desiredAccuracy: LocationAccuracy.high,
       );
 
+      final locationName = await _resolveLocationName(position);
+
       setState(() {
         _currentPosition = position;
-        _detectedLocation = '${position.latitude.toStringAsFixed(6)}, ${position.longitude.toStringAsFixed(6)}';
+        _detectedLocation = locationName;
         _isLoadingLocation = false;
       });
 
@@ -159,6 +364,7 @@ class _ScanScreenState extends State<ScanScreen> {
           scanId: scanId,
           timestamp: result.timestamp,
           fingerprintId: fingerprintId,
+          location: _detectedLocation,
         );
 
         // Persist scan ID locally
@@ -185,6 +391,7 @@ class _ScanScreenState extends State<ScanScreen> {
           scanId: scanId,
           timestamp: result.timestamp,
           fingerprintId: null,
+          location: _detectedLocation,
         );
 
         if (mounted) {
@@ -556,4 +763,18 @@ class _ScanScreenState extends State<ScanScreen> {
       ),
     );
   }
+}
+
+class _KnownPlace {
+  final String name;
+  final double latitude;
+  final double longitude;
+  final double radiusMeters;
+
+  const _KnownPlace({
+    required this.name,
+    required this.latitude,
+    required this.longitude,
+    required this.radiusMeters,
+  });
 }

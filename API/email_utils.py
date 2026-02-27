@@ -252,6 +252,55 @@ def send_approval_email(user_name: str, user_email: str) -> bool:
     return send_email(user_email, subject, html_content)
 
 
+def send_admin_created_account_email(user_name: str, user_email: str) -> bool:
+    """
+    Send notification email when admin creates an account directly
+    """
+    subject = "✅ Your MineralTrace Account Has Been Created"
+
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #4DD0CE 0%, #2AB8B6 100%); 
+                        padding: 30px; color: white; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0;">Welcome to MineralTrace! 🎉</h1>
+            </div>
+
+            <div style="padding: 30px; background: #f5f5f5;">
+                <p>Hi <strong>{user_name}</strong>,</p>
+
+                <p>An administrator has created your <strong>MineralTrace</strong> account.</p>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                    <p><strong>Email:</strong> {user_email}</p>
+                    <p><strong>Status:</strong> <span style="color: #00B894;">✅ Active</span></p>
+                </div>
+
+                <p>Your account is ready to use. Please log in with the credentials provided by your administrator.</p>
+
+                <p style="margin: 30px 0;">
+                    <a href="http://127.0.0.1:8000/webapp/index.html" 
+                       style="background: #00B894; color: white; padding: 12px 30px; 
+                              text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+                        Login to MineralTrace →
+                    </a>
+                </p>
+
+                <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666;">
+                    <small>If you were not expecting this email, please contact your system administrator.</small>
+                </p>
+            </div>
+
+            <div style="background: #2AB8B6; color: white; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
+                <p style="margin: 0;">MineralTrace System | AI-Powered Mineral Traceability</p>
+            </div>
+        </body>
+    </html>
+    """
+
+    return send_email(user_email, subject, html_content)
+
+
 def send_denial_email(user_name: str, user_email: str, reason: str = "") -> bool:
     """
     Send denial notification email to user

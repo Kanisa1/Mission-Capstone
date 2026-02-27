@@ -480,6 +480,110 @@ class ApiService {
     }
   }
 
+  // Admin: Create user
+  Future<Map<String, dynamic>> createUser({
+    required String name,
+    required String email,
+    required String role,
+    required String password,
+    String? organization,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseUrl${AppConstants.usersEndpoint}'),
+      );
+
+      if (_authToken != null) {
+        request.headers['Authorization'] = 'Bearer $_authToken';
+      }
+
+      request.fields['name'] = name;
+      request.fields['email'] = email;
+      request.fields['role'] = role;
+      request.fields['password'] = password;
+      if (organization != null && organization.trim().isNotEmpty) {
+        request.fields['organization'] = organization.trim();
+      }
+
+      final streamedResponse = await request.send().timeout(AppConstants.apiTimeout);
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['detail'] ?? 'Failed to create user');
+      }
+    } catch (e) {
+      throw Exception('Create user error: $e');
+    }
+  }
+
+  // Admin: Update user
+  Future<Map<String, dynamic>> updateUser({
+    required String userId,
+    String? name,
+    String? email,
+    String? role,
+    String? password,
+  }) async {
+    try {
+      final request = http.MultipartRequest(
+        'PUT',
+        Uri.parse('$baseUrl${AppConstants.usersEndpoint}/$userId'),
+      );
+
+      if (_authToken != null) {
+        request.headers['Authorization'] = 'Bearer $_authToken';
+      }
+
+      if (name != null && name.trim().isNotEmpty) {
+        request.fields['name'] = name.trim();
+      }
+      if (email != null && email.trim().isNotEmpty) {
+        request.fields['email'] = email.trim();
+      }
+      if (role != null && role.trim().isNotEmpty) {
+        request.fields['role'] = role.trim();
+      }
+      if (password != null && password.isNotEmpty) {
+        request.fields['password'] = password;
+      }
+
+      final streamedResponse = await request.send().timeout(AppConstants.apiTimeout);
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['detail'] ?? 'Failed to update user');
+      }
+    } catch (e) {
+      throw Exception('Update user error: $e');
+    }
+  }
+
+  // Admin: Delete user
+  Future<Map<String, dynamic>> deleteUser(String userId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl${AppConstants.usersEndpoint}/$userId'),
+        headers: _getHeaders(),
+      ).timeout(AppConstants.apiTimeout);
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['detail'] ?? 'Failed to delete user');
+      }
+    } catch (e) {
+      throw Exception('Delete user error: $e');
+    }
+  }
+
   // Extract and store fingerprint
   Future<Map<String, dynamic>> extractFingerprint({
     required String sampleId,

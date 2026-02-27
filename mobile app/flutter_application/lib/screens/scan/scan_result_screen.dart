@@ -240,6 +240,8 @@ class ScanResultScreen extends StatelessWidget {
                       'Timestamp',
                       DateFormat('MMM dd, yyyy • HH:mm:ss').format(result.timestamp),
                     ),
+                    if (result.location != null && result.location!.trim().isNotEmpty)
+                      _buildDetailRow('Location', result.location!),
                     if (result.fingerprintId != null)
                       _buildDetailRow('Fingerprint ID', result.fingerprintId!),
                   ],

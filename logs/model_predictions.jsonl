@@ -5,3 +5,5 @@
 {"timestamp": "2026-02-23T17:18:37.809361", "sample_id": "unknown", "modalities": {"image": true, "audio": false, "chemical": true}, "prediction": "hematite", "confidence": 1.0, "scores": {}}
 {"timestamp": "2026-02-26T11:24:51.726395", "sample_id": "unknown", "modalities": {"image": true, "audio": false, "chemical": true}, "prediction": "gold", "confidence": 1.0, "scores": {}}
 {"timestamp": "2026-02-26T12:04:30.186482", "sample_id": "unknown", "modalities": {"image": true, "audio": false, "chemical": true}, "prediction": "gold", "confidence": 1.0, "scores": {}}
+{"timestamp": "2026-02-27T11:45:14.461823", "sample_id": "unknown", "modalities": {"image": true, "audio": false, "chemical": true}, "prediction": "gold", "confidence": 1.0, "scores": {}}
+{"timestamp": "2026-02-27T18:00:52.117457", "sample_id": "unknown", "modalities": {"image": true, "audio": false, "chemical": true}, "prediction": "chalcopyrite", "confidence": 1.0, "scores": {}}

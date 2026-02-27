@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../config/theme.dart';
+import '../../models/user.dart';
 import '../../services/api_service.dart';
 
 class AdminApprovalScreen extends StatefulWidget {
@@ -12,12 +13,20 @@ class AdminApprovalScreen extends StatefulWidget {
 class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
   final _apiService = ApiService();
   List<Map<String, dynamic>> _pendingUsers = [];
+  List<User> _allUsers = [];
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadPendingUsers();
+    _refreshData();
+  }
+
+  Future<void> _refreshData() async {
+    await Future.wait([
+      _loadPendingUsers(),
+      _loadAllUsers(),
+    ]);
   }
 
   Future<void> _loadPendingUsers() async {
@@ -42,6 +51,26 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
     }
   }
 
+  Future<void> _loadAllUsers() async {
+    try {
+      final users = await _apiService.getUsers();
+      if (mounted) {
+        setState(() {
+          _allUsers = users;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load users: ${e.toString()}'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _approveUser(String userId, String name) async {
     try {
       await _apiService.approveUser(userId);
@@ -52,7 +81,7 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
             backgroundColor: AppTheme.successColor,
           ),
         );
-        _loadPendingUsers(); // Refresh the list
+        _refreshData();
       }
     } catch (e) {
       if (mounted) {
@@ -118,7 +147,7 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
               backgroundColor: AppTheme.warningColor,
             ),
           );
-          _loadPendingUsers(); // Refresh the list
+          _refreshData();
         }
       } catch (e) {
         if (mounted) {
@@ -135,6 +164,389 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
     reasonController.dispose();
   }
 
+  Future<void> _showAddUserDialog() async {
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final organizationController = TextEditingController();
+    String selectedRole = 'operator';
+
+    final created = await showDialog<bool>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Add User'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: selectedRole,
+                  decoration: const InputDecoration(
+                    labelText: 'Role',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'operator', child: Text('Operator')),
+                    DropdownMenuItem(value: 'inspector', child: Text('Inspector')),
+                    DropdownMenuItem(value: 'regulator', child: Text('Regulator')),
+                    DropdownMenuItem(value: 'admin', child: Text('Admin')),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      setDialogState(() => selectedRole = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: organizationController,
+                  decoration: const InputDecoration(
+                    labelText: 'Organization (optional)',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final name = nameController.text.trim();
+                final email = emailController.text.trim();
+                final password = passwordController.text;
+
+                if (name.isEmpty || email.isEmpty || password.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Name, email, and password are required.'),
+                    ),
+                  );
+                  return;
+                }
+
+                try {
+                  await _apiService.createUser(
+                    name: name,
+                    email: email,
+                    role: selectedRole,
+                    password: password,
+                    organization: organizationController.text.trim().isNotEmpty
+                        ? organizationController.text.trim()
+                        : null,
+                  );
+
+                  if (context.mounted) {
+                    Navigator.of(context).pop(true);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to create user: ${e.toString()}'),
+                        backgroundColor: AppTheme.errorColor,
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('Create User'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (created == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('User created successfully'),
+          backgroundColor: AppTheme.successColor,
+        ),
+      );
+      _refreshData();
+    }
+
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    organizationController.dispose();
+  }
+
+  Future<void> _showEditUserDialog(User user) async {
+    final nameController = TextEditingController(text: user.name);
+    final emailController = TextEditingController(text: user.email);
+    final passwordController = TextEditingController();
+    String selectedRole = user.role.toLowerCase();
+
+    final updated = await showDialog<bool>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text('Edit ${user.name}'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: selectedRole,
+                  decoration: const InputDecoration(
+                    labelText: 'Role',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'operator', child: Text('Operator')),
+                    DropdownMenuItem(value: 'inspector', child: Text('Inspector')),
+                    DropdownMenuItem(value: 'regulator', child: Text('Regulator')),
+                    DropdownMenuItem(value: 'admin', child: Text('Admin')),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      setDialogState(() => selectedRole = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'New Password (optional)',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _apiService.updateUser(
+                    userId: user.id,
+                    name: nameController.text.trim(),
+                    email: emailController.text.trim(),
+                    role: selectedRole,
+                    password: passwordController.text.trim().isNotEmpty
+                        ? passwordController.text.trim()
+                        : null,
+                  );
+
+                  if (context.mounted) {
+                    Navigator.of(context).pop(true);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to update user: ${e.toString()}'),
+                        backgroundColor: AppTheme.errorColor,
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('Save Changes'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (updated == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('User updated successfully'),
+          backgroundColor: AppTheme.successColor,
+        ),
+      );
+      _refreshData();
+    }
+
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  Future<void> _deleteUser(User user) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete User'),
+        content: Text('Delete ${user.name}? This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.errorColor,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await _apiService.deleteUser(user.id);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${user.name} deleted successfully'),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+          _refreshData();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to delete user: ${e.toString()}'),
+              backgroundColor: AppTheme.errorColor,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  void _showUserManagementSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.75,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'User Management',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () async {
+                      await _loadAllUsers();
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                        _showUserManagementSheet();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: _allUsers.isEmpty
+                  ? const Center(child: Text('No users found'))
+                  : ListView.builder(
+                      itemCount: _allUsers.length,
+                      itemBuilder: (context, index) {
+                        final user = _allUsers[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+                            child: const Icon(Icons.person, color: AppTheme.primaryColor),
+                          ),
+                          title: Text(user.name.isNotEmpty ? user.name : user.email),
+                          subtitle: Text('${user.email} • ${user.role}'),
+                          trailing: Wrap(
+                            spacing: 6,
+                            children: [
+                              IconButton(
+                                tooltip: 'Edit User',
+                                icon: const Icon(Icons.edit, color: Colors.orange),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  _showEditUserDialog(user);
+                                },
+                              ),
+                              IconButton(
+                                tooltip: 'Delete User',
+                                icon: const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  _deleteUser(user);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,8 +556,13 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
+            icon: const Icon(Icons.manage_accounts),
+            onPressed: _showUserManagementSheet,
+            tooltip: 'Manage Users',
+          ),
+          IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _loadPendingUsers,
+            onPressed: _refreshData,
           ),
         ],
       ),
@@ -182,7 +599,7 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
                   ),
                 )
               : RefreshIndicator(
-                  onRefresh: _loadPendingUsers,
+                  onRefresh: _refreshData,
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: _pendingUsers.length,
@@ -358,6 +775,13 @@ class _AdminApprovalScreenState extends State<AdminApprovalScreen> {
                     },
                   ),
                 ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAddUserDialog,
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.person_add),
+        label: const Text('Add User'),
+      ),
     );
   }
 

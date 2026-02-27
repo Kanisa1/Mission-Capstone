@@ -78,6 +78,7 @@ body {
     flex-direction: column;
     z-index: 1000;
     box-shadow: var(--shadow-lg);
+
 }
 
 .sidebar-header {

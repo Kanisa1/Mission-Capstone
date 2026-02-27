@@ -249,7 +249,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             'User Management',
                             Icons.people_outline,
                             () {
-                              // TODO: Navigate to user management
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const AdminApprovalScreen(),
+                                ),
+                              );
                             },
                           ),
                           _buildMenuItem(

@@ -5,6 +5,7 @@ class ScansPage {
         this.pageSize = 20;
         this.allScans = [];
         this.filteredScans = [];
+        this.geocodeCache = new Map();
         this.filters = {
             site: '',
             mineral: '',
@@ -19,6 +20,7 @@ class ScansPage {
         try {
             await this.loadScans();
             this.setupEventListeners();
+            this.applyInitialSiteFilterFromQuery();
             this.renderTable();
             this.updateStats();
         } catch (error) {
@@ -38,12 +40,115 @@ class ScansPage {
             }
             const data = await response.json();
             this.allScans = data.fingerprints || [];
+            await this.enrichLocationNames();
+            this.populateSiteFilterOptions();
             this.filteredScans = [...this.allScans];
         } catch (error) {
             console.error('Error loading scans:', error);
             this.allScans = [];
             this.filteredScans = [];
         }
+    }
+
+    normalizeSiteName(site) {
+        if (!site) return 'Unknown';
+        const value = String(site).trim();
+        if (!value) return 'Unknown';
+        return value.replace(/_/g, ' ');
+    }
+
+    isCoordinateText(value) {
+        if (!value) return false;
+        return /^\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?\s*$/.test(String(value));
+    }
+
+    async reverseGeocode(latitude, longitude) {
+        const cacheKey = `${Number(latitude).toFixed(6)},${Number(longitude).toFixed(6)}`;
+        if (this.geocodeCache.has(cacheKey)) {
+            return this.geocodeCache.get(cacheKey);
+        }
+
+        try {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}&zoom=12`;
+            const response = await fetch(url, {
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Reverse geocode failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const address = data?.address || {};
+
+            const locality = address.city || address.town || address.village || address.suburb || address.county;
+            const region = address.state || address.region;
+            const country = address.country;
+
+            const parts = [locality, region, country].filter(Boolean);
+            const locationName = parts.length > 0 ? parts.join(', ') : 'Detected Location';
+
+            this.geocodeCache.set(cacheKey, locationName);
+            return locationName;
+        } catch (error) {
+            this.geocodeCache.set(cacheKey, 'Detected Location');
+            return 'Detected Location';
+        }
+    }
+
+    async enrichLocationNames() {
+        for (const scan of this.allScans) {
+            const siteText = this.normalizeSiteName(scan.site);
+
+            if (scan.site && !this.isCoordinateText(scan.site)) {
+                scan.location_name = siteText;
+                continue;
+            }
+
+            const gps = scan.gps;
+            if (gps && gps.latitude !== undefined && gps.longitude !== undefined) {
+                scan.location_name = await this.reverseGeocode(gps.latitude, gps.longitude);
+            } else {
+                scan.location_name = siteText !== 'Unknown' ? siteText : 'Detected Location';
+            }
+        }
+    }
+
+    populateSiteFilterOptions() {
+        const siteFilter = document.getElementById('siteFilter');
+        if (!siteFilter) return;
+
+        const selectedValue = this.filters.site || '';
+        const uniqueLocations = [...new Set(
+            this.allScans
+                .map(scan => scan.location_name || this.normalizeSiteName(scan.site))
+                .filter(Boolean)
+        )].sort((a, b) => a.localeCompare(b));
+
+        siteFilter.innerHTML = '<option value="">All Sites</option>';
+        uniqueLocations.forEach(location => {
+            const option = document.createElement('option');
+            option.value = location;
+            option.textContent = location;
+            siteFilter.appendChild(option);
+        });
+
+        siteFilter.value = selectedValue;
+    }
+
+    applyInitialSiteFilterFromQuery() {
+        const params = new URLSearchParams(window.location.search);
+        const siteParam = params.get('site');
+        if (!siteParam) return;
+
+        this.filters.site = siteParam;
+        const siteFilter = document.getElementById('siteFilter');
+        if (siteFilter) {
+            siteFilter.value = siteParam;
+        }
+        this.applyFilters();
     }
 
     // Setup event listeners
@@ -92,7 +197,7 @@ class ScansPage {
     applyFilters() {
         this.filteredScans = this.allScans.filter(scan => {
             // Site filter
-            if (this.filters.site && scan.site !== this.filters.site) {
+            if (this.filters.site && (scan.location_name || this.normalizeSiteName(scan.site)) !== this.filters.site) {
                 return false;
             }
 
@@ -107,7 +212,7 @@ class ScansPage {
                 const matchesSearch = 
                     (scan.sample_id && scan.sample_id.toLowerCase().includes(searchText)) ||
                     (scan.mineral && scan.mineral.toLowerCase().includes(searchText)) ||
-                    (scan.site && scan.site.toLowerCase().includes(searchText)) ||
+                    ((scan.location_name || this.normalizeSiteName(scan.site)).toLowerCase().includes(searchText)) ||
                     (scan.user_name && scan.user_name.toLowerCase().includes(searchText));
                 
                 if (!matchesSearch) {
@@ -186,14 +291,15 @@ class ScansPage {
 
         // GPS coordinates
         const gps = scan.gps;
-        const gpsDisplay = gps && gps.latitude && gps.longitude
+        const locationDisplay = scan.location_name || this.normalizeSiteName(scan.site);
+        const gpsDisplay = gps && gps.latitude !== undefined && gps.longitude !== undefined
             ? `<a href="https://www.google.com/maps?q=${gps.latitude},${gps.longitude}" target="_blank" title="View on map">
                    <i class="fas fa-map-marker-alt"></i>
                </a>`
             : 'N/A';
 
         // Site display name
-        const siteDisplay = scan.site ? scan.site.replace(/_/g, ' ') : 'Unknown';
+        const siteDisplay = locationDisplay;
 
         tr.innerHTML = `
             <td>${formattedDate}</td>
@@ -209,7 +315,7 @@ class ScansPage {
                 <span class="confidence-badge ${this.getConfidenceClass(scan.confidence)}">${confidence}</span>
             </td>
             <td style="font-size: 16px;">${modalityDisplay}</td>
-            <td style="font-size: 16px;">${gpsDisplay}</td>
+            <td style="font-size: 13px;">${locationDisplay} ${gpsDisplay !== 'N/A' ? ` ${gpsDisplay}` : ''}</td>
             <td>${scan.user_name || 'Unknown'}</td>
             <td>
                 <button class="btn-icon" onclick="scansPage.viewDetails('${scan.sample_id}')" title="View Details">
@@ -288,8 +394,8 @@ class ScansPage {
     viewDetails(sampleId) {
         const scan = this.allScans.find(s => s.sample_id === sampleId);
         if (scan) {
-            const gpsInfo = scan.gps && scan.gps.latitude && scan.gps.longitude
-                ? `GPS: ${scan.gps.latitude.toFixed(6)}, ${scan.gps.longitude.toFixed(6)}\n`
+            const gpsInfo = scan.gps && scan.gps.latitude !== undefined && scan.gps.longitude !== undefined
+                ? `Location: ${scan.location_name || this.normalizeSiteName(scan.site)}\n`
                 : '';
             
             const modalitiesUsed = scan.modalities_used || {};
@@ -303,7 +409,7 @@ class ScansPage {
                 `Mineral: ${scan.mineral}\n` +
                 `Predicted: ${scan.predicted_mineral}\n` +
                 `Confidence: ${scan.confidence ? (scan.confidence * 100).toFixed(2) + '%' : 'N/A'}\n` +
-                `Site: ${scan.site}\n` +
+                `Site: ${scan.location_name || this.normalizeSiteName(scan.site)}\n` +
                 `User: ${scan.user_name}\n` +
                 `Modalities: ${modsList}\n` +
                 gpsInfo +

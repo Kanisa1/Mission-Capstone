@@ -122,6 +122,85 @@ class UsersPage {
         }
     }
 
+    // Open add user modal
+    openAddModal() {
+        const modal = document.getElementById('addUserModal');
+        const form = document.getElementById('addUserForm');
+        if (form) {
+            form.reset();
+        }
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    // Close add user modal
+    closeAddModal() {
+        const modal = document.getElementById('addUserModal');
+        const form = document.getElementById('addUserForm');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+        if (form) {
+            form.reset();
+        }
+    }
+
+    // Submit add user form
+    async submitAddUser(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const name = formData.get('name')?.toString().trim();
+        const email = formData.get('email')?.toString().trim();
+        const role = formData.get('role')?.toString().trim();
+        const organization = formData.get('organization')?.toString().trim();
+        const password = formData.get('password')?.toString();
+
+        if (!name || !email || !role || !password) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        try {
+            const body = new FormData();
+            body.append('name', name);
+            body.append('email', email);
+            body.append('role', role);
+            body.append('password', password);
+            if (organization) {
+                body.append('organization', organization);
+            }
+
+            const response = await fetch(`${API_BASE_URL}/users`, {
+                method: 'POST',
+                body
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Failed to create user');
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('User created successfully.');
+                this.closeAddModal();
+                await this.loadUsers();
+                await this.loadPendingUsers();
+                this.renderTable();
+                this.renderPendingTable();
+                this.updateStats();
+            } else {
+                throw new Error(data.message || 'Failed to create user');
+            }
+        } catch (error) {
+            console.error('Error creating user:', error);
+            alert('Failed to create user: ' + error.message);
+        }
+    }
+
     // Apply filters
     applyFilters() {
         this.filteredUsers = this.allUsers.filter(user => {
@@ -463,12 +542,6 @@ class UsersPage {
         const user = this.allUsers.find(u => u.id === userId);
         if (!user) {
             alert('User not found');
-            return;
-        }
-
-        // Don't allow deleting admin users
-        if (user.role === 'admin') {
-            alert('Cannot delete admin users for security reasons.');
             return;
         }
 

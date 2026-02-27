@@ -3,6 +3,7 @@ class SitesPage {
     constructor() {
         this.charts = {};
         this.sitesData = {};
+        this.siteKeys = [...SITES];
     }
 
     // Initialize page
@@ -34,9 +35,15 @@ class SitesPage {
             const statsData = await statsResponse.json();
 
             const fingerprints = fingerprintsData.fingerprints || [];
+            const detectedSites = [...new Set(
+                fingerprints
+                    .map(fp => (fp.site || '').toString().trim())
+                    .filter(site => site.length > 0)
+            )];
+            this.siteKeys = [...new Set([...SITES, ...detectedSites])];
 
             // Calculate site-specific data
-            SITES.forEach(site => {
+            this.siteKeys.forEach(site => {
                 const siteFingerprints = fingerprints.filter(fp => fp.site === site);
                 
                 // Count by mineral
@@ -81,9 +88,20 @@ class SitesPage {
                     recentScans
                 };
             });
+
+            const totalSitesElement = document.getElementById('totalSites');
+            const activeSitesElement = document.getElementById('activeSites');
+            if (totalSitesElement) {
+                totalSitesElement.textContent = String(this.siteKeys.length);
+            }
+            if (activeSitesElement) {
+                const activeCount = this.siteKeys.filter(site => (this.sitesData[site]?.total || 0) > 0).length;
+                activeSitesElement.textContent = String(activeCount);
+            }
         } catch (error) {
             console.error('Error loading sites data:', error);
-            SITES.forEach(site => {
+            this.siteKeys = [...SITES];
+            this.siteKeys.forEach(site => {
                 this.sitesData[site] = {
                     name: site.replace(/_/g, ' '),
                     total: 0,
@@ -101,7 +119,7 @@ class SitesPage {
         const container = document.getElementById('sitesContainer');
         if (!container) return;
 
-        container.innerHTML = SITES.map(site => {
+        container.innerHTML = this.siteKeys.map(site => {
             const data = this.sitesData[site];
             const accuracyClass = data.accuracy >= 85 ? 'high' : data.accuracy >= 70 ? 'medium' : 'low';
             
@@ -170,7 +188,7 @@ class SitesPage {
                     </div>
                     
                     <div class="site-actions">
-                        <button class="action-btn secondary" onclick="window.location.href='scans.html?site=${site}'">
+                        <button class="action-btn secondary" onclick="window.location.href='scans.html?site=${encodeURIComponent(data.name)}'">
                             <i class="fas fa-list"></i>
                             View Scans
                         </button>
@@ -196,10 +214,10 @@ class SitesPage {
         const ctx = document.getElementById('siteComparisonChart');
         if (!ctx) return;
 
-        const siteNames = SITES.map(site => this.sitesData[site].name);
-        const totalScans = SITES.map(site => this.sitesData[site].total);
-        const verified = SITES.map(site => this.sitesData[site].verified);
-        const accuracy = SITES.map(site => this.sitesData[site].accuracy);
+        const siteNames = this.siteKeys.map(site => this.sitesData[site].name);
+        const totalScans = this.siteKeys.map(site => this.sitesData[site].total);
+        const verified = this.siteKeys.map(site => this.sitesData[site].verified);
+        const accuracy = this.siteKeys.map(site => this.sitesData[site].accuracy);
 
         this.charts.comparison = new Chart(ctx, {
             type: 'bar',
@@ -267,10 +285,10 @@ class SitesPage {
         const ctx = document.getElementById('mineralDistributionChart');
         if (!ctx) return;
 
-        const siteNames = SITES.map(site => this.sitesData[site].name);
-        const goldData = SITES.map(site => this.sitesData[site].mineralCounts.gold);
-        const chalcoData = SITES.map(site => this.sitesData[site].mineralCounts.chalcopyrite);
-        const hematiteData = SITES.map(site => this.sitesData[site].mineralCounts.hematite);
+        const siteNames = this.siteKeys.map(site => this.sitesData[site].name);
+        const goldData = this.siteKeys.map(site => this.sitesData[site].mineralCounts.gold);
+        const chalcoData = this.siteKeys.map(site => this.sitesData[site].mineralCounts.chalcopyrite);
+        const hematiteData = this.siteKeys.map(site => this.sitesData[site].mineralCounts.hematite);
 
         this.charts.distribution = new Chart(ctx, {
             type: 'bar',

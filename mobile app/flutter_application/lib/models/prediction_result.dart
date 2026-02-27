@@ -6,6 +6,7 @@ class PredictionResult {
   final String? scanId;
   final DateTime timestamp;
   final String? fingerprintId;
+  final String? location;
 
   PredictionResult({
     required this.predictedMineral,
@@ -15,6 +16,7 @@ class PredictionResult {
     this.scanId,
     required this.timestamp,
     this.fingerprintId,
+    this.location,
   });
 
   factory PredictionResult.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class PredictionResult {
           ? DateTime.parse(json['timestamp'])
           : DateTime.now(),
       fingerprintId: json['fingerprint_id'],
+      location: json['location'] ?? json['site_id'] ?? json['site_name'],
     );
   }
 
