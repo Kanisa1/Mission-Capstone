@@ -3,6 +3,7 @@ class AnalyticsPage {
     constructor() {
         this.charts = {};
         this.metrics = null;
+        this.refreshTimer = null;
     }
 
     // Initialize page
@@ -10,10 +11,8 @@ class AnalyticsPage {
         this.showLoading(true);
         
         try {
-            await this.loadMetrics();
-            this.updateStats();
-            this.initCharts();
-            this.updateMetricsTable();
+            await this.refreshData();
+            this.startRealtimeUpdates();
         } catch (error) {
             console.error('Failed to initialize analytics page:', error);
             this.showError('Failed to load analytics data');
@@ -22,24 +21,86 @@ class AnalyticsPage {
         }
     }
 
+    async refreshData() {
+        await this.loadMetrics();
+        this.updateStats();
+        this.initCharts();
+        this.updateMetricsTable();
+    }
+
+    startRealtimeUpdates() {
+        const seconds = Number(this.metrics?.refresh_seconds) || 15;
+        if (this.refreshTimer) {
+            clearInterval(this.refreshTimer);
+        }
+        this.refreshTimer = setInterval(async () => {
+            try {
+                await this.refreshData();
+            } catch (error) {
+                console.error('Real-time analytics refresh failed:', error);
+            }
+        }, Math.max(5, seconds) * 1000);
+    }
+
     // Load metrics from API
     async loadMetrics() {
         try {
-            const response = await fetch(`${API_BASE_URL}/metrics`);
+            const response = await fetch(`${API_BASE_URL}/analytics/realtime`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            this.metrics = await response.json();
+            const payload = await response.json();
+            this.metrics = this.normalizeMetrics(payload);
         } catch (error) {
             console.error('Error loading metrics:', error);
             this.metrics = {
+                status: 'no_data',
                 accuracy: 0,
                 macro_precision: 0,
                 macro_recall: 0,
                 macro_f1: 0,
                 total_samples: 0,
-                per_class_metrics: {}
+                samples_with_predictions: 0,
+                per_class_metrics: {},
+                modality_usage: {},
+                confidence_distribution: {
+                    labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                    bins: [0, 0, 0, 0, 0]
+                }
             };
+        }
+    }
+
+    normalizeMetrics(payload) {
+        const overall = payload?.overall_metrics || {};
+        return {
+            status: payload?.status || 'success',
+            last_updated: payload?.last_updated || null,
+            refresh_seconds: payload?.refresh_seconds || 15,
+            accuracy: payload?.accuracy ?? overall.accuracy ?? 0,
+            macro_precision: payload?.macro_precision ?? overall.macro_precision ?? 0,
+            macro_recall: payload?.macro_recall ?? overall.macro_recall ?? 0,
+            macro_f1: payload?.macro_f1 ?? overall.macro_f1_score ?? 0,
+            total_samples: payload?.total_samples ?? 0,
+            samples_with_predictions: payload?.samples_with_predictions ?? 0,
+            per_class_metrics: payload?.per_class_metrics || {},
+            modality_usage: payload?.modality_usage || {},
+            confidence_distribution: payload?.confidence_distribution || {
+                labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                bins: [0, 0, 0, 0, 0]
+            }
+        };
+    }
+
+    getCssVar(name, fallback) {
+        const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        return value || fallback;
+    }
+
+    destroyChart(name) {
+        if (this.charts[name]) {
+            this.charts[name].destroy();
+            this.charts[name] = null;
         }
     }
 
@@ -55,6 +116,14 @@ class AnalyticsPage {
         document.getElementById('overallRecall').textContent = `${Math.round(recall * 100)}%`;
         document.getElementById('overallF1').textContent = `${Math.round(f1 * 100)}%`;
         document.getElementById('totalSamples').textContent = this.metrics.samples_with_predictions || 0;
+
+        const lastUpdatedEl = document.getElementById('analyticsLastUpdated');
+        if (lastUpdatedEl) {
+            const ts = this.metrics.last_updated ? new Date(this.metrics.last_updated) : null;
+            lastUpdatedEl.textContent = ts && !Number.isNaN(ts.getTime())
+                ? ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                : '--';
+        }
     }
 
     // Initialize charts
@@ -69,6 +138,8 @@ class AnalyticsPage {
     initConfusionMatrix() {
         const ctx = document.getElementById('confusionMatrix');
         if (!ctx) return;
+
+        this.destroyChart('confusion');
 
         const classMetrics = this.metrics.per_class_metrics || {};
         const minerals = Object.keys(classMetrics);
@@ -86,17 +157,17 @@ class AnalyticsPage {
                     {
                         label: 'True Positives',
                         data: truePositives,
-                        backgroundColor: '#00B894'
+                        backgroundColor: this.getCssVar('--success', '#2E8B6E')
                     },
                     {
                         label: 'False Positives',
                         data: falsePositives,
-                        backgroundColor: '#F59E0B'
+                        backgroundColor: this.getCssVar('--warning', '#F59E0B')
                     },
                     {
                         label: 'False Negatives',
                         data: falseNegatives,
-                        backgroundColor: '#D63031'
+                        backgroundColor: this.getCssVar('--error', '#DC2626')
                     }
                 ]
             },
@@ -132,6 +203,8 @@ class AnalyticsPage {
         const ctx = document.getElementById('perClassChart');
         if (!ctx) return;
 
+        this.destroyChart('perClass');
+
         const classMetrics = this.metrics.per_class_metrics || {};
         const minerals = Object.keys(classMetrics);
 
@@ -147,23 +220,23 @@ class AnalyticsPage {
                     {
                         label: 'Precision',
                         data: precision,
-                        borderColor: '#4DD0CE',
-                        backgroundColor: 'rgba(77, 208, 206, 0.1)',
-                        pointBackgroundColor: '#4DD0CE'
+                        borderColor: this.getCssVar('--primary-light', '#2C6E91'),
+                        backgroundColor: 'rgba(44, 110, 145, 0.10)',
+                        pointBackgroundColor: this.getCssVar('--primary-light', '#2C6E91')
                     },
                     {
                         label: 'Recall',
                         data: recall,
-                        borderColor: '#00B894',
-                        backgroundColor: 'rgba(0, 184, 148, 0.1)',
-                        pointBackgroundColor: '#00B894'
+                        borderColor: this.getCssVar('--success', '#2E8B6E'),
+                        backgroundColor: 'rgba(46, 139, 110, 0.10)',
+                        pointBackgroundColor: this.getCssVar('--success', '#2E8B6E')
                     },
                     {
                         label: 'F1-Score',
                         data: f1,
-                        borderColor: '#F59E0B',
-                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                        pointBackgroundColor: '#F59E0B'
+                        borderColor: this.getCssVar('--accent-gold', '#BFDCD0'),
+                        backgroundColor: 'rgba(191, 220, 208, 0.18)',
+                        pointBackgroundColor: this.getCssVar('--accent-gold', '#BFDCD0')
                     }
                 ]
             },
@@ -189,70 +262,58 @@ class AnalyticsPage {
     }
 
     // Initialize confidence distribution chart
-    async initConfidenceChart() {
+    initConfidenceChart() {
         const ctx = document.getElementById('confidenceChart');
         if (!ctx) return;
 
-        // Fetch fingerprints to get confidence distribution
-        try {
-            const response = await fetch(`${API_BASE_URL}/fingerprints`);
-            const data = await response.json();
-            const fingerprints = data.fingerprints || [];
+        this.destroyChart('confidence');
 
-            // Create confidence bins
-            const bins = [0, 0, 0, 0, 0]; // 0-20%, 20-40%, 40-60%, 60-80%, 80-100%
-            
-            fingerprints.forEach(fp => {
-                const conf = fp.confidence;
-                if (conf !== null && conf !== undefined) {
-                    const index = Math.min(Math.floor(conf * 5), 4);
-                    bins[index]++;
-                }
-            });
+        const distribution = this.metrics.confidence_distribution || {};
+        const labels = distribution.labels || ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'];
+        const bins = distribution.bins || [0, 0, 0, 0, 0];
 
-            this.charts.confidence = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
-                    datasets: [{
-                        label: 'Number of Predictions',
-                        data: bins,
-                        backgroundColor: [
-                            '#D63031',
-                            '#F59E0B',
-                            '#F59E0B',
-                            '#4DD0CE',
-                            '#00B894'
-                        ]
-                    }]
+        this.charts.confidence = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Number of Predictions',
+                    data: bins,
+                    backgroundColor: [
+                        this.getCssVar('--error', '#DC2626'),
+                        this.getCssVar('--warning', '#F59E0B'),
+                        this.getCssVar('--warning', '#F59E0B'),
+                        this.getCssVar('--primary-light', '#2C6E91'),
+                        this.getCssVar('--success', '#2E8B6E')
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
                         }
                     }
                 }
-            });
-        } catch (error) {
-            console.error('Error creating confidence chart:', error);
-        }
+            }
+        });
     }
 
     // Initialize modality usage chart
     initModalityChart() {
         const ctx = document.getElementById('modalityChart');
         if (!ctx) return;
+
+        this.destroyChart('modality');
 
         const modalityUsage = this.metrics.modality_usage || {};
         const labels = Object.keys(modalityUsage);
@@ -270,11 +331,11 @@ class AnalyticsPage {
                 datasets: [{
                     data: data,
                     backgroundColor: [
-                        '#4DD0CE',
-                        '#00B894',
-                        '#F59E0B',
-                        '#8B5CF6',
-                        '#EC4899'
+                        this.getCssVar('--primary-light', '#2C6E91'),
+                        this.getCssVar('--success', '#2E8B6E'),
+                        this.getCssVar('--accent-gold', '#BFDCD0'),
+                        this.getCssVar('--warning', '#F59E0B'),
+                        this.getCssVar('--info', '#3B82F6')
                     ]
                 }]
             },
@@ -319,13 +380,13 @@ class AnalyticsPage {
                         <span class="mineral-badge ${mineral}">${mineralName}</span>
                     </td>
                     <td>${metrics.support || 0}</td>
-                    <td>${this.formatPercent(metrics.precision)}</td>
+                    <td>${this.formatPercent(metrics.accuracy)}</td>
                     <td>${this.formatPercent(metrics.precision)}</td>
                     <td>${this.formatPercent(metrics.recall)}</td>
                     <td>${this.formatPercent(metrics.f1_score)}</td>
-                    <td><span class="confidence-badge high">${metrics.true_positive || 0}</span></td>
-                    <td><span class="confidence-badge medium">${metrics.false_positive || 0}</span></td>
-                    <td><span class="confidence-badge low">${metrics.false_negative || 0}</span></td>
+                    <td><span class="confidence-badge high">${metrics.true_positive ?? metrics.true_positives ?? 0}</span></td>
+                    <td><span class="confidence-badge medium">${metrics.false_positive ?? metrics.false_positives ?? 0}</span></td>
+                    <td><span class="confidence-badge low">${metrics.false_negative ?? metrics.false_negatives ?? 0}</span></td>
                 </tr>
             `;
         }).join('');
@@ -357,4 +418,10 @@ let analyticsPage;
 document.addEventListener('DOMContentLoaded', () => {
     analyticsPage = new AnalyticsPage();
     analyticsPage.init();
+});
+
+window.addEventListener('beforeunload', () => {
+    if (analyticsPage?.refreshTimer) {
+        clearInterval(analyticsPage.refreshTimer);
+    }
 });

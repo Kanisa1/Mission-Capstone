@@ -1,8 +1,15 @@
-import { API_BASE_URL } from './config.js';
-import { apiService } from './api.js';
+const FALLBACK_API_BASE_URL = 'http://127.0.0.1:8000';
+
+function resolveApiBaseUrl() {
+    const globalUrl = globalThis?.API_BASE_URL;
+    return typeof globalUrl === 'string' && globalUrl.trim()
+        ? globalUrl.trim()
+        : FALLBACK_API_BASE_URL;
+}
 
 class AuditTrailPage {
     constructor() {
+        this.apiBaseUrl = resolveApiBaseUrl();
         this.allEvents = [];
         this.currentPage = 1;
         this.itemsPerPage = 20;
@@ -23,103 +30,110 @@ class AuditTrailPage {
 
     async loadData() {
         try {
-            // Fetch fingerprints and users to build audit trail
-            const [fingerprints, users] = await Promise.all([
-                apiService.getFingerprints(),
-                apiService.getUsers()
-            ]);
+            const response = await fetch(`${this.apiBaseUrl}/audit-trail/chain?limit=1000`);
+            if (!response.ok) {
+                throw new Error(`Failed to load blockchain audit trail: ${response.status}`);
+            }
 
-            // Build audit trail from fingerprints
-            this.allEvents = [];
-            
-            fingerprints.forEach(fp => {
-                // Scan creation event
-                this.allEvents.push({
-                    id: `scan_${fp.id}`,
-                    type: 'scan',
-                    action: 'Scan Created',
-                    description: `Fingerprint scan created for ${fp.predicted_mineral || 'unknown mineral'}`,
-                    user: fp.user_name || fp.user || 'System',
-                    timestamp: fp.timestamp || fp.created_at,
-                    details: {
-                        mineral: fp.predicted_mineral,
-                        confidence: fp.confidence,
-                        site: fp.site,
-                        modalities: this.getModalities(fp)
-                    },
-                    icon: 'fa-camera',
-                    color: 'primary'
-                });
+            let payload = await response.json();
+            let blocks = payload.blocks || [];
 
-                // Verification event (if verified)
-                if (fp.verified !== undefined && fp.verified !== null) {
-                    this.allEvents.push({
-                        id: `verify_${fp.id}`,
-                        type: 'verification',
-                        action: fp.verified ? 'Verified' : 'Rejected',
-                        description: `Fingerprint ${fp.verified ? 'verified' : 'rejected'} - ${fp.predicted_mineral}`,
-                        user: fp.verified_by || 'Regulator',
-                        timestamp: fp.verified_at || fp.timestamp,
-                        details: {
-                            mineral: fp.predicted_mineral,
-                            actualMineral: fp.actual_mineral,
-                            verificationStatus: fp.verified ? 'Approved' : 'Rejected'
-                        },
-                        icon: fp.verified ? 'fa-check-circle' : 'fa-times-circle',
-                        color: fp.verified ? 'success' : 'error'
+            // If empty, trigger one-time backfill from existing records and reload.
+            if (blocks.length === 0) {
+                try {
+                    const backfillResponse = await fetch(`${this.apiBaseUrl}/audit-trail/backfill`, {
+                        method: 'POST'
                     });
+                    if (backfillResponse.ok) {
+                        const reloadResponse = await fetch(`${this.apiBaseUrl}/audit-trail/chain?limit=1000`);
+                        if (reloadResponse.ok) {
+                            payload = await reloadResponse.json();
+                            blocks = payload.blocks || [];
+                        }
+                    }
+                } catch (backfillError) {
+                    console.warn('Audit trail backfill fallback failed:', backfillError);
                 }
-            });
+            }
 
-            // User creation events
-            users.forEach(user => {
-                if (user.created_at) {
-                    this.allEvents.push({
-                        id: `user_${user.id}`,
-                        type: 'user',
-                        action: 'User Created',
-                        description: `User account created: ${user.name}`,
-                        user: 'Admin',
-                        timestamp: user.created_at,
-                        details: {
-                            userName: user.name,
-                            userEmail: user.email,
-                            role: user.role
-                        },
-                        icon: 'fa-user-plus',
-                        color: 'info'
-                    });
-                }
-
-                // User update events
-                if (user.updated_at && user.updated_at !== user.created_at) {
-                    this.allEvents.push({
-                        id: `user_update_${user.id}`,
-                        type: 'user',
-                        action: 'User Updated',
-                        description: `User account updated: ${user.name}`,
-                        user: 'Admin',
-                        timestamp: user.updated_at,
-                        details: {
-                            userName: user.name,
-                            userEmail: user.email,
-                            role: user.role
-                        },
-                        icon: 'fa-user-edit',
-                        color: 'info'
-                    });
-                }
-            });
-
-            // Sort by timestamp (most recent first)
-            this.allEvents.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            this.allEvents = blocks.map(block => this.mapBlockToEvent(block));
+            this.setChainStatus(payload);
 
             // Populate user filter
             this.populateUserFilter();
 
         } catch (error) {
             console.error('Error loading audit trail:', error);
+            this.allEvents = [];
+            this.setChainStatus(null, error);
         }
+    }
+
+    mapBlockToEvent(block) {
+        const rawType = (block.event_type || 'system').toLowerCase();
+        const type = rawType === 'auth' ? 'user' : rawType;
+        const action = String(block.action || 'event').replace(/_/g, ' ');
+        const actor = block.actor || 'System';
+        const details = block.details || {};
+
+        let icon = 'fa-cube';
+        let color = 'info';
+        if (type === 'scan' || action.includes('scan') || action.includes('fingerprint')) {
+            icon = 'fa-camera';
+            color = action.includes('rejected') ? 'error' : 'primary';
+        } else if (type === 'verification') {
+            icon = 'fa-check-circle';
+            color = 'success';
+        } else if (type === 'user' || type === 'auth') {
+            icon = 'fa-user-shield';
+            color = 'info';
+        }
+
+        return {
+            id: `block_${block.block_index || Date.now()}`,
+            type,
+            action: this.toTitleCase(action),
+            description: `${this.toTitleCase(action)} recorded on immutable audit chain`,
+            user: actor,
+            timestamp: block.timestamp,
+            details: {
+                blockIndex: block.block_index,
+                source: block.source,
+                previousHash: block.previous_hash,
+                hash: block.hash,
+                ...details
+            },
+            icon,
+            color
+        };
+    }
+
+    setChainStatus(payload, error = null) {
+        const chainStatusEl = document.getElementById('chainStatus');
+        const latestHashEl = document.getElementById('latestBlockHash');
+        if (!chainStatusEl || !latestHashEl) return;
+
+        if (error || !payload) {
+            chainStatusEl.textContent = 'Unavailable';
+            chainStatusEl.classList.remove('success');
+            latestHashEl.textContent = '--';
+            return;
+        }
+
+        const isValid = !!payload.chain_valid;
+        chainStatusEl.textContent = isValid ? 'Valid' : 'Invalid';
+        chainStatusEl.classList.toggle('success', isValid);
+
+        const latestHash = payload.latest_block_hash || '';
+        latestHashEl.textContent = latestHash ? `${latestHash.substring(0, 10)}...` : '--';
+        latestHashEl.title = latestHash || 'No hash available';
+    }
+
+    toTitleCase(value) {
+        return String(value || '')
+            .split(' ')
+            .map(part => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
+            .join(' ');
     }
 
     populateUserFilter() {
@@ -193,6 +207,31 @@ class AuditTrailPage {
                 this.renderTimeline();
             }
         });
+
+        document.getElementById('verifyChainBtn')?.addEventListener('click', async () => {
+            await this.verifyChain();
+        });
+    }
+
+    async verifyChain() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/audit-trail/chain?limit=1`);
+            if (!response.ok) {
+                throw new Error(`Chain verification failed: ${response.status}`);
+            }
+
+            const payload = await response.json();
+            this.setChainStatus(payload);
+
+            const valid = !!payload.chain_valid;
+            const message = valid
+                ? `Blockchain integrity verified (${payload.total_events || 0} blocks).`
+                : `Blockchain integrity failed at block ${payload?.integrity?.invalid_block_index ?? 'unknown'}.`;
+            alert(message);
+        } catch (error) {
+            console.error('Chain verification error:', error);
+            alert('Unable to verify blockchain integrity right now.');
+        }
     }
 
     getFilteredEvents() {
@@ -331,14 +370,6 @@ class AuditTrailPage {
             hour: '2-digit',
             minute: '2-digit'
         });
-    }
-
-    getModalities(fp) {
-        const modalities = [];
-        if (fp.image_path) modalities.push('Image');
-        if (fp.audio_path) modalities.push('Audio');
-        if (fp.chemical_features || fp.chemical_fingerprint) modalities.push('Chemical');
-        return modalities.join(', ') || 'None';
     }
 
     updatePagination(totalItems) {

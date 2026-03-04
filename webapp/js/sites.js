@@ -227,7 +227,7 @@ class SitesPage {
                     {
                         label: 'Total Scans',
                         data: totalScans,
-                        backgroundColor: '#4DD0CE',
+                        backgroundColor: '#2C6E91',
                         yAxisID: 'y'
                     },
                     {

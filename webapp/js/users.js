@@ -11,6 +11,39 @@ class UsersPage {
         };
     }
 
+    getApiBaseCandidates() {
+        const candidates = [API_BASE_URL];
+
+        if (API_BASE_URL.includes('127.0.0.1')) {
+            candidates.push(API_BASE_URL.replace('127.0.0.1', 'localhost'));
+        }
+
+        if (API_BASE_URL.endsWith(':8000')) {
+            candidates.push(API_BASE_URL.replace(':8000', ':8001'));
+            if (API_BASE_URL.includes('127.0.0.1')) {
+                candidates.push('http://localhost:8001');
+            }
+        }
+
+        return [...new Set(candidates)];
+    }
+
+    async requestWithFallback(path, options = {}) {
+        const bases = this.getApiBaseCandidates();
+        let lastError = null;
+
+        for (const base of bases) {
+            try {
+                const response = await fetch(`${base}${path}`, options);
+                return { response, base };
+            } catch (error) {
+                lastError = error;
+            }
+        }
+
+        throw lastError || new Error('Failed to fetch');
+    }
+
     // Initialize page
     async init() {
         this.showLoading(true);
@@ -34,7 +67,7 @@ class UsersPage {
     // Load users from API
     async loadUsers() {
         try {
-            const response = await fetch(`${API_BASE_URL}/users`);
+            const { response } = await this.requestWithFallback('/users');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -51,7 +84,7 @@ class UsersPage {
     // Load pending users from API
     async loadPendingUsers() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/admin/pending-users`);
+            const { response } = await this.requestWithFallback('/api/admin/pending-users');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -85,7 +118,7 @@ class UsersPage {
     // Load user scan counts
     async loadUserScans() {
         try {
-            const response = await fetch(`${API_BASE_URL}/fingerprints`);
+            const { response } = await this.requestWithFallback('/fingerprints');
             if (!response.ok) return;
             
             const data = await response.json();
@@ -172,7 +205,7 @@ class UsersPage {
                 body.append('organization', organization);
             }
 
-            const response = await fetch(`${API_BASE_URL}/users`, {
+            const { response } = await this.requestWithFallback('/users', {
                 method: 'POST',
                 body
             });
@@ -333,7 +366,7 @@ class UsersPage {
         const lastActive = user.last_active || 'N/A';
         
         // User avatar
-        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'User')}&background=4DD0CE&color=fff`;
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'User')}&background=0A3552&color=fff`;
 
         tr.innerHTML = `
             <td>
@@ -391,7 +424,7 @@ class UsersPage {
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/admin/approve-user`, {
+            const { response } = await this.requestWithFallback('/api/admin/approve-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -406,7 +439,14 @@ class UsersPage {
             const data = await response.json();
             
             if (data.success) {
-                alert('User approved successfully!');
+                const emailSent = data.notification?.email_sent;
+                if (emailSent === true) {
+                    alert('User approved successfully. Approval email sent to user.');
+                } else if (emailSent === false) {
+                    alert('User approved, but user email was not sent. Please check backend logs.');
+                } else {
+                    alert('User approved successfully!');
+                }
                 // Reload data
                 await this.loadUsers();
                 await this.loadPendingUsers();
@@ -428,7 +468,7 @@ class UsersPage {
         if (reason === null) return; // User cancelled
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/admin/deny-user`, {
+            const { response } = await this.requestWithFallback('/api/admin/deny-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -446,7 +486,14 @@ class UsersPage {
             const data = await response.json();
             
             if (data.success) {
-                alert('User denied successfully!');
+                const emailSent = data.notification?.email_sent;
+                if (emailSent === true) {
+                    alert('User denied successfully. Denial email sent to user.');
+                } else if (emailSent === false) {
+                    alert('User denied, but user email was not sent. Please check backend logs.');
+                } else {
+                    alert('User denied successfully!');
+                }
                 // Reload data
                 await this.loadUsers();
                 await this.loadPendingUsers();
@@ -507,7 +554,7 @@ class UsersPage {
                 body.append('password', password);
             }
 
-            const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+            const { response } = await this.requestWithFallback(`/users/${userId}`, {
                 method: 'PUT',
                 body: body
             });
@@ -550,7 +597,7 @@ class UsersPage {
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+            const { response } = await this.requestWithFallback(`/users/${userId}`, {
                 method: 'DELETE'
             });
 

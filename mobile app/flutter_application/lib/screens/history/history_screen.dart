@@ -16,7 +16,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   final _apiService = ApiService();
   final _storageService = StorageService();
-  
+
   List<Scan> _scans = [];
   List<Scan> _filteredScans = [];
   bool _isLoading = true;
@@ -37,11 +37,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Future<void> _loadScans() async {
     setState(() => _isLoading = true);
-    
+
     try {
       final userId = _storageService.getUserId();
       final scans = await _apiService.getScans(userId: userId);
-      
+
       if (mounted) {
         setState(() {
           _scans = scans;
@@ -59,7 +59,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void _filterScans(String? filterType) {
     setState(() {
       _selectedFilter = filterType;
-      
+
       if (filterType == null || filterType == 'All') {
         _filteredScans = _scans;
       } else {
@@ -81,8 +81,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       } else {
         _filteredScans = _scans.where((scan) {
           return scan.mineral.toLowerCase().contains(query.toLowerCase()) ||
-                 scan.location.toLowerCase().contains(query.toLowerCase()) ||
-                 scan.scanId.toLowerCase().contains(query.toLowerCase());
+              scan.location.toLowerCase().contains(query.toLowerCase()) ||
+              scan.scanId.toLowerCase().contains(query.toLowerCase());
         }).toList();
       }
     });
@@ -93,102 +93,135 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Scan History',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  // Search bar
-                  TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search scans...',
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: _searchController.text.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () {
-                                _searchController.clear();
-                                _searchScans('');
-                              },
-                            )
-                          : null,
-                    ),
-                    onChanged: _searchScans,
-                  ),
-                ],
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                AppTheme.primaryColor.withValues(alpha: 0.06),
+                AppTheme.backgroundColor,
+              ],
             ),
-            
-            // Filter chips
-            SizedBox(
-              height: 50,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                children: [
-                  _buildFilterChip('All', null),
-                  _buildFilterChip('Gold', 'gold'),
-                  _buildFilterChip('Chalcopyrite', 'chalcopyrite'),
-                  _buildFilterChip('Hematite', 'hematite'),
-                  _buildFilterChip('Verified', 'Verified'),
-                ],
+          ),
+          child: Column(
+            children: [
+              // Header
+              Container(
+                margin: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppTheme.primaryColor, AppTheme.secondaryColor],
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: AppTheme.softCardShadow,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Scan History',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Browse, filter and inspect all captured verification scans',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.white.withValues(alpha: 0.88),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+
+                    // Search bar
+                    TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: 'Search scans...',
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: _searchController.text.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  _searchScans('');
+                                },
+                              )
+                            : null,
+                      ),
+                      onChanged: _searchScans,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // Scans list
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _filteredScans.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.history,
-                                size: 80,
-                                color: AppTheme.textLight,
-                              ),
-                              const SizedBox(height: 16),
-                              const Text(
-                                'No scans found',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppTheme.textSecondary,
+
+              // Filter chips
+              SizedBox(
+                height: 50,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  children: [
+                    _buildFilterChip('All', null),
+                    _buildFilterChip('Gold', 'gold'),
+                    _buildFilterChip('Chalcopyrite', 'chalcopyrite'),
+                    _buildFilterChip('Hematite', 'hematite'),
+                    _buildFilterChip('Verified', 'Verified'),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Scans list
+              Expanded(
+                child: _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : _filteredScans.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.history,
+                                  size: 80,
+                                  color: AppTheme.textLight,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 16),
+                                const Text(
+                                  'No scans found',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppTheme.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : RefreshIndicator(
+                            onRefresh: _loadScans,
+                            color: AppTheme.primaryColor,
+                            child: ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              itemCount: _filteredScans.length,
+                              itemBuilder: (context, index) {
+                                return _buildScanCard(_filteredScans[index]);
+                              },
+                            ),
                           ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: _loadScans,
-                          color: AppTheme.primaryColor,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            itemCount: _filteredScans.length,
-                            itemBuilder: (context, index) {
-                              return _buildScanCard(_filteredScans[index]);
-                            },
-                          ),
-                        ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -196,7 +229,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildFilterChip(String label, String? value) {
     final isSelected = _selectedFilter == value;
-    
+
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: FilterChip(
@@ -229,13 +262,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border:
+            Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.06)),
+        boxShadow: AppTheme.softCardShadow,
       ),
       child: Material(
         color: Colors.transparent,
@@ -262,9 +291,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     color: mineralColor,
                   ),
                 ),
-                
+
                 const SizedBox(width: 16),
-                
+
                 // Details
                 Expanded(
                   child: Column(
@@ -299,7 +328,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        DateFormat('MMM dd, yyyy • HH:mm').format(scan.timestamp),
+                        DateFormat('MMM dd, yyyy • HH:mm')
+                            .format(scan.timestamp),
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.textLight,
@@ -308,13 +338,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ],
                   ),
                 ),
-                
+
                 // Confidence badge
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: AppTheme.successColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
@@ -367,7 +398,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              
+
               // Content
               Expanded(
                 child: SingleChildScrollView(
@@ -384,23 +415,27 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      
+
                       _buildDetailItem('Mineral', scan.mineral),
                       _buildDetailItem('Confidence', scan.confidencePercent),
-                      _buildDetailItem('Location', scan.location.replaceAll('_', ' ')),
+                      _buildDetailItem(
+                          'Location', scan.location.replaceAll('_', ' ')),
                       _buildDetailItem(
                         'Date',
-                        DateFormat('MMM dd, yyyy • HH:mm:ss').format(scan.timestamp),
+                        DateFormat('MMM dd, yyyy • HH:mm:ss')
+                            .format(scan.timestamp),
                       ),
                       _buildDetailItem('Scan ID', scan.scanId),
                       _buildDetailItem(
                         'Verified',
                         scan.verified ? 'Yes' : 'No',
-                        valueColor: scan.verified ? AppTheme.successColor : AppTheme.textSecondary,
+                        valueColor: scan.verified
+                            ? AppTheme.successColor
+                            : AppTheme.textSecondary,
                       ),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Actions
                       Row(
                         children: [
@@ -413,8 +448,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               label: const Text('Export'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppTheme.primaryColor,
-                                side: const BorderSide(color: AppTheme.primaryColor),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                side: const BorderSide(
+                                    color: AppTheme.primaryColor),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
                               ),
                             ),
                           ),
@@ -429,7 +466,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppTheme.primaryColor,
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
                               ),
                             ),
                           ),

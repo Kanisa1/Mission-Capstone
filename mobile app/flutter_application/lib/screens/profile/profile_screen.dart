@@ -14,6 +14,7 @@ import 'reports_screen.dart';
 import 'help_support_screen.dart';
 import 'terms_conditions_screen.dart';
 import 'about_app_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,7 +25,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _storageService = StorageService();
-  
+
   String _userName = '';
   String _userEmail = '';
   String _userRole = '';
@@ -66,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (confirm == true && mounted) {
       await _storageService.clearUserData();
-      
+
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -81,307 +82,341 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Header with gradient background
-              Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  gradient: AppTheme.primaryGradient,
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(32),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                AppTheme.primaryColor.withValues(alpha: 0.07),
+                AppTheme.backgroundColor,
+              ],
+            ),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Header with gradient background
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  decoration: BoxDecoration(
+                    gradient: AppTheme.primaryGradient,
+                    boxShadow: AppTheme.softCardShadow,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(32),
+                    ).copyWith(
+                      topLeft: const Radius.circular(24),
+                      topRight: const Radius.circular(24),
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    children: [
-                      // Avatar
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 20,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                          image: _profilePicturePath != null
-                              ? DecorationImage(
-                                  image: FileImage(File(_profilePicturePath!)),
-                                  fit: BoxFit.cover,
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Column(
+                      children: [
+                        // Avatar
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppTheme.primaryColor
+                                    .withValues(alpha: 0.18),
+                                blurRadius: 20,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                            image: _profilePicturePath != null
+                                ? DecorationImage(
+                                    image:
+                                        FileImage(File(_profilePicturePath!)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
+                          ),
+                          child: _profilePicturePath == null
+                              ? Center(
+                                  child: Text(
+                                    _userName.isNotEmpty
+                                        ? _userName[0].toUpperCase()
+                                        : 'U',
+                                    style: const TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.primaryColor,
+                                    ),
+                                  ),
                                 )
                               : null,
                         ),
-                        child: _profilePicturePath == null
-                            ? Center(
-                                child: Text(
-                                  _userName.isNotEmpty ? _userName[0].toUpperCase() : 'U',
-                                  style: const TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppTheme.primaryColor,
-                                  ),
-                                ),
-                              )
-                            : null,
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Name
-                      Text(
-                        _userName,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 4),
-                      
-                      // Email
-                      Text(
-                        _userEmail,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white.withOpacity(0.9),
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 8),
-                      
-                      // Role badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          _userRole.toUpperCase(),
+
+                        const SizedBox(height: 16),
+
+                        // Name
+                        Text(
+                          _userName,
                           style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 24),
-              
-              // Menu items
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    _buildMenuSection(
-                      'Account',
-                      [
-                        _buildMenuItem(
-                          'Edit Profile',
-                          Icons.person_outline,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const EditProfileScreen(),
-                              ),
-                            ).then((_) {
-                              // Reload user data when returning from edit screen
-                              _loadUserData();
-                            });
-                          },
+
+                        const SizedBox(height: 4),
+
+                        // Email
+                        Text(
+                          _userEmail,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white.withOpacity(0.9),
+                          ),
                         ),
-                        _buildMenuItem(
-                          'Change PIN',
-                          Icons.lock_outline,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const ChangePinScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        _buildMenuItem(
-                          'Notifications',
-                          Icons.notifications_outlined,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const NotificationsScreen(),
-                              ),
-                            );
-                          },
+
+                        const SizedBox(height: 8),
+
+                        // Role badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            _userRole.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Admin section (only for admin role)
-                    if (_userRole.toLowerCase() == 'admin') ...[
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Menu items
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
                       _buildMenuSection(
-                        'Admin',
+                        'Account',
                         [
                           _buildMenuItem(
-                            'Pending Approvals',
-                            Icons.how_to_reg_outlined,
+                            'Edit Profile',
+                            Icons.person_outline,
+                            () {
+                              Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EditProfileScreen(),
+                                ),
+                              )
+                                  .then((_) {
+                                // Reload user data when returning from edit screen
+                                _loadUserData();
+                              });
+                            },
+                          ),
+                          _buildMenuItem(
+                            'Change PIN',
+                            Icons.lock_outline,
                             () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const AdminApprovalScreen(),
+                                  builder: (context) => const ChangePinScreen(),
                                 ),
                               );
                             },
                           ),
                           _buildMenuItem(
-                            'User Management',
-                            Icons.people_outline,
+                            'Notifications',
+                            Icons.notifications_outlined,
                             () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const AdminApprovalScreen(),
+                                  builder: (context) =>
+                                      const NotificationsScreen(),
                                 ),
                               );
-                            },
-                          ),
-                          _buildMenuItem(
-                            'System Settings',
-                            Icons.settings_outlined,
-                            () {
-                              // TODO: Navigate to system settings
                             },
                           ),
                         ],
                       ),
-                      
+
                       const SizedBox(height: 16),
+
+                      // Admin section (only for admin role)
+                      if (_userRole.toLowerCase() == 'admin') ...[
+                        _buildMenuSection(
+                          'Admin',
+                          [
+                            _buildMenuItem(
+                              'Pending Approvals',
+                              Icons.how_to_reg_outlined,
+                              () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AdminApprovalScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            _buildMenuItem(
+                              'User Management',
+                              Icons.people_outline,
+                              () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AdminApprovalScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            _buildMenuItem(
+                              'System Settings',
+                              Icons.settings_outlined,
+                              () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SettingsScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+
+                      _buildMenuSection(
+                        'Data & Analytics',
+                        [
+                          _buildMenuItem(
+                            'My Scans',
+                            Icons.qr_code_scanner_outlined,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const MyScansScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildMenuItem(
+                            'Analytics',
+                            Icons.analytics_outlined,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const AnalyticsScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildMenuItem(
+                            'Reports',
+                            Icons.description_outlined,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const ReportsScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      _buildMenuSection(
+                        'About',
+                        [
+                          _buildMenuItem(
+                            'Help & Support',
+                            Icons.help_outline,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const HelpSupportScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildMenuItem(
+                            'Terms & Conditions',
+                            Icons.description_outlined,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TermsConditionsScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildMenuItem(
+                            'About App',
+                            Icons.info_outline,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const AboutAppScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Logout button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton.icon(
+                          onPressed: _handleLogout,
+                          icon: const Icon(Icons.logout),
+                          label: const Text('LOGOUT'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.errorColor,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Version
+                      Text(
+                        'Version ${AppConstants.appVersion}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textLight,
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
                     ],
-                    
-                    _buildMenuSection(
-                      'Data & Analytics',
-                      [
-                        _buildMenuItem(
-                          'My Scans',
-                          Icons.qr_code_scanner_outlined,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const MyScansScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        _buildMenuItem(
-                          'Analytics',
-                          Icons.analytics_outlined,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const AnalyticsScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        _buildMenuItem(
-                          'Reports',
-                          Icons.description_outlined,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const ReportsScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    _buildMenuSection(
-                      'About',
-                      [
-                        _buildMenuItem(
-                          'Help & Support',
-                          Icons.help_outline,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const HelpSupportScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        _buildMenuItem(
-                          'Terms & Conditions',
-                          Icons.description_outlined,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const TermsConditionsScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                        _buildMenuItem(
-                          'About App',
-                          Icons.info_outline,
-                          () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const AboutAppScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Logout button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton.icon(
-                        onPressed: _handleLogout,
-                        icon: const Icon(Icons.logout),
-                        label: const Text('LOGOUT'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.errorColor,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Version
-                    Text(
-                      'Version ${AppConstants.appVersion}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.textLight,
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 32),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -392,14 +427,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(20),
+        border:
+            Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.06)),
+        boxShadow: AppTheme.softCardShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

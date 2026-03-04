@@ -1,0 +1,23 @@
+{
+  "model_path": "mineral_gate_model.pt",
+  "input_size": [
+    224,
+    224
+  ],
+  "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "threshold": 0.3,
+  "label_map": {
+    "non_mineral": 0,
+    "mineral": 1
+  },
+  "backbone": "resnet18"
+}

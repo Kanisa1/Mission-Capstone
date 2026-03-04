@@ -335,7 +335,7 @@ class Dashboard {
             data: {
                 datasets: [{
                     data: [accuracy, 100 - accuracy],
-                    backgroundColor: ['#4DD0CE', '#E5E7EB'],
+                    backgroundColor: ['#2C6E91', '#E5E7EB'],
                     borderWidth: 0
                 }]
             },

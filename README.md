@@ -203,6 +203,34 @@ python test_optional_modalities.py
 
 ## 🚀 Deployment Plan
 
+### Quick Deploy on Render (API + Web App)
+
+This repository includes a Render Blueprint at `render.yaml` to deploy both services with different URLs:
+- **FastAPI service**: `mineraltrace-api` (Web Service)
+- **Web dashboard**: `mineraltrace-web` (Static Site)
+
+Steps:
+1. Push this repository to GitHub.
+2. In Render, choose **New + → Blueprint** and select this repository.
+3. Render reads `render.yaml` and creates both services.
+4. In the API service settings, add secret env vars:
+    - `SENDER_EMAIL`
+    - `SENDER_PASSWORD`
+    - `ADMIN_EMAIL`
+   - `ALLOWED_ORIGINS` (example: `https://mineraltrace-web.onrender.com`)
+5. Deploy both services.
+
+Notes:
+- The web app uses `http://127.0.0.1:8000` on localhost.
+- In production it defaults to `https://mineraltrace-api.onrender.com`.
+- If your API gets a different Render URL, set a runtime override in any web page before loading `js/config.js`:
+
+```html
+<script>
+   window.__API_BASE_URL__ = 'https://your-api-name.onrender.com';
+</script>
+```
+
 ### Phase 1: Development (Current)
 - ✅ ML model training and validation
 - ✅ FAST API development

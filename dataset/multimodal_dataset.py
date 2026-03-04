@@ -23,7 +23,9 @@ class MultiModalDataset(Dataset):
         image_size=224,
         audio_sr=16000,
         n_mfcc=20,
-        transform=None
+        transform=None,
+        chem_scaler=None,
+        fit_scaler=True,
     ):
         self.df = pd.read_csv(csv_file)
         self.image_size = image_size
@@ -33,10 +35,15 @@ class MultiModalDataset(Dataset):
         
         # ✅ FIX: Normalize chemical features to handle different scales
         # Au: 0-100, Cu: 0-50, Fe: 0-40, S/O: 0-30
-        self.chem_scaler = StandardScaler()
-        chem_data = self.df[['Au', 'Cu', 'Fe', 'S', 'O']].values
-        self.chem_scaler.fit(chem_data)
-        print(f"✅ Chemical features normalized for {csv_file}")
+        if chem_scaler is not None:
+            self.chem_scaler = chem_scaler
+            print(f"✅ Chemical scaler reused for {csv_file}")
+        else:
+            self.chem_scaler = StandardScaler()
+            chem_data = self.df[['Au', 'Cu', 'Fe', 'S', 'O']].values
+            if fit_scaler:
+                self.chem_scaler.fit(chem_data)
+                print(f"✅ Chemical features normalized for {csv_file}")
 
     def __len__(self):
         return len(self.df)

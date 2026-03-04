@@ -9,3 +9,4 @@ librosa==0.10.0
 python-multipart==0.0.6
 torch
 torchvision
+python-dotenv==1.0.1

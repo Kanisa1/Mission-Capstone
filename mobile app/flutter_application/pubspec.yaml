@@ -50,9 +50,8 @@ dependencies:
   # Google Sign-In
   google_sign_in: ^6.2.1
   
-  # Audio recording - Temporarily disabled due to Windows compatibility issues
-  # Uncomment when implementing audio recording feature
-  # record: ^5.0.4
+  # Audio recording
+  record: 6.0.0
   # audio_waveforms: ^1.0.5
   
   # File handling

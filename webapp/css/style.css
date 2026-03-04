@@ -8,38 +8,44 @@
 }
 
 :root {
-    /* Mobile app theme colors (from Flutter AppTheme) */
-    --primary: #4DD0CE; /* AppTheme.primaryColor */
-    --primary-dark: #2AB8B6; /* AppTheme.secondaryColor */
-    --primary-light: #5FE3E1; /* AppTheme.accentColor */
-    --accent: var(--primary-light);
+    /* Screenshot-inspired palette (clean slate + deep blue + mint) */
+    --primary: #0A3552;
+    --primary-dark: #082A42;
+    --primary-light: #2C6E91;
+    --accent-gold: #BFDCD0;
+    --accent: #BFDCD0;
+
+    /* Mineral tones */
+    --gold: #BFDCD0;
+    --copper: #6FAF98;
+    --iron: #5E7D90;
 
     /* Status colors */
-    --success: #00B894; /* AppTheme.successColor */
-    --error: #D63031; /* AppTheme.errorColor */
-    --warning: #FDCB6E; /* AppTheme.warningColor */
-    --info: #74B9FF; /* AppTheme.infoColor */
+    --success: #2E8B6E;
+    --error: #DC2626;
+    --warning: #F59E0B;
+    --info: #3B82F6;
 
     /* Neutral / Background */
-    --bg-main: #F5F8FA; /* AppTheme.backgroundColor */
-    --bg-card: #FFFFFF; /* AppTheme.cardBackground */
-    --bg-sidebar: var(--primary-dark);
-    --bg-hover: #F3F4F6;
+    --bg-main: #F1F3F5;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #0A3552;
+    --bg-hover: #EEF2F5;
 
     /* Text Colors */
-    --text-primary: #2D3436; /* AppTheme.textPrimary */
-    --text-secondary: #636E72; /* AppTheme.textSecondary */
-    --text-light: #B2BEC3; /* AppTheme.textLight */
+    --text-primary: #0A3552;
+    --text-secondary: #5F7280;
+    --text-light: #99A8B3;
     --text-white: #FFFFFF;
 
     /* Borders / inputs */
-    --border-color: #E1E8ED; /* matches Flutter input border */
+    --border-color: #E5E7EB;
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 2px 8px rgba(10, 53, 82, 0.08);
+    --shadow-md: 0 10px 24px rgba(10, 53, 82, 0.14);
+    --shadow-lg: 0 18px 38px rgba(10, 53, 82, 0.20);
+    --shadow-xl: 0 28px 56px rgba(10, 53, 82, 0.28);
 
     /* Spacing */
     --spacing-xs: 0.25rem;
@@ -53,15 +59,46 @@
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
+
+    --gradient-brand: linear-gradient(135deg, #082A42 0%, #0A3552 52%, #2C6E91 100%);
+    --gradient-card: linear-gradient(140deg, #ffffff 0%, #f5f9fd 100%);
+    --gradient-accent: linear-gradient(135deg, rgba(10, 53, 82, 0.12) 0%, rgba(191, 220, 208, 0.14) 100%);
+    --primary-rgb: 10, 53, 82;
+    --primary-light-rgb: 44, 110, 145;
+    --accent-rgb: 191, 220, 208;
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg-main);
+    background:
+        radial-gradient(circle at 14% 12%, rgba(44, 110, 145, 0.10) 0%, transparent 34%),
+        radial-gradient(circle at 86% 78%, rgba(191, 220, 208, 0.14) 0%, transparent 38%),
+        var(--bg-main);
     color: var(--text-primary);
     font-size: 14px;
     line-height: 1.6;
     overflow-x: hidden;
+}
+
+@keyframes floatSoft {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes glowShift {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.82; }
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ===========================
@@ -73,12 +110,26 @@ body {
     top: 0;
     width: 260px;
     height: 100vh;
-    background: var(--bg-sidebar);
+    background: var(--gradient-brand);
+    border-radius: 0 14px 14px 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     z-index: 1000;
     box-shadow: var(--shadow-lg);
 
+}
+
+.sidebar::after {
+    content: '';
+    position: absolute;
+    inset: auto -36px -54px auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.32) 0%, rgba(var(--accent-rgb), 0.0) 72%);
+    pointer-events: none;
+    animation: glowShift 6s ease-in-out infinite;
 }
 
 .sidebar-header {
@@ -99,6 +150,7 @@ body {
     width: 40px;
     height: 40px;
     object-fit: contain;
+    animation: floatSoft 4s ease-in-out infinite;
 }
 
 .logo i {
@@ -139,13 +191,12 @@ body {
 }
 
 .nav-item:hover {
-    /* Hover matches mobile primary tint and uses white text for contrast */
-    background: rgba(77, 208, 206, 0.12);
+    background: rgba(var(--primary-light-rgb), 0.20);
     color: var(--text-white);
 }
 
 .nav-item.active {
-    background: rgba(77, 208, 206, 0.1);
+    background: rgba(var(--primary-light-rgb), 0.16);
     color: var(--primary-light);
 }
 
@@ -173,6 +224,59 @@ body {
     padding: var(--spacing-xl);
 }
 
+.intelligence-banner {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    padding: 1.1rem 1.25rem;
+    background: var(--gradient-brand);
+    color: var(--text-white);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+}
+
+.intelligence-banner::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -24px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.36) 0%, rgba(var(--accent-rgb), 0) 72%);
+    animation: glowShift 8s ease-in-out infinite;
+}
+
+.intelligence-banner .banner-text {
+    position: relative;
+    z-index: 1;
+}
+
+.intelligence-banner h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.18rem;
+}
+
+.intelligence-banner p {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.intelligence-banner img {
+    position: relative;
+    z-index: 1;
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    animation: floatSoft 4.8s ease-in-out infinite;
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.18));
+}
+
 /* ===========================
    TOP BAR
    =========================== */
@@ -183,7 +287,9 @@ body {
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
     padding: var(--spacing-lg);
-    background: var(--bg-card);
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(220, 229, 239, 0.75);
+    backdrop-filter: blur(8px);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
 }
@@ -292,7 +398,7 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-gold) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -321,15 +427,31 @@ body {
    CARD COMPONENT
    =========================== */
 .card {
-    background: var(--bg-card);
+    position: relative;
+    background: var(--gradient-card);
+    border: 1px solid rgba(220, 229, 239, 0.72);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     padding: var(--spacing-lg);
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.25s, transform 0.25s;
+    animation: fadeSlideIn 0.38s ease both;
 }
 
 .card:hover {
     box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 58%, var(--accent-gold) 100%);
+    opacity: 0.85;
 }
 
 .card h3 {
@@ -372,12 +494,14 @@ body {
     gap: var(--spacing-md);
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
-    background: var(--bg-hover);
-    transition: transform 0.2s;
+    background: var(--gradient-accent);
+    border: 1px solid rgba(var(--primary-rgb), 0.14);
+    transition: transform 0.22s, box-shadow 0.22s;
 }
 
 .metric-item:hover {
     transform: translateX(4px);
+    box-shadow: var(--shadow-sm);
 }
 
 .metric-icon {
@@ -1012,11 +1136,12 @@ body {
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.2s, transform 0.2s;
 }
 
 .btn-text:hover {
     color: var(--primary-dark);
+    transform: translateX(1px);
 }
 
 .btn-icon {
@@ -1097,6 +1222,14 @@ body {
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: var(--spacing-xs);
+    letter-spacing: 0.2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 
 .page-subtitle {
@@ -1383,7 +1516,7 @@ body {
     width: 48px;
     height: 48px;
     border-radius: var(--radius-md);
-    background: rgba(77, 208, 206, 0.1);
+    background: rgba(var(--primary-rgb), 0.1);
     color: var(--primary);
     display: flex;
     align-items: center;
@@ -1668,7 +1801,7 @@ body {
 }
 
 .audit-icon.primary {
-    background: rgba(77, 208, 206, 0.1);
+    background: rgba(var(--primary-rgb), 0.1);
     color: var(--primary);
 }
 
@@ -1848,7 +1981,7 @@ body {
 }
 
 .notification-item.unread {
-    background: rgba(77, 208, 206, 0.05);
+    background: rgba(var(--primary-rgb), 0.05);
 }
 
 .notification-item:last-child {
@@ -1867,7 +2000,7 @@ body {
 }
 
 .notification-icon.primary {
-    background: rgba(77, 208, 206, 0.1);
+    background: rgba(var(--primary-rgb), 0.1);
     color: var(--primary);
 }
 

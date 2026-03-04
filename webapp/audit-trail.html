@@ -80,6 +80,14 @@
                     <span class="label">Today:</span>
                     <span class="value success" id="todayEvents">0</span>
                 </div>
+                <div class="stat-pill">
+                    <span class="label">Chain:</span>
+                    <span class="value" id="chainStatus">Unknown</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="label">Latest Hash:</span>
+                    <span class="value" id="latestBlockHash">--</span>
+                </div>
                 
                 <button class="btn-notification">
                     <i class="fas fa-bell"></i>
@@ -117,6 +125,10 @@
                     <option value="week">Last 7 Days</option>
                     <option value="month">Last 30 Days</option>
                 </select>
+                <button id="verifyChainBtn" class="action-btn secondary">
+                    <i class="fas fa-link"></i>
+                    Verify Chain
+                </button>
                 <button class="action-btn primary" onclick="window.location.reload()">
                     <i class="fas fa-sync"></i>
                     Refresh

@@ -13,8 +13,11 @@ class ScanResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMineral = result.isMineral;
     final mineralColor = Color(
-      AppConstants.mineralColors[result.predictedMineral.toLowerCase()] ?? 0xFFCCCCCC,
+      isMineral
+          ? (AppConstants.mineralColors[result.predictedMineral.toLowerCase()] ?? 0xFFCCCCCC)
+          : AppTheme.errorColor.value,
     );
 
     return Scaffold(
@@ -58,21 +61,21 @@ class ScanResultScreen extends StatelessWidget {
                       width: 120,
                       height: 120,
                       decoration: BoxDecoration(
-                        color: AppTheme.successColor.withOpacity(0.1),
+                        color: (isMineral ? AppTheme.successColor : AppTheme.errorColor).withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
-                        Icons.check_circle,
+                      child: Icon(
+                        isMineral ? Icons.check_circle : Icons.warning_amber_rounded,
                         size: 80,
-                        color: AppTheme.successColor,
+                        color: isMineral ? AppTheme.successColor : AppTheme.errorColor,
                       ),
                     ),
                     
                     const SizedBox(height: 24),
                     
-                    const Text(
-                      'Identification Complete',
-                      style: TextStyle(
+                    Text(
+                      isMineral ? 'Identification Complete' : 'Non-Mineral Detected',
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.textPrimary,
@@ -93,9 +96,11 @@ class ScanResultScreen extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        result.predictedMineral.toUpperCase(),
+                        isMineral
+                            ? result.predictedMineral.toUpperCase()
+                            : 'NOT A MINERAL SAMPLE',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: isMineral ? 28 : 18,
                           fontWeight: FontWeight.bold,
                           color: mineralColor,
                         ),
@@ -115,7 +120,9 @@ class ScanResultScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Confidence: ${result.confidencePercent}',
+                          isMineral
+                              ? 'Confidence: ${result.confidencePercent}'
+                              : 'Gate confidence: ${result.gateConfidencePercent}',
                           style: const TextStyle(
                             fontSize: 16,
                             color: AppTheme.textSecondary,
@@ -123,14 +130,26 @@ class ScanResultScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    if (!isMineral && (result.rejectionReason ?? '').isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        result.rejectionReason!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.textSecondary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ],
                 ),
               ),
               
-              const SizedBox(height: 24),
+              if (result.probabilities.isNotEmpty) ...[
+                const SizedBox(height: 24),
               
-              // Probabilities
-              Container(
+                // Probabilities
+                Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -146,9 +165,9 @@ class ScanResultScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Mineral Probabilities',
-                      style: TextStyle(
+                    Text(
+                      isMineral ? 'Mineral Probabilities' : 'Mineral Likelihoods',
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.textPrimary,
@@ -205,6 +224,7 @@ class ScanResultScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              ],
               
               const SizedBox(height: 24),
               
@@ -240,6 +260,17 @@ class ScanResultScreen extends StatelessWidget {
                       'Timestamp',
                       DateFormat('MMM dd, yyyy • HH:mm:ss').format(result.timestamp),
                     ),
+                    _buildDetailRow('Mineral Gate', result.isMineral ? 'Passed' : 'Rejected'),
+                    if ((result.oodStatus ?? '').isNotEmpty)
+                      _buildDetailRow('OOD Status', result.oodStatus!),
+                    if (result.similarityScore != null)
+                      _buildDetailRow('Similarity Score', result.similarityPercent),
+                    if (result.isMineral)
+                      _buildDetailRow('Same Physical Sample', result.isSameSample ? 'Yes' : 'No'),
+                    if ((result.reidStatus ?? '').isNotEmpty)
+                      _buildDetailRow('Re-ID Status', result.reidStatus!),
+                    if ((result.matchedSampleId ?? '').isNotEmpty)
+                      _buildDetailRow('Matched Sample', result.matchedSampleId!),
                     if (result.location != null && result.location!.trim().isNotEmpty)
                       _buildDetailRow('Location', result.location!),
                     if (result.fingerprintId != null)
@@ -306,7 +337,7 @@ class ScanResultScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () async {
+                      onPressed: !result.isMineral ? null : () async {
                         // Show progress dialog
                         showDialog(
                           context: context,
@@ -357,7 +388,7 @@ class ScanResultScreen extends StatelessWidget {
                           Navigator.of(context).pop(); // remove progress
 
                           // Navigate to dedicated verification result screen
-                          Navigator.of(context).push(
+                          final done = await Navigator.of(context).push<bool>(
                             MaterialPageRoute(
                               builder: (context) => VerificationResultScreen(
                                 verification: verification,
@@ -365,6 +396,10 @@ class ScanResultScreen extends StatelessWidget {
                               ),
                             ),
                           );
+
+                          if (done == true && context.mounted) {
+                            Navigator.of(context).pop(true);
+                          }
                         } catch (e) {
                           Navigator.of(context).pop();
                           showDialog(

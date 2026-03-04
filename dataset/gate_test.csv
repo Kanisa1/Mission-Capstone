@@ -1,0 +1,521 @@
+image_path,label,label_id,split,site,mineral,source
+images/Yei_River/gold/01316200017494650671086.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/02830650017650490899768.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/08879000017654861558213.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/00086040017476483482465.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Glass_335.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/06326800017659792427408.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/wood (179).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_218.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_382.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/02693000017661882752704.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/04581990017625230318124.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_183.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_438.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/00573900017669647574415.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Vegetation_82.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_9.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_581.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/02825120017651119714064.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/09924500017536614291900.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_178.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_81.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/artificial-ingelligence-circuit-board-closeup-view-with-electronic-picture-id1204293064.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/09853420017651609245877.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_370.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_139.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_92.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_209.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_179.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_271.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/01757050017654915172222.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/05343330017653880485567.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/00382120017525642777963.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/01659440017532562366163.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_115.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/electronic-waste-concept-e-heap-discarded-pc-computer-laptop-parts-many-old-components-motherboards-video-cards-air-cooler-164889858.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/05032510017493102806348.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/02134910017662549368248.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/00707180017527647234728.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Food Organics_190.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_455.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08751240017655090683731.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/03374860017659048682455.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_135.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_168.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_436.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/03258930017664477042280.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/04713410017530350205510.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/images51.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/05009050017629755913005.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/05708620017536614296408.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/04368190017662658587918.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/00926650017533716273598.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/images (85).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_223.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_33.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_63.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_192.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/06935050017655554777415.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/battery-aa-alkaline-cadmium-chemical-three-isolated-white-bac-background-43901964.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/black-white-battery-recycling-sign-black-white-battery-recycling-sign-pasted-metal-box-collecting-used-batteries-194702893.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_328.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/06661860017518690949878.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/01756850017518690945447.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/04906330017525642777580.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/wood (173).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/00752400017655612048771.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/e-waste-technician-repairing-inside-hard-disk-soldering-iron-integrated-circuit-concept-data-hardware-technology-164181399.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_16.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/08268600017645711418192.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/03593680017505334189109.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Paper_102.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/08392850017530350049479.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_70.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_78.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_375.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/R_9566.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/06327540017490386801984.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/pile-of-electronic-scrap-at-a-junkyard-on-december-04-in-hamburg-by-picture-id454448719.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/office-business-accessories-e-commerce-euro-dollar-banknotes-spread-out-table-office-business-accessories-210979635.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/01977300017533447035060.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/02981480017535386099981.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_77.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_40.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/01199870017647562644172.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/01803060017531269159932.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Vegetation_341.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/08307230017659048683687.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Metal_659.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/06657110017650605736633.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/00784720017477750806650.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/08769120017665639106649.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Metal_577.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_154.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/07770650017527647226160.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/04757060017547673845117.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/00219740017519670758607.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/02635080017617737785676.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/wood (83).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/05319470017667737914696.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/08473990017521462739986.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Glass_107.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/00459020017651185749558.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/05438670017532732928564.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/00683310017611616961644.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Paper_147.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_192.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/images (41).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/wood (234).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/09268570017519670757682.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Textile Trash_283.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_248.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/01388040017518690953570.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/09909190017683046429002.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/06601450017659048721247.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/09794770017573937422134.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/01695060017622903078568.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/03181510017606496308998.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_54.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/02336330017659048703030.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/06973930017662700756238.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Cardboard_437.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_453.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/05899870017535386102264.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Food Organics_312.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/09586590017662576585186.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/02361140017651351379875.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Miscellaneous Trash_153.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_407.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07911700017662576598961.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Paper_68.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_207.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/04708160017659735102258.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/wood (249).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/R_9561.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/02500430017471445191245.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Paper_363.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_4.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/05949120017664233509594.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/08798880017649474661416.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/01358420017659048673739.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/08169880017695856655993.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/06974680017626714543656.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/different-batteries-recycling-bin-sofia-bulgaria-january-seen-thrown-away-174149552.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/05048220017611616962759.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/images - 2026-02-28T100751.233.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/images (69).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/images - 2022-04-19T135731.501.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/04391500017536161322133.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/images (15).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_350.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/wood (55).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_110.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/03775420017663379865021.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/bunch-old-used-mobile-phone-batteries-recycling-electronics-was-sold-market-cheap-kharkiv-ukraine-july-close-up-top-view-154987330.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/00757460017526851873323.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/02282930017504584745140.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_40.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/06671090017662549352951.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/03593580017519670765058.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Miscellaneous Trash_69.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/alkaline-batteries-box-close-up-battery-d-aa-size-top-view-alkaline-batteries-box-close-up-battery-d-aa-size-top-164343692.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_211.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/03160090017653880473143.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_204.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08548700017661647216072.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/05439420017647347453854.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Vegetation_97.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/06676040017504249904517.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-battery-rechargeable-accumulator-alkaline-batteries-color-123003253.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/04755570017671605712159.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Metal_678.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_150.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/09707100017526595815099.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Food Organics_30.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_462.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/06191100017521303854127.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/03900620017504543885044.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/07618070017535386095246.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_112.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_375.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/07475420017531269142179.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_363.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/02407760017655676232731.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/03226110017662700762461.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/02904920017662576604399.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/battery-contains-harmful-environment-natural-compounds-mercury-cadmium-lead-which-included-called-batteries-140033282.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_343.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_293.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/02106900017662700755189.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/08313430017521425001110.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_404.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_248.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_709.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/03919860017611662035598.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/00407980017652693609624.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/08421190017494703983323.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Metal_499.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_241.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_289.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/01460200017654848625579.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Metal_282.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/computer-dumping-in-accra-ghana-picture-id564189573.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_767.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/03755650017652956286335.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/06755010017663015332910.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/09229980017644663957913.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Glass_369.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_31.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/08781150017512244149385.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/battery-21404974.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/02786410017494806082040.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_242.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07425470017655135702924.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/close-up-hand-holding-green-alkaline-battery-recycling-energy-power-environment-ecology-concept-74192774.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/07035510017533390228245.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/00385090017536327267304.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/06399950017635831191775.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/02716200017659048719669.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/04789680017519172046522.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/03430180017471366316625.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/02189520017662689723439.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Food Organics_237.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/download (29).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_108.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_322.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_446.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/battery-dry-cell-standing-white-background-32584302.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_23.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/06940330017532732923675.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Paper_293.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/06489520017665868853275.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/00237810017662700787728.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/wood (68).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_331.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_158.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/07768690017642870372970.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/06351120017657662997319.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Plastic_663.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/battery-drone-battery-drone-isolated-white-background-110443063.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/05501140017664385816406.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Plastic_368.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07654650017662658576110.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Food Organics_101.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07123320017645366474846.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/01906520017642622162747.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Miscellaneous Trash_136.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/06043240017650003269308.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Plastic_876.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_68.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/06617300017653159732017.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Vegetation_340.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_299.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07335230017659048709996.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/illegal-ewaste-dumping-grounds-in-yuen-long-no-9-09jul16-scmp-bruce-picture-id1096277724.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/08191630017661682179459.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Plastic_850.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/05528740017519670807502.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/09784740017645362745840.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/wood (65).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_247.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07493600017650772012395.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/09315980017662658581140.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/02675220017525612299524.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_211.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_123.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/03838570017651211644412.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/09801930017655293401356.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/03116670017650655335981.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/08003060017662576609118.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/06671820017650655318345.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/01415280017665699902025.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Metal_260.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08193760017649317475123.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/05320680017533731661472.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Textile Trash_151.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_99.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_826.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/00407360017653880486363.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/02837310017494704002942.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Paper_130.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_317.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/images (54).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/aa-accumulators-7201087.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/close-positive-poles-used-battery-black-background-up-backgrounds-intended-focused-179989124.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/09041980017630058811797.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/00166790017654381751671.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Cardboard_387.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_108.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_372.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/computer-parts-picture-id155601068.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/02179110017518075001118.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Glass_360.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/03652680017535386086419.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Food Organics_143.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_179.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_195.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_359.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/04322730017671692732293.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/mobile-phone-battery-expired-electronic-waste-contains-dangerous-substances-white-background-193826200.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-battery-rechargeable-accumulator-alkaline-batteries-color-125891485.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_497.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07024790017659048675501.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/00205710017650604072177.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Miscellaneous Trash_392.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/00077890017519670815490.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Miscellaneous Trash_369.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/09258360017662813676251.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/09532400017531269147802.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/02594170017667684484729.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/06613120017471704661872.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Metal_649.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_233.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/00869050017520586614636.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_398.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_448.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/07185240017641135461910.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/08094810017519670761413.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/05773200017662700779647.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_94.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/00702210017478010188738.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/04316020017519670812927.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/closeup-black-battery-blue-border-against-background-other-batteries-conceptual-image-metaphor-200016258.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_50.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/alkaline-battery-aa-size-selective-focus-single-battery-87126285.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/06302620017524229172346.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/00973420017659048644492.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/02720990017651428528908.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/00393210017518690967408.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_919.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/03744190017494703984915.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/01984450017654194696951.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/09167790017671605701259.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/06682220017660847111514.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Food Organics_14.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08541370017643612014697.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/00608240017671529522838.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/download (5).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/03857130017671529517777.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/01379130017535386105985.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/09854340017655272631477.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/07808550017664194954319.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/01502720017521303866556.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_18.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/03433130017650851206869.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Textile Trash_138.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_381.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_765.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_448.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/01342170017664195003286.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/wood (70).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_183.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/06954440017662549365838.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Plastic_651.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/02153930017662813673729.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/04604950017658934629283.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/00472860017535386118412.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/03280120017626714524935.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/07186940017664378964943.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Plastic_450.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_717.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_458.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08776140017660380893594.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Metal_560.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_218.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/04030120017531269154591.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_102.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/e-waste-electronic-computer-circuit-cpu-chip-mainboard-core-processor-electronics-device-concept-data-hardware-technician-186555033.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/wood (110).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/paper-box-computer-hardware-part-electronic-waste-isolated-white-paper-box-computer-hardware-part-electronic-waste-125245266.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_350.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_97.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_404.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_15.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/04941580017662576587501.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_139.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07474760017667063411541.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/08489870017481301839937.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Metal_114.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_17.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/07767330017642474663683.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Metal_317.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_685.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/03320350017635831193882.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/02497230017538665975936.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/electronics-waste-bin-concept-garbage-electrical-ready-recycling-old-devices-e-disposal-management-reuse-recycle-recovery-164345022.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_50.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/01344540017529956385109.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/05996220017518690958096.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Paper_258.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/00401910017662700859356.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/03165460017652140501342.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/08280800017659048713185.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Plastic_123.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_367.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/various-electronic-components-detail-printed-circuit-board-electrotechnics-close-up-resistors-standard-color-code-208847870.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/07037720017640426624726.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/06346980017530009513783.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/09333190017669626266301.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/00412420017661824615997.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Vegetation_227.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_297.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_91.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/00878910017650586702667.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/06966270017529956383041.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/05315490017654793573088.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/battery-charger-connected-charging-four-batteries-gray-wooden-background-81118343.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_721.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_274.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08150840017671529518264.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/03111950017494806079137.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Metal_112.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/09431760017625535924789.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/00360610017651185683724.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_4.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_173.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/01828150017662549372651.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/04719350017535386118942.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/01466390017659048724258.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Metal_434.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/05220180017519670754639.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/images (13).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/01622760017658988625023.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_304.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_300.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/close-up-battery-positive-poles-black-backgrounds-intended-focused-close-positive-poles-used-battery-black-182840630.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/00309150017662576584843.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_168.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/06827940017658988614858.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Food Organics_34.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_401.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/06272420017651185733262.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/discarded-and-recyclable-computer-parts-also-called-ewaste-at-an-in-picture-id999238438.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_170.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/03102060017542208904636.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/05362200017532562367853.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_431.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/08767270017667078668598.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/gold/01212780017493102792095.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_155.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/07981710017535386081317.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_487.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_478.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/02126990017527647231263.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_426.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/04873200017529956381813.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_340.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/06699900017644917574666.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Plastic_653.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_436.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_287.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/07043590017659048632139.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/02253150017663379865292.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/05300280017671531429527.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/00627140017640004285089.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/03482440017662700802258.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/08849770017651185666146.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/images17.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_390.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/01707120017525612304101.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/concept-battery-recycling-2498672.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/07985930017494806069518.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/gold/08979420017522281528312.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/09186240017661879533734.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/hematite/08158310017671692838809.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Textile Trash_194.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/close-positive-poles-used-battery-black-background-up-backgrounds-intended-focused-181768016.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/07227640017525612292225.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Paper_188.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/05290040017512244144862.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/00173630017662675622242.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/gold/02131630017519670778032.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/03270120017659932002384.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/00624850017626714539809.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/images (17).jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_285.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/artificial-ingelligence-circuit-board-closeup-view-with-electronic-picture-id1204292317.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/07494900017658370594764.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/01076690017659467782250.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/09856820017674093913115.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Vegetation_161.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_369.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_399.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/08789550017662700791495.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Plastic_404.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/04625940017503516223886.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Cardboard_220.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/05428460017525642762358.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/chalcopyrite/00078420017635831199690.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/01819590017659048733811.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Cardboard_337.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/00125990017519172053279.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/Yei_River/hematite/03606920017653159735348.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/07707210017659048691081.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/chalcopyrite/05148770017662675629895.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Metal_369.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/alkaline-battery-aaa-size-selective-focus-single-91083876.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_827.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/04238220017530350043606.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/obsolete-media-picture-id1148112480.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_55.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/hematite/09522740017651760387878.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Glass_394.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/09185840017527647228719.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Metal_304.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/01493640017509006022836.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Textile Trash_57.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_105.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/08853090017535386111028.jpg,mineral,1,test,Yei_River,gold,field_mineral
+images/non-minerals/Plastic_815.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/01956130017650655323311.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/02984930017645708559430.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/non-minerals/Food Organics_305.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_108.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/chalcopyrite/03562600017646455324649.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/Yei_River/hematite/03152300017674539684048.jpg,mineral,1,test,Yei_River,hematite,field_mineral
+images/Yei_River/chalcopyrite/02265280017659048692497.jpg,mineral,1,test,Yei_River,chalcopyrite,field_mineral
+images/non-minerals/Plastic_775.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/battery-1832552.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_321.jpg,non_mineral,0,test,non-minerals,,non_mineral_collection
+images/Yei_River/gold/09133690017514182852604.jpg,mineral,1,test,Yei_River,gold,field_mineral

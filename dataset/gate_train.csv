@@ -1,0 +1,711 @@
+image_path,label,label_id,split,site,mineral,source
+images/non-minerals/Glass_404.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/00534000017684106462831.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/hematite/02894490017695584155029.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Plastic_420.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/03541620017686622515094.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/05134050017688444699161.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/hematite/09074020017695641795661.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/hematite/01429650017674838148837.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Miscellaneous Trash_305.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09436530017689449148446.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/07856420017683351034611.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/00023390017679535185844.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Cardboard_353.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_290.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_267.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_21.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/computer-and-electronic-waste-picture-id486948220.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_113.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/04347250017672931915777.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/wood (212).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02838510017579390864894.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/00061590017682943039097.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/hematite/04660280017680531934985.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/00275920017667737987257.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/09498070017633747638391.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/gold/02130040017555323137357.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/gold/09933260017687243119939.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/hematite/07204960017685692918411.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/05950530017686381031516.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/01469190017640943987789.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/battery-charger-isolated-white-background-34004360.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/01421120017637661217720.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_236.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/05327640017696915186671.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/04137370017679823237921.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/05868140017592237896456.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/08859460017667738087659.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/old-computer-equipment-picture-id80616242.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_509.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/battery-wrapped-dollar-bill-13347801.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/03906910017682848292187.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/06331770017652140506932.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_458.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02352870017640927692743.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Cardboard_122.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/00789100017589731412960.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Cardboard_39.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_220.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/08241840017665606502261.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/06372060017620335015671.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Plastic_892.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_17.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/05920940017670245437546.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/hematite/08822610017700925651835.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/wood (99).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/dry-battery-closeup-rechargeable-42169883.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/00741150017686622484505.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Plastic_831.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/04177970017677953099225.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/09728390017698739727652.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Paper_218.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_224.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/07938950017634395718168.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/07434280017689449139383.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/07614550017691715256896.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/08315140017686622518034.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Textile Trash_298.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/09679800017695786505407.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Metal_606.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/08922710017697072639718.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_154.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_334.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_730.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/04106050017655014729785.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/03512320017678893456615.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/08322720017663975209567.webp,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/06736710017645840807937.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_757.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (56).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_69.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_260.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/battery-charger-5190793.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02972380017645131169227.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_281.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/04930840017650376652856.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/images (67).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/08767790017698739851415.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/05624670017667738089327.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/08595940017644570647699.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Cardboard_391.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/04077180017680441316825.webp,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/08984310017676575488858.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/05994210017599791262945.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/gold/00918520017619990739286.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/hematite/06070410017695173401666.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/gold/06675470017579381801975.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Food Organics_171.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_163.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/artificial-ingelligence-circuit-board-closeup-view-with-electronic-picture-id1204292248.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/07206480017594184545806.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/04394620017674676561965.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Plastic_120.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/01374720017671692723006.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Metal_637.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/01268710017619990786723.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Miscellaneous Trash_125.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_97.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/04247690017678893561540.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Plastic_200.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_225.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_431.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_442.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_257.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/03507260017682094419884.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/hematite/09466420017685018081082.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/07132200017667778196967.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Paper_336.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/technological-waste-picture-id489051957.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/05452280017671895185928.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/01883040017637661477381.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/bangkok-thailand-october-many-old-mobile-phones-broken-not-working-out-date-e-waste-heap-environmental-problem-198982174.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_232.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/08325680017551360121643.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/04174610017685571493498.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/gold/06703290017557804231366.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/00005200017689449142879.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/02141940017689452605374.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/05938080017688444707191.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Metal_53.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/03634630017562388811176.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/wood (229).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/00568820017691656023123.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/00522400017680531932042.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Vegetation_316.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/electronic-trash-accumulated-home-recycling-turkey-electronic-trash-accumulated-home-recycling-195386029.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/images25.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_624.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02778570017591273816862.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Plastic_74.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/08513800017678227699029.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_423.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/08069800017644536315284.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_843.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02156660017558168957788.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Metal_493.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_104.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_1.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/04211040017663975193500.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/08661620017695584157649.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/close-up-hand-holding-green-alkaline-battery-recycling-energy-power-environment-ecology-concept-over-lights-74690447.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_184.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_319.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/09322480017634395705824.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Vegetation_60.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/08150490017686622486322.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-battery-rechargeable-accumulator-alkaline-batteries-color-background-134525731.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_210.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_290.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/05768100017688444688003.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_290.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_427.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/01876760017703265805274.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/06715010017680531965299.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Glass_272.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/06744580017689449149366.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Miscellaneous Trash_433.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_45.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/gowanus-ewaste-warehouse-prop-rental-library-picture-id868165890.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/artificial-ingelligence-circuit-board-closeup-view-with-electronic-picture-id1204292341.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09821660017675802308289.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-battery-rechargeable-accumulator-alkaline-batteries-color-background-134525888.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/07159430017634395223492.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Textile Trash_318.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/01381690017575863324398.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Plastic_498.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/02668660017680533293630.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Paper_231.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (240).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (286).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/00332930017680042726240.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/09974090017683212232814.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Plastic_921.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/02783660017672704624065.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Food Organics_228.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/04396790017695641763717.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/hematite/06836230017696514498442.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-battery-rechargeable-accumulator-alkaline-batteries-color-133589029.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/battery-C3B1C281-white-isolated-background-concept-renewable-energy-sources-electrical-power-pattern-designer-envi-123682488.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_118.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/pile-electronic-waste-motherboard-computer-cpu-microchips-electronic-equipment-printed-circuit-board-pile-electronic-159532404.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02792250017653653209756.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_153.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/07111940017679274809641.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/close-positive-poles-used-battery-black-background-up-backgrounds-intended-focused-182174403.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/05884700017703264898120.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/07306600017682848291094.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/close-up-positive-ends-row-battery-cells-top-view-soft-focus-used-aa-alkaline-size-180437345.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/battery-15104265.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/00185320017579428891194.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/gold/05320060017548893972448.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/02786880017680441333086.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Plastic_901.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/accumulator-battery-charger-8311567.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/00682700017555250307507.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Metal_655.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09339410017678498374793.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/gold/08885470017617656495638.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Paper_307.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/03190700017671895173874.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_81.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/01800480017649994904879.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/03282190017663975169339.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/09166690017578851702465.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/batteries-top-view-rows-rechargeable-battery-206059508.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/09677500017683471067089.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/wood (129).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/05583740017682703109533.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Metal_625.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/june-2020-saxony-kleincotta-several-defective-and-old-electronic-as-picture-id1223468233.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/06370130017702552158972.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Glass_330.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/04949300017696514486404.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Plastic_646.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/01196230017673288536875.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/gold/08681170017645840795845.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/04919250017688590772425.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/00310390017686622498223.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Plastic_519.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/09309940017662816255485.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_108.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/green-small-battery-positive-negative-signs-40494251.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/images58.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/05599550017695641774220.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Cardboard_365.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/08957940017695637537377.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/01852070017685021341087.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/05077630017685881117345.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/04747620017674837956647.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Metal_759.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/06867790017678809053095.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/gold/07657810017555250292973.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Metal_256.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/06926930017698741901835.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/01535130017688450766645.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/08759810017613192161743.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Food Organics_197.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/08039760017671895177148.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/07946850017693853943811.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/colorful-multi-wire-bus-connector-white-ribbon-cables-background-internal-integrated-drive-electronics-digital-data-168225829.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/05647640017685880971497.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/wood (6).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_508.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09019640017685692913069.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/images (70).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_329.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-ecology-recycling-concept-many-different-types-used-new-battery-123003932.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_48.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/02153720017697345153042.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Food Organics_105.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09693440017683962148719.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/gold/00440250017637661418244.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/00395990017685692917616.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/images (32).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/09432720017679614786546.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/06442730017692772204617.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/09515520017689218928827.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/08771400017664258768816.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/08500640017685571492295.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/electronic-scrap-hard-drive-isolated-on-white-background-picture-id1033902672.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_674.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02766910017578851953208.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Food Organics_298.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_573.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_129.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/09519630017550256478634.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/gold/01459350017647364032767.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/electronic-waste-garbage-recycling-260nw-1675112317.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/02830680017685881112868.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Metal_25.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_407.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/01235420017621557064548.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Vegetation_369.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/07142790017683600752921.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/gold/01604920017645486223558.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/gold/01175570017557804198128.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/00582650017688590462559.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/09072060017575863314864.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Plastic_225.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_196.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_52.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_353.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02066640017629438378804.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Cardboard_26.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_72.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_384.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/08549270017583944816553.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/wood (317).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_422.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/08434910017700958966843.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Food Organics_323.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/00379560017671895183090.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/wood (23).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/03279170017696370965724.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Glass_192.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_289.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_212.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_325.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_329.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/04652500017621557062540.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/02530800017665275278212.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/hematite/09901260017695641745556.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-ecology-recycling-concept-many-different-types-used-new-battery-133585920.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_54.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_416.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/08733330017685136861466.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/wood (256).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/01392610017679823215734.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-battery-rechargeable-accumulator-alkaline-batteries-color-123006286.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/download (18).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/07605630017683595045592.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/macro-positive-terminal-aa-battery-other-batteries-190184660.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/images - 2026-02-28T100815.935.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/06431320017685571497965.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Vegetation_89.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/03101090017667737989981.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/close-up-hand-holding-green-alkaline-battery-recycling-energy-power-environment-ecology-concept-over-blue-sky-clouds-74818218.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/03841790017688444703420.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/01887150017680531969283.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/02596060017696293093617.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/05811490017686622518025.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Metal_432.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_564.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_807.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/07719930017681792526095.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/battery-charger-12544741.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/09563440017695504489055.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/08183900017688444682704.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_407.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/04368300017683747511007.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/04983600017579455597446.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Textile Trash_82.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/08843040017578851954245.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/gold/01612100017672924769402.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/hematite/01945340017696915858122.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Paper_200.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/04532780017644536313561.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Glass_286.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-ecology-recycling-concept-many-different-types-used-new-battery-123003315.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_151.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_20.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_895.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/06407620017679941198488.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/03472540017686622481707.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Glass_15.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_396.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_118.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/05852880017640927598020.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_829.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/07223070017663765915203.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_553.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_230.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/00604650017633654644931.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Vegetation_42.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_200.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_96.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_317.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/06543310017685021307241.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/electricity-aa-size-battery-background-electricity-aa-size-battery-background-closeup-row-round-batteries-view-above-110062347.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_181.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/01875810017628053971511.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Plastic_771.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-battery-rechargeable-accumulator-alkaline-batteries-color-124464950.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/e-waste-technician-repairing-inside-hard-disk-soldering-iron-integrated-circuit-concept-data-hardware-technology-205542420.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/04509630017590473892678.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/07074170017689218911985.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Cardboard_186.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (236).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_184.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/junk-pile-of-computers-picture-id77859716.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_402.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/01417020017675802372208.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Cardboard_300.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/02031120017685021302432.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/03113130017676494568028.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/close-positive-poles-used-battery-black-background-up-backgrounds-intended-focused-181768005.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_361.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/04387080017637661467688.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/03208310017691141456741.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/R_9614.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_72.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/00306560017671895196100.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/03507330017579382797706.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Glass_175.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_15.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_116.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02583350017688450809183.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Textile Trash_133.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/05001250017693853854364.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Paper_359.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_473.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/08429580017695786297442.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/04706130017667737979284.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/wires-from-electronics-sit-in-a-pile-at-the-adl-process-inc-recycling-picture-id529796038.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/01900740017696514458993.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/hematite/00632440017696770255454.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Food Organics_217.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/battery-recycling-electric-cars-greener-than-alternative-still-produces-lot-emissions-152328281.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_728.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_236.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/00837570017663975178893.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/09466410017700304531989.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Miscellaneous Trash_492.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02016580017682943046764.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Food Organics_142.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_362.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/06080400017686622509993.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_101.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/09356550017698739887277.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Plastic_40.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/02605350017665606515296.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/03325220017683471072836.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Plastic_649.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_132.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_29.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/08903350017592318066318.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/smashed-old-fashioned-cathode-ray-tube-computer-monitor-picture-id876770486.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/00080690017672354958868.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/05548880017668486377402.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/09911260017688444692290.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/assorted-electronic-products-e-waste-pile-204091719.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_449.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09831030017680533279376.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Plastic_484.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/09035490017600768895764.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Cardboard_124.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/08304360017679823215036.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_251.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/ecology-recycling-concept-many-different-types-used-new-batt-ecology-recycling-concept-many-different-types-used-new-battery-125891494.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/00525480017640944004012.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_213.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_106.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/08719890017686622505904.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Metal_396.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_243.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_716.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09468660017687243092991.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/hematite/06409350017698739774622.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/08594030017680042706205.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/06187110017683747478368.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/04530100017645840801174.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/02862320017671895183888.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_85.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_348.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_89.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_229.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/image23.jpeg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/08791430017680531941831.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Cardboard_6.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_712.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_3.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/09575900017640200981327.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/hematite/05564820017685018083418.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Food Organics_395.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_177.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_332.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_435.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/08367440017667249692182.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Vegetation_56.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/09305950017666093578565 (1).jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_281.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/09564060017680273669760.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Metal_290.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/09863160017679823172376.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Textile Trash_169.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/09031280017695173407216.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Vegetation_429.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/images (28).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/04494910017702227173669.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Metal_129.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/03493830017680616838244.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Cardboard_370.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02073400017645708055768.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/03569560017686381034784.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/05203150017664311683132.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/07940110017688508748319.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/02810870017644271987739.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/00330220017696303889385.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/09578440017635871166621.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Metal_265.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/02590860017695786561754.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/battery-positive-side-up-old-battery-seen-positive-top-side-isolated-white-194660449.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/01980190017667737977995.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/07995530017580416309453.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Glass_202.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_334.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/07170180017680042723033.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/06036680017680441865667.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/07523820017667737953204.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Textile Trash_129.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/01291090017680619799543.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Miscellaneous Trash_221.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_174.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/08027150017592237894383.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/gold/06461300017663335012836.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Metal_462.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/05879760017671895199542.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/images (30).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (312).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_64.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/08256030017682848289561.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/01031880017686381038897.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Cardboard_149.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_695.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/07679400017669319072091.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/09929480017587455356301.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/gold/06426380017633747633713.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/gold/07046430017636977556483.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/hematite/02329790017682943058031.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/05684560017679823191244.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/images (37).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/02330560017672623656788.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Paper_143.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_60.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/03250560017689218922147.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/hematite/09793020017673756407196.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/hematite/05790000017695641868290.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/01626190017688444703774.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/chalcopyrite/00231580017682196936232.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/04980230017676418184047.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Textile Trash_106.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (81).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/03702900017684991849920.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/hematite/02307920017686977301252.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/wood (154).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/08293280017685880977554.webp,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/04225180017660131536461.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/battery-outlined-2319606.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_465.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_18.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/05177270017682943047419.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/hematite/05121540017689993407970.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/gold/02238780017650352363259.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/gold/06499400017597947085442.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Glass_258.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_824.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/closeup-of-a-heap-of-computer-mouse-montevideo-uruguay-picture-id89134026.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/01997320017663125882328.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/02510840017663379856070.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/07156060017702217272087.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Vegetation_190.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/09798220017598449818963.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/01086310017686622511846.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/hematite/01233850017695641844707.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/hematite/01793730017697962376060.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Vegetation_68.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/images - 2022-04-19T135706.659.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/01273930017694612824838.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/03195120017688444696308.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/chalcopyrite/03654210017688444689163.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Plastic_639.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (301).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/07261730017650376655288.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_570.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_761.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/00081230017663975235325.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/man-is-seen-sorting-tvs-for-recycle-at-a-tv-recycling-scrap-yard-in-picture-id1228516991.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/08217720017657663647393.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/battery-charger-batteries-isolated-white-17899326.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/06871870017672924755941.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/environmental-protection-department-small-group-media-tour-to-waste-picture-id1096432646.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_137.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/closeup-of-a-large-number-of-broken-cellphones-including-cracked-picture-id1084203064.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/01088830017686622505138.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/hematite/05680320017689714528457.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Food Organics_96.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_457.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/09939090017683747485820.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Glass_62.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/06816830017558660078809.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/many-stepper-motors-as-industrial-e-waste-background-many-stepper-motors-as-industrial-e-waste-background-136603339.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/06548860017695641782968.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/gold/02312180017685880982961.webp,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/hematite/07521410017700956568904.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Paper_201.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02032560017633747644764.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/chalcopyrite/07319230017688444691713.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Metal_444.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_213.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/07952290017671895183677.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Paper_70.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_593.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/00623730017700711669624.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/gold/02174070017592237904963.webp,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/hematite/05725350017695786541714.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/chalcopyrite/05903040017686622486904.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/06851650017683436602235.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/image11.jpeg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/03677640017674754581144.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/computer-junk-picture-id155909688.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/07553790017667737973173.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/04110150017663066574642.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Textile Trash_74.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_206.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/05500900017695786389218.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Metal_650.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Paper_292.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Glass_381.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/05017330017633747632282.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/wood (342).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_354.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/03660250017687067266625.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Paper_195.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_551.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/05375790017691141424556.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_129.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/00314030017667737969151.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Miscellaneous Trash_288.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_384.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_171.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/08742130017702029707479.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/hematite/00099180017696915185839.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/e-waste-electronic-computer-circuit-cpu-chip-mainboard-core-processor-electronics-device-concept-data-hardware-technician-198145342.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/03601090017686622493585.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/01199450017634861953999.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/wood (192).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_100.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/02804920017680531945909.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/Glass_153.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/05550660017640931867946.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/gold/02756190017582161929614.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/hematite/07750400017689714584476.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Food Organics_218.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (314).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/03968500017696915853516.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/hematite/07893620017689218932779.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/non-minerals/many-different-types-used-new-battery-rechargeable-accumulator-alkaline-batteries-color-background-ecology-recycling-concept-172661205.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/09257840017680531932964.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/hematite/01534550017695650254245.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/05582820017672354983847.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Central_Equatoria/gold/01086100017645840805314.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/06837210017671104177098.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/battery-small-aaa-battery-held-fingers-7074395.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/images6.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/hematite/02302050017680531972614.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/gold/02328980017578393911256.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/computer-recycle-dump-picture-id856086582.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_74.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_68.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/08759980017663379841245.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/gold/00697610017558168952648.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Paper_339.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_538.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/07158730017557804197571.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/gold/00780860017551360136213.webp,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Central_Equatoria/gold/06270300017676576333168.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/01096320017673813719452.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/Kapoeta_East/hematite/04458680017680533276410.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Kapoeta_East/chalcopyrite/02949830017667737961013.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/battery-charger-23359508.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/chalcopyrite/05998030017686622498504.jpg,mineral,1,train,Central_Equatoria,chalcopyrite,field_mineral
+images/non-minerals/e-book-reader-hand-background-table-paper-books-no-longer-used-intended-waste-paper-e-174956834.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_694.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_162.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_789.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Vegetation_404.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_280.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Miscellaneous Trash_127.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02182670017586579731615.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Plastic_84.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_84.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/electronic-waste-gadgets-equipment-used-damaged-e-management-plan-mobile-accessories-not-use-expired-technical-181134627.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (122).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/00932430017695786415200.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/hematite/04108240017692676448652.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Metal_575.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_37.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/03088800017692934876101.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/non-minerals/Textile Trash_260.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_896.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/01120100017676540869881.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Plastic_561.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (300).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Food Organics_267.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/gold/02452390017661647222135.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Central_Equatoria/gold/02639720017646455335322.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Paper_65.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (184).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/chalcopyrite/05688760017667737961025.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/e-waste-electronic-computer-circuit-cpu-chip-mainboard-core-processor-electronics-device-concept-data-hardware-technician-e-197166373.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Cardboard_282.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Metal_507.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/08463110017695786375280.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/hematite/03574000017694856784870.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/gold/01923580017658956921184.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/Kapoeta_East/chalcopyrite/01108080017669447345626.jpg,mineral,1,train,Kapoeta_East,chalcopyrite,field_mineral
+images/non-minerals/Glass_407.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/06899690017695786538950.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Central_Equatoria/gold/03757750017677604976686.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/non-minerals/Paper_482.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/wood (115).jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Kapoeta_East/gold/02216710017601154003201.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Metal_609.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/9-volt-battery-white-clipping-path-11607399.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/Central_Equatoria/hematite/06932020017696915177465.jpg,mineral,1,train,Central_Equatoria,hematite,field_mineral
+images/Kapoeta_East/hematite/09576660017680531887696.jpg,mineral,1,train,Kapoeta_East,hematite,field_mineral
+images/Central_Equatoria/gold/00560600017644271983607.jpg,mineral,1,train,Central_Equatoria,gold,field_mineral
+images/Kapoeta_East/gold/00590940017555323139936.jpg,mineral,1,train,Kapoeta_East,gold,field_mineral
+images/non-minerals/Paper_228.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Textile Trash_146.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection
+images/non-minerals/Plastic_150.jpg,non_mineral,0,train,non-minerals,,non_mineral_collection

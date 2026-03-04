@@ -162,3 +162,90 @@ Traceback (most recent call last):
     if not self.fingerprints_file.exists():
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AttributeError: 'str' object has no attribute 'exists'
+2026-03-04 09:40:04,776 - ERROR - Exception: Error opening <_io.BytesIO object at 0x000001CFA3A076F0>: Format not recognised. | Context: {"endpoint": "/predict"}
+(<class 'soundfile.LibsndfileError'>, LibsndfileError(1, 'Error opening <_io.BytesIO object at 0x000001CFA3A076F0>: '), <traceback object at 0x000001CFA6656A40>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1599, in predict
+    aud = process_audio(audio_bytes)
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 357, in process_audio
+    y, _ = librosa.load(
+           ~~~~~~~~~~~~^
+        io.BytesIO(file_bytes),
+        ^^^^^^^^^^^^^^^^^^^^^^^
+        sr=sr,
+        ^^^^^^
+        mono=True
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 186, in load
+    raise exc
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 176, in load
+    y, sr_native = __soundfile_load(path, offset, duration, dtype)
+                   ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 209, in __soundfile_load
+    context = sf.SoundFile(path)
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\soundfile.py", line 690, in __init__
+    self._file = self._open(file, mode_int, closefd)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\soundfile.py", line 1265, in _open
+    raise LibsndfileError(err, prefix="Error opening {0!r}: ".format(self.name))
+soundfile.LibsndfileError: Error opening <_io.BytesIO object at 0x000001CFA3A076F0>: Format not recognised.
+2026-03-04 09:40:11,139 - ERROR - Exception: Error opening <_io.BytesIO object at 0x000001CFA65FF560>: Format not recognised. | Context: {"endpoint": "/predict"}
+(<class 'soundfile.LibsndfileError'>, LibsndfileError(1, 'Error opening <_io.BytesIO object at 0x000001CFA65FF560>: '), <traceback object at 0x000001CFA6656C80>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1599, in predict
+    aud = process_audio(audio_bytes)
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 357, in process_audio
+    y, _ = librosa.load(
+           ~~~~~~~~~~~~^
+        io.BytesIO(file_bytes),
+        ^^^^^^^^^^^^^^^^^^^^^^^
+        sr=sr,
+        ^^^^^^
+        mono=True
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 186, in load
+    raise exc
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 176, in load
+    y, sr_native = __soundfile_load(path, offset, duration, dtype)
+                   ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 209, in __soundfile_load
+    context = sf.SoundFile(path)
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\soundfile.py", line 690, in __init__
+    self._file = self._open(file, mode_int, closefd)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\soundfile.py", line 1265, in _open
+    raise LibsndfileError(err, prefix="Error opening {0!r}: ".format(self.name))
+soundfile.LibsndfileError: Error opening <_io.BytesIO object at 0x000001CFA65FF560>: Format not recognised.
+2026-03-04 09:40:17,793 - ERROR - Exception: Error opening <_io.BytesIO object at 0x000001CFA666C090>: Format not recognised. | Context: {"endpoint": "/predict"}
+(<class 'soundfile.LibsndfileError'>, LibsndfileError(1, 'Error opening <_io.BytesIO object at 0x000001CFA666C090>: '), <traceback object at 0x000001CFA6656980>)
+Traceback (most recent call last):
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 1599, in predict
+    aud = process_audio(audio_bytes)
+  File "C:\Users\HP\Mission-Capstone\API\api.py", line 357, in process_audio
+    y, _ = librosa.load(
+           ~~~~~~~~~~~~^
+        io.BytesIO(file_bytes),
+        ^^^^^^^^^^^^^^^^^^^^^^^
+        sr=sr,
+        ^^^^^^
+        mono=True
+        ^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 186, in load
+    raise exc
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 176, in load
+    y, sr_native = __soundfile_load(path, offset, duration, dtype)
+                   ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\librosa\core\audio.py", line 209, in __soundfile_load
+    context = sf.SoundFile(path)
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\soundfile.py", line 690, in __init__
+    self._file = self._open(file, mode_int, closefd)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Mission-Capstone\.venv\Lib\site-packages\soundfile.py", line 1265, in _open
+    raise LibsndfileError(err, prefix="Error opening {0!r}: ".format(self.name))
+soundfile.LibsndfileError: Error opening <_io.BytesIO object at 0x000001CFA666C090>: Format not recognised.

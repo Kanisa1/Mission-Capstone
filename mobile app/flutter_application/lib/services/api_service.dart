@@ -31,14 +31,16 @@ class ApiService {
   // Authentication
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl${AppConstants.loginEndpoint}'),
-        headers: _getHeaders(includeAuth: false),
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl${AppConstants.loginEndpoint}'),
+            headers: _getHeaders(includeAuth: false),
+            body: jsonEncode({
+              'email': email,
+              'password': password,
+            }),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -58,17 +60,19 @@ class ApiService {
     String? organization,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl${AppConstants.registerEndpoint}'),
-        headers: _getHeaders(includeAuth: false),
-        body: jsonEncode({
-          'name': name,
-          'email': email,
-          'password': password,
-          'role': role,
-          'organization': organization,
-        }),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl${AppConstants.registerEndpoint}'),
+            headers: _getHeaders(includeAuth: false),
+            body: jsonEncode({
+              'name': name,
+              'email': email,
+              'password': password,
+              'role': role,
+              'organization': organization,
+            }),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
@@ -89,17 +93,19 @@ class ApiService {
     String? photoUrl,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/auth/google'),
-        headers: _getHeaders(includeAuth: false),
-        body: jsonEncode({
-          'id_token': idToken,
-          'access_token': accessToken,
-          'name': name,
-          'email': email,
-          'photo_url': photoUrl,
-        }),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/api/auth/google'),
+            headers: _getHeaders(includeAuth: false),
+            body: jsonEncode({
+              'id_token': idToken,
+              'access_token': accessToken,
+              'name': name,
+              'email': email,
+              'photo_url': photoUrl,
+            }),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
@@ -114,10 +120,12 @@ class ApiService {
   // Check user approval status
   Future<Map<String, dynamic>> checkApprovalStatus(String email) async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/api/auth/approval-status?email=$email'),
-        headers: _getHeaders(includeAuth: false),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl/api/auth/approval-status?email=$email'),
+            headers: _getHeaders(includeAuth: false),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -132,10 +140,12 @@ class ApiService {
   // Admin: Get pending users
   Future<List<Map<String, dynamic>>> getPendingUsers() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/api/admin/pending-users'),
-        headers: _getHeaders(),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl/api/admin/pending-users'),
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -152,11 +162,13 @@ class ApiService {
   // Admin: Approve user
   Future<Map<String, dynamic>> approveUser(String userId) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/admin/approve-user'),
-        headers: _getHeaders(),
-        body: jsonEncode({'user_id': userId}),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/api/admin/approve-user'),
+            headers: _getHeaders(),
+            body: jsonEncode({'user_id': userId}),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -171,14 +183,16 @@ class ApiService {
   // Admin: Deny user
   Future<Map<String, dynamic>> denyUser(String userId, {String? reason}) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/admin/deny-user'),
-        headers: _getHeaders(),
-        body: jsonEncode({
-          'user_id': userId,
-          'reason': reason,
-        }),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/api/admin/deny-user'),
+            headers: _getHeaders(),
+            body: jsonEncode({
+              'user_id': userId,
+              'reason': reason,
+            }),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -221,7 +235,8 @@ class ApiService {
         request.fields['new_password'] = newPassword;
       }
 
-      final streamedResponse = await request.send().timeout(AppConstants.apiTimeout);
+      final streamedResponse =
+          await request.send().timeout(AppConstants.apiTimeout);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
@@ -296,7 +311,8 @@ class ApiService {
         request.fields['longitude'] = longitude.toString();
       }
 
-      final streamedResponse = await request.send().timeout(AppConstants.scanTimeout);
+      final streamedResponse =
+          await request.send().timeout(AppConstants.scanTimeout);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
@@ -336,7 +352,6 @@ class ApiService {
         );
       }
 
-
       // Add chemical form fields (API expects individual element fields)
       double au2 = 0.0, cu2 = 0.0, fe2 = 0.0, s2 = 0.0, o2 = 0.0;
       if (chemicalData != null && chemicalData.length >= 5) {
@@ -356,7 +371,8 @@ class ApiService {
         request.fields['fingerprint_id'] = fingerprintId;
       }
 
-      final streamedResponse = await request.send().timeout(AppConstants.scanTimeout);
+      final streamedResponse =
+          await request.send().timeout(AppConstants.scanTimeout);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
@@ -372,6 +388,23 @@ class ApiService {
 
   // Get scans
   Future<List<Scan>> getScans({String? userId, String? location}) async {
+    List<Scan> mapVerificationsToScans(List<dynamic> verifications) {
+      return verifications.map((item) {
+        final row = item as Map<String, dynamic>;
+        final status = (row['status'] ?? '').toString().toLowerCase();
+        return Scan.fromJson({
+          'scan_id': row['id'] ?? row['scan_id'] ?? '',
+          'mineral': row['mineral'] ?? row['predicted_mineral'] ?? '',
+          'predicted_mineral': row['predicted_mineral'] ?? row['mineral'] ?? '',
+          'confidence': row['confidence'] ?? 0.0,
+          'site_id': row['site'] ?? row['location'] ?? '',
+          'timestamp': row['timestamp'],
+          'user_id': row['user_id'] ?? '',
+          'verified': status == 'verified',
+        });
+      }).toList();
+    }
+
     try {
       final queryParams = <String, String>{};
       if (userId != null) queryParams['user_id'] = userId;
@@ -380,18 +413,52 @@ class ApiService {
       final uri = Uri.parse('$baseUrl${AppConstants.scansEndpoint}')
           .replace(queryParameters: queryParams);
 
-      final response = await http.get(
-        uri,
-        headers: _getHeaders(),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .get(
+            uri,
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final scansList = data['scans'] ?? data['data'] ?? [];
-        return (scansList as List).map((scan) => Scan.fromJson(scan)).toList();
+        final scans =
+            (scansList as List).map((scan) => Scan.fromJson(scan)).toList();
+        if (scans.isNotEmpty) {
+          return scans;
+        }
       } else {
-        throw Exception('Failed to get scans: ${response.body}');
+        // continue to fallback endpoint below
       }
+
+      final fallbackParams = <String, String>{
+        if (location != null) 'site': location,
+        'limit': '200',
+      };
+      final fallbackUri = Uri.parse('$baseUrl/verifications')
+          .replace(queryParameters: fallbackParams);
+
+      final fallbackResponse = await http
+          .get(
+            fallbackUri,
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
+
+      if (fallbackResponse.statusCode == 200) {
+        final data = jsonDecode(fallbackResponse.body);
+        final verifications = data['verifications'] ?? data['data'] ?? [];
+        var scans = mapVerificationsToScans(verifications as List<dynamic>);
+        if (userId != null && userId.isNotEmpty) {
+          scans = scans.where((scan) => scan.userId == userId).toList();
+        }
+        return scans;
+      }
+
+      throw Exception(
+        'Failed to get scans: ${response.statusCode} / ${fallbackResponse.statusCode}',
+      );
     } catch (e) {
       throw Exception('Get scans error: $e');
     }
@@ -425,11 +492,13 @@ class ApiService {
         if (longitude != null) 'longitude': longitude,
       };
 
-      final response = await http.post(
-        uri,
-        headers: _getHeaders(),
-        body: jsonEncode(body),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .post(
+            uri,
+            headers: _getHeaders(),
+            body: jsonEncode(body),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
@@ -445,10 +514,12 @@ class ApiService {
   // Get metrics
   Future<Map<String, dynamic>> getMetrics() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl${AppConstants.metricsEndpoint}'),
-        headers: _getHeaders(),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl${AppConstants.metricsEndpoint}'),
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -463,10 +534,12 @@ class ApiService {
   // Get users
   Future<List<User>> getUsers() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl${AppConstants.usersEndpoint}'),
-        headers: _getHeaders(),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl${AppConstants.usersEndpoint}'),
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -506,7 +579,8 @@ class ApiService {
         request.fields['organization'] = organization.trim();
       }
 
-      final streamedResponse = await request.send().timeout(AppConstants.apiTimeout);
+      final streamedResponse =
+          await request.send().timeout(AppConstants.apiTimeout);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -551,7 +625,8 @@ class ApiService {
         request.fields['password'] = password;
       }
 
-      final streamedResponse = await request.send().timeout(AppConstants.apiTimeout);
+      final streamedResponse =
+          await request.send().timeout(AppConstants.apiTimeout);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
@@ -568,10 +643,12 @@ class ApiService {
   // Admin: Delete user
   Future<Map<String, dynamic>> deleteUser(String userId) async {
     try {
-      final response = await http.delete(
-        Uri.parse('$baseUrl${AppConstants.usersEndpoint}/$userId'),
-        headers: _getHeaders(),
-      ).timeout(AppConstants.apiTimeout);
+      final response = await http
+          .delete(
+            Uri.parse('$baseUrl${AppConstants.usersEndpoint}/$userId'),
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -640,11 +717,23 @@ class ApiService {
         request.fields['longitude'] = longitude.toString();
       }
 
-      final streamedResponse = await request.send().timeout(AppConstants.scanTimeout);
+      final streamedResponse =
+          await request.send().timeout(AppConstants.scanTimeout);
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
+      } else if (response.statusCode == 409) {
+        String message =
+            'Duplicate sample ID detected. Please use a new scan ID.';
+        try {
+          final error = jsonDecode(response.body);
+          final detail = error['detail'];
+          if (detail is String && detail.trim().isNotEmpty) {
+            message = detail;
+          }
+        } catch (_) {}
+        throw Exception('DuplicateSampleId: $message');
       } else {
         throw Exception('Fingerprint extraction failed: ${response.body}');
       }
@@ -656,9 +745,11 @@ class ApiService {
   // Health check
   Future<bool> checkHealth() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/health'),
-      ).timeout(const Duration(seconds: 5));
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl/health'),
+          )
+          .timeout(const Duration(seconds: 5));
 
       return response.statusCode == 200;
     } catch (e) {

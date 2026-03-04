@@ -9,8 +9,19 @@ from email.mime.multipart import MIMEMultipart
 from typing import List
 import logging
 import os
+from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+except Exception:
+    load_dotenv = None
 
 logger = logging.getLogger(__name__)
+
+if load_dotenv is not None:
+    env_path = Path(__file__).resolve().parent / ".env"
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path)
 
 # ===========================
 # EMAIL CONFIGURATION
@@ -23,7 +34,7 @@ EMAIL_CONFIG = {
     'SENDER_PASSWORD': os.getenv('SENDER_PASSWORD', 'your_app_password_here'),
     'SMTP_SERVER': os.getenv('SMTP_SERVER', 'smtp.gmail.com'),
     'SMTP_PORT': int(os.getenv('SMTP_PORT', 587)),
-    'ADMIN_EMAIL': os.getenv('ADMIN_EMAIL', 'admin@mineraltrace.com'),
+    'ADMIN_EMAIL': os.getenv('ADMIN_EMAIL', 'beckykanisa@gmail.com'),
 }
 
 # Set to True to enable emails (set False for testing without real email)
@@ -299,6 +310,104 @@ def send_admin_created_account_email(user_name: str, user_email: str) -> bool:
     """
 
     return send_email(user_email, subject, html_content)
+
+
+def send_admin_new_account_notification(
+    user_name: str,
+    user_email: str,
+    created_by: str = "system",
+    approval_status: str = "pending",
+) -> bool:
+    """
+    Send admin notification when a new account is created.
+    """
+    status_label = "✅ Approved" if approval_status == "approved" else "⏳ Pending Approval"
+    subject = f"📌 New Account Created: {user_name}"
+
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #4DD0CE 0%, #2AB8B6 100%);
+                        padding: 28px; color: white; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0;">📌 New MineralTrace Account</h1>
+            </div>
+
+            <div style="padding: 28px; background: #f5f5f5;">
+                <p>A new account has been created in MineralTrace:</p>
+
+                <div style="background: white; padding: 14px; border-radius: 6px; margin: 18px 0;">
+                    <p><strong>Name:</strong> {user_name}</p>
+                    <p><strong>Email:</strong> {user_email}</p>
+                    <p><strong>Created By:</strong> {created_by}</p>
+                    <p><strong>Status:</strong> {status_label}</p>
+                </div>
+
+                <p style="color: #666; font-size: 14px;">
+                    You can manage this user from the admin dashboard at any time.
+                </p>
+            </div>
+
+            <div style="background: #2AB8B6; color: white; padding: 18px; text-align: center; border-radius: 0 0 8px 8px;">
+                <p style="margin: 0;">MineralTrace System | AI-Powered Mineral Traceability</p>
+            </div>
+        </body>
+    </html>
+    """
+
+    return send_email(EMAIL_CONFIG['ADMIN_EMAIL'], subject, html_content)
+
+
+def send_admin_scan_notification(
+    sample_id: str,
+    site: str,
+    mineral: str,
+    predicted_mineral: str,
+    confidence: float,
+    status: str,
+    user_name: str,
+    user_id: str,
+    scanned_at: str,
+) -> bool:
+    """
+    Send admin notification when a new mining scan/fingerprint is stored.
+    """
+    subject = f"⛏️ New Mining Scan Recorded: {sample_id}"
+
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #4DD0CE 0%, #2AB8B6 100%);
+                        padding: 28px; color: white; border-radius: 8px 8px 0 0;">
+                <h1 style="margin: 0;">⛏️ New Mining Site Scan</h1>
+            </div>
+
+            <div style="padding: 28px; background: #f5f5f5;">
+                <p>A new mineral scan has been recorded in MineralTrace:</p>
+
+                <div style="background: white; padding: 14px; border-radius: 6px; margin: 18px 0;">
+                    <p><strong>Sample ID:</strong> {sample_id}</p>
+                    <p><strong>Site:</strong> {site}</p>
+                    <p><strong>Claimed Mineral:</strong> {mineral}</p>
+                    <p><strong>Predicted Mineral:</strong> {predicted_mineral}</p>
+                    <p><strong>Confidence:</strong> {confidence:.4f}</p>
+                    <p><strong>Status:</strong> {status}</p>
+                    <p><strong>Scanned By:</strong> {user_name} ({user_id})</p>
+                    <p><strong>Timestamp (UTC):</strong> {scanned_at}</p>
+                </div>
+
+                <p style="color: #666; font-size: 14px;">
+                    Review scan details and audit logs in the admin dashboard.
+                </p>
+            </div>
+
+            <div style="background: #2AB8B6; color: white; padding: 18px; text-align: center; border-radius: 0 0 8px 8px;">
+                <p style="margin: 0;">MineralTrace System | AI-Powered Mineral Traceability</p>
+            </div>
+        </body>
+    </html>
+    """
+
+    return send_email(EMAIL_CONFIG['ADMIN_EMAIL'], subject, html_content)
 
 
 def send_denial_email(user_name: str, user_email: str, reason: str = "") -> bool:

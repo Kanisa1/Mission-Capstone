@@ -1,0 +1,11 @@
+metric,value
+mineral_total_raw,712
+mineral_total_clean,702
+mineral_train,355
+mineral_val,87
+mineral_test,260
+non_mineral_total_raw,6360
+non_mineral_total_clean,6360
+gate_train_total,710
+gate_val_total,174
+gate_test_total,520
