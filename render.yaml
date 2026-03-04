@@ -23,8 +23,9 @@ services:
       - key: SMTP_PORT
         value: "587"
 
-  - type: static
+  - type: web
     name: mineraltrace-web
+    env: static
     rootDir: webapp
     buildCommand: ""
     staticPublishPath: .
