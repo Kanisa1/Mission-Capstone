@@ -234,7 +234,7 @@ class ProfileManager {
         }
 
         try {
-            const baseUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://127.0.0.1:8000';
+            const baseUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'https://mineraltrace-api.onrender.com';
             const response = await fetch(`${baseUrl}/profile/${this.user.id}`, {
                 method: 'PUT',
                 body: payload

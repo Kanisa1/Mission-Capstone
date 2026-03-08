@@ -1,5 +1,4 @@
-import { API_BASE_URL } from './config.js';
-import { apiService } from './api.js';
+const apiService = globalThis.apiService;
 
 class NotificationManager {
     constructor() {
@@ -64,6 +63,10 @@ class NotificationManager {
     }
 
     async checkForNewNotifications() {
+        if (!apiService) {
+            return;
+        }
+
         try {
             const now = new Date();
             const [users, fingerprints] = await Promise.all([

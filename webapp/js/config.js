@@ -1,4 +1,6 @@
 // API Configuration
+const DEPLOYED_API_BASE_URL = 'https://mineraltrace-api.onrender.com';
+
 const API_BASE_URL = (() => {
     const runtimeOverride = globalThis.__API_BASE_URL__;
     if (typeof runtimeOverride === 'string' && runtimeOverride.trim()) {
@@ -7,7 +9,8 @@ const API_BASE_URL = (() => {
 
     const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
     if (isLocalHost) {
-        return 'http://127.0.0.1:8000';
+        // When previewing the static webapp locally, use the deployed backend by default.
+        return DEPLOYED_API_BASE_URL;
     }
 
     const host = window.location.hostname;
@@ -15,7 +18,7 @@ const API_BASE_URL = (() => {
         return `${window.location.protocol}//${host.replace('-web', '-api')}`;
     }
 
-    return 'https://mineraltrace-api.onrender.com';
+    return DEPLOYED_API_BASE_URL;
 })();
 
 const API_ENDPOINTS = {
@@ -29,6 +32,13 @@ const API_ENDPOINTS = {
 const MINERALS = ['gold', 'chalcopyrite', 'hematite'];
 const SITES = ['Kapoeta_East', 'Central_Equatoria', 'Yei_River'];
 const REFRESH_INTERVAL = 30000; // 30 seconds
+
+// Expose runtime config for both classic scripts and ES modules.
+globalThis.API_BASE_URL = API_BASE_URL;
+globalThis.API_ENDPOINTS = API_ENDPOINTS;
+globalThis.MINERALS = MINERALS;
+globalThis.SITES = SITES;
+globalThis.REFRESH_INTERVAL = REFRESH_INTERVAL;
 
 // Chart.js default configuration
 if (window.Chart?.defaults) {

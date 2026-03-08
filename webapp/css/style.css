@@ -153,7 +153,27 @@ body {
     animation: floatSoft 4s ease-in-out infinite;
 }
 
-.logo i {
+.logo-icon {
+    position: relative;
+    z-index: 1;
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border-radius: 14px;
+    font-size: 30px;
+    color: #d7ecfb;
+    line-height: 2;
+    font-style: normal;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.14);
+    animation: floatSoft 4.8s ease-in-out infinite;
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.18));
+}
+
+
+.logo i:not(.logo-icon) {
     color: var(--primary-light);
     font-size: 24px;
 }
@@ -275,6 +295,39 @@ body {
     object-fit: contain;
     animation: floatSoft 4.8s ease-in-out infinite;
     filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.18));
+}
+
+.intelligence-banner .banner-icon {
+    position: relative;
+    z-index: 1;
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border-radius: 14px;
+    font-size: 30px;
+    color: #d7ecfb;
+    line-height: 1;
+    font-style: normal;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.14);
+    animation: floatSoft 4.8s ease-in-out infinite;
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.18));
+}
+
+.logo-icon::before {
+    display: block;
+    line-height: 2;
+    margin: 0;
+    transform: translate(0, 2px);
+}
+
+.intelligence-banner .banner-icon::before {
+    display: block;
+    line-height: 1;
+    margin: 0;
+    transform: translate(0, 0);
 }
 
 /* ===========================

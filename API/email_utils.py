@@ -37,6 +37,14 @@ EMAIL_CONFIG = {
     'ADMIN_EMAIL': os.getenv('ADMIN_EMAIL', 'beckykanisa@gmail.com'),
 }
 
+WEBAPP_BASE_URL = os.getenv('WEBAPP_BASE_URL', 'https://mineraltrace-web.onrender.com').rstrip('/')
+
+
+def build_webapp_url(path: str = 'index.html') -> str:
+    """Build an absolute webapp URL for email CTAs."""
+    safe_path = (path or 'index.html').lstrip('/')
+    return f"{WEBAPP_BASE_URL}/{safe_path}"
+
 # Set to True to enable emails (set False for testing without real email)
 ENABLE_EMAIL = os.getenv('ENABLE_EMAIL', 'False').lower() == 'true'
 
@@ -153,6 +161,8 @@ def send_admin_approval_notification(new_user_count: int, pending_users: List[di
     
     more_users = f"<p style='color: #666;'>... and {len(pending_users) - 5} more users</p>" if len(pending_users) > 5 else ""
     
+    pending_users_url = build_webapp_url('users.html#pendingApprovalsSection')
+
     html_content = f"""
     <html>
         <body style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
@@ -185,7 +195,7 @@ def send_admin_approval_notification(new_user_count: int, pending_users: List[di
                 {more_users}
                 
                 <p style="margin-top: 30px;">
-                    <a href="http://127.0.0.1:8000/webapp/index.html" 
+                    <a href="{pending_users_url}" 
                        style="background: #4DD0CE; color: white; padding: 12px 30px; 
                               text-decoration: none; border-radius: 5px; display: inline-block;">
                         Review Pending Users
@@ -213,6 +223,8 @@ def send_approval_email(user_name: str, user_email: str) -> bool:
     """
     subject = "✅ Account Approved - Welcome to MineralTrace!"
     
+    dashboard_url = build_webapp_url('index.html')
+
     html_content = f"""
     <html>
         <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -227,7 +239,7 @@ def send_approval_email(user_name: str, user_email: str) -> bool:
                 <p>Great news! Your account has been approved by our administrator.</p>
                 
                 <p style="margin: 30px 0;">
-                    <a href="http://127.0.0.1:8000/webapp/index.html" 
+                    <a href="{dashboard_url}" 
                        style="background: #00B894; color: white; padding: 12px 30px; 
                               text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
                         Login to MineralTrace →
@@ -269,6 +281,8 @@ def send_admin_created_account_email(user_name: str, user_email: str) -> bool:
     """
     subject = "✅ Your MineralTrace Account Has Been Created"
 
+    dashboard_url = build_webapp_url('index.html')
+
     html_content = f"""
     <html>
         <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -290,7 +304,7 @@ def send_admin_created_account_email(user_name: str, user_email: str) -> bool:
                 <p>Your account is ready to use. Please log in with the credentials provided by your administrator.</p>
 
                 <p style="margin: 30px 0;">
-                    <a href="http://127.0.0.1:8000/webapp/index.html" 
+                    <a href="{dashboard_url}" 
                        style="background: #00B894; color: white; padding: 12px 30px; 
                               text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
                         Login to MineralTrace →

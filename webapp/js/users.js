@@ -12,20 +12,10 @@ class UsersPage {
     }
 
     getApiBaseCandidates() {
-        const candidates = [API_BASE_URL];
-
-        if (API_BASE_URL.includes('127.0.0.1')) {
-            candidates.push(API_BASE_URL.replace('127.0.0.1', 'localhost'));
-        }
-
-        if (API_BASE_URL.endsWith(':8000')) {
-            candidates.push(API_BASE_URL.replace(':8000', ':8001'));
-            if (API_BASE_URL.includes('127.0.0.1')) {
-                candidates.push('http://localhost:8001');
-            }
-        }
-
-        return [...new Set(candidates)];
+        const configuredBase = typeof API_BASE_URL === 'string' && API_BASE_URL.trim()
+            ? API_BASE_URL.trim()
+            : 'https://mineraltrace-api.onrender.com';
+        return [configuredBase.replace(/\/$/, '')];
     }
 
     async requestWithFallback(path, options = {}) {

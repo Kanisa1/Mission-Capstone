@@ -19,6 +19,25 @@ class APIService {
         }
     }
 
+    // Public alias used by other modules.
+    async getFingerprints() {
+        return this.loadFingerprints();
+    }
+
+    async getUsers() {
+        try {
+            const response = await fetch(`${this.baseURL}/users`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data.users || [];
+        } catch (error) {
+            console.error('Error loading users:', error);
+            return [];
+        }
+    }
+
     // Load predictions from fingerprints (each fingerprint has prediction data)
     async loadPredictions() {
         try {
@@ -336,3 +355,6 @@ class APIService {
 
 // Export API service instance
 const apiService = new APIService(API_BASE_URL);
+
+// Make service available to module scripts that do not import api.js directly.
+globalThis.apiService = apiService;

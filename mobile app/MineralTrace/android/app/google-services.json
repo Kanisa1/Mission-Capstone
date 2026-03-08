@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "69359034996",
+    "project_id": "mineraltrace-a4d4c",
+    "storage_bucket": "mineraltrace-a4d4c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69359034996:android:da6d5009dbc61ae84ee721",
+        "android_client_info": {
+          "package_name": "com.mineral.MineralTrace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69359034996-miorecfhe4ipiikc7s5hudu547o2jbib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mineral.MineralTrace",
+            "certificate_hash": "2de9425c2befce6eef149dc4659a7d4f346f368e"
+          }
+        },
+        {
+          "client_id": "69359034996-t2re57513upk9lc6pv77936smhvmnofb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfLdYym2PF9ZAGhajDtfB9lOwzXj1Kqa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69359034996-t2re57513upk9lc6pv77936smhvmnofb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

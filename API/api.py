@@ -60,8 +60,8 @@ class RegisterRequest(BaseModel):
     organization: Optional[str] = None
 
 class GoogleSignInRequest(BaseModel):
-    id_token: str
-    access_token: str
+    id_token: Optional[str] = ""
+    access_token: Optional[str] = ""
     name: str
     email: str
     photo_url: Optional[str] = None
@@ -148,6 +148,56 @@ MINERAL_GATE_MODEL_PATH = BASE_DIR / "dataset" / "mineral_gate_model.pt"
 MINERAL_GATE_CONFIG_PATH = BASE_DIR / "dataset" / "mineral_gate_config.json"
 chemical_means = {}
 chemical_overall_mean = None
+
+DEFAULT_CHEM_SCALER_MEAN = np.array(
+    [0.36794582, 0.33860045, 0.9255079, 0.6772009, 0.88036117],
+    dtype=np.float64,
+)
+DEFAULT_CHEM_SCALER_SCALE = np.array(
+    [0.48224651, 0.47323375, 0.80984596, 0.94646751, 1.36603357],
+    dtype=np.float64,
+)
+
+
+def _build_fitted_fallback_scaler() -> StandardScaler:
+    """Create a fitted scaler for inference, using dataset CSV when available."""
+    scaler = StandardScaler()
+
+    chem_rows = []
+    if CHEMICAL_CSV.exists():
+        try:
+            with open(CHEMICAL_CSV, newline="", encoding="utf-8") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    try:
+                        chem_rows.append([
+                            float(row.get("Au", 0.0)),
+                            float(row.get("Cu", 0.0)),
+                            float(row.get("Fe", 0.0)),
+                            float(row.get("S", 0.0)),
+                            float(row.get("O", 0.0)),
+                        ])
+                    except Exception:
+                        continue
+        except Exception:
+            chem_rows = []
+
+    if chem_rows:
+        scaler.fit(np.asarray(chem_rows, dtype=np.float64))
+        return scaler
+
+    scaler.mean_ = DEFAULT_CHEM_SCALER_MEAN.copy()
+    scaler.scale_ = DEFAULT_CHEM_SCALER_SCALE.copy()
+    scaler.var_ = np.square(DEFAULT_CHEM_SCALER_SCALE)
+    scaler.n_features_in_ = 5
+    scaler.n_samples_seen_ = 1
+    return scaler
+
+
+def _validate_scaler_or_raise(scaler: StandardScaler) -> None:
+    """Ensure scaler can transform 5 chemical features before serving requests."""
+    probe = np.array([[0.0, 0.0, 0.0, 0.0, 0.0]], dtype=np.float64)
+    _ = scaler.transform(probe)
 
 def load_chemical_means():
     global chemical_means, chemical_overall_mean
@@ -300,14 +350,20 @@ async def startup_event():
             print(f" Chemical scaler loaded from: {scaler_path}")
         else:
             print(f"  Chemical scaler not found at {scaler_path}")
-            print(f"   Creating default scaler with training data statistics...")
-            chem_scaler = StandardScaler()
-            chem_scaler.mean_ = np.array([0.36794582, 0.33860045, 0.9255079, 0.6772009, 0.88036117])
-            chem_scaler.scale_ = np.array([0.48224651, 0.47323375, 0.80984596, 0.94646751, 1.36603357])
-            print(f" Default scaler initialized")
+            print("   Creating fitted fallback scaler...")
+            chem_scaler = _build_fitted_fallback_scaler()
+
+        _validate_scaler_or_raise(chem_scaler)
+        print(" Chemical scaler validated for inference")
     except Exception as _e:
         print(f" Failed to load/create chemical scaler: {_e}")
-        chem_scaler = StandardScaler()
+        chem_scaler = _build_fitted_fallback_scaler()
+        try:
+            _validate_scaler_or_raise(chem_scaler)
+            print(" Recovered with fitted fallback scaler")
+        except Exception as _scaler_e:
+            print(f" Fallback scaler validation failed: {_scaler_e}")
+            chem_scaler = None
 
     # Image preprocessing
     img_transform = T.Compose([
@@ -1665,7 +1721,12 @@ async def predict(
         ]
 
         chem_raw = np.array([used_chem])
-        chem_normalized = chem_scaler.transform(chem_raw)
+        if chem_scaler is None:
+            raise HTTPException(status_code=500, detail="Chemical scaler is not initialized on server startup")
+        try:
+            chem_normalized = chem_scaler.transform(chem_raw)
+        except Exception as scaler_error:
+            raise HTTPException(status_code=500, detail=f"Chemical scaler is not ready for inference: {scaler_error}")
         chem_tensor = torch.tensor(chem_normalized, dtype=torch.float32).to(DEVICE)
 
         with torch.no_grad():
@@ -2066,7 +2127,12 @@ async def fingerprint(
 
         def run_model(chem_values):
             chem_raw = np.array([chem_values])
-            chem_normalized = chem_scaler.transform(chem_raw)
+            if chem_scaler is None:
+                raise HTTPException(status_code=500, detail="Chemical scaler is not initialized on server startup")
+            try:
+                chem_normalized = chem_scaler.transform(chem_raw)
+            except Exception as scaler_error:
+                raise HTTPException(status_code=500, detail=f"Chemical scaler is not ready for inference: {scaler_error}")
             chem_tensor = torch.tensor(chem_normalized, dtype=torch.float32).to(DEVICE)
             with torch.no_grad():
                 fingerprint_tensor, modalities_used = model.extract_fingerprint(
