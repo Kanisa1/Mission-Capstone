@@ -129,6 +129,10 @@
                     <i class="fas fa-link"></i>
                     Verify Chain
                 </button>
+                <button id="anchorMissingBtn" class="action-btn secondary">
+                    <i class="fas fa-gavel"></i>
+                    Anchor Missing
+                </button>
                 <button class="action-btn primary" onclick="window.location.reload()">
                     <i class="fas fa-sync"></i>
                     Refresh
@@ -171,6 +175,9 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/profile.js"></script>
+    <!-- PDF & Chart Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script type="module">
         import { NotificationManager } from './js/notifications.js';
         window.notificationManager = new NotificationManager();

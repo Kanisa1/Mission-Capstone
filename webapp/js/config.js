@@ -9,8 +9,8 @@ const API_BASE_URL = (() => {
 
     const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
     if (isLocalHost) {
-        // When previewing the static webapp locally, use the deployed backend by default.
-        return DEPLOYED_API_BASE_URL;
+        // Use local API server during development (change port if needed).
+        return 'http://127.0.0.1:8000';
     }
 
     const host = window.location.hostname;

@@ -4,15 +4,17 @@ import json
 import pickle
 import hashlib
 import os
+import time
 from pathlib import Path
 from datetime import datetime
+from threading import Lock
 
 import torch
 import numpy as np
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 from PIL import Image
 import librosa
 import torchvision.transforms as T
@@ -20,6 +22,8 @@ from torchvision import models
 from sklearn.preprocessing import StandardScaler
 from pydantic import BaseModel
 import csv
+from web3 import Web3
+from eth_account import Account
 
 # Email utilities
 try:
@@ -104,6 +108,18 @@ USERS_DB = BASE_DIR / "dataset" / "users.json"
 LOGS_DIR = BASE_DIR / "logs"
 AUDIT_CHAIN_DB = LOGS_DIR / "audit_chain.jsonl"
 
+BLOCKCHAIN_ANCHOR_ENABLED = os.getenv("BLOCKCHAIN_ANCHOR_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+BLOCKCHAIN_RPC_URL = os.getenv("BLOCKCHAIN_RPC_URL", "").strip()
+BLOCKCHAIN_PRIVATE_KEY = os.getenv("BLOCKCHAIN_PRIVATE_KEY", "").strip()
+BLOCKCHAIN_FROM_ADDRESS = os.getenv("BLOCKCHAIN_FROM_ADDRESS", "").strip()
+BLOCKCHAIN_EXPLORER_BASE = os.getenv("BLOCKCHAIN_EXPLORER_BASE", "https://amoy.polygonscan.com/tx/").strip()
+BLOCKCHAIN_ANCHOR_GAS_LIMIT = int(os.getenv("BLOCKCHAIN_ANCHOR_GAS_LIMIT", "100000") or "100000")
+_W3_LOCK = Lock()
+_W3_CLIENT: Optional[Web3] = None
+_AUDIT_CHAIN_LOCK = Lock()
+_NONCE_LOCK = Lock()
+_NEXT_NONCE: Optional[int] = None
+
 # Initialize logging
 logger = ScanEventLogger(LOGS_DIR)
 metrics_calc = MetricsCalculator(fingerprints_file=str(FINGERPRINT_DB))
@@ -129,6 +145,13 @@ MINERAL_GATE_ENTROPY_THRESHOLD = 0.80
 OOD_CONFIDENCE_THRESHOLD = 0.85
 OOD_EMBEDDING_SIM_THRESHOLD = 0.03
 
+AUDIO_OOD_MIN_DURATION_SEC = 0.25
+AUDIO_OOD_MIN_RMS = 0.003
+AUDIO_OOD_MIN_DYNAMIC_STD = 0.003
+AUDIO_OOD_MAX_PEAK = 0.999
+AUDIO_OOD_EMBEDDING_SIM_THRESHOLD = 0.05
+AUDIO_OOD_MIN_REF_COUNT = 5
+
 REID_SAME_EXACT_THRESHOLD = 0.90
 REID_LIKELY_SAME_THRESHOLD = 0.80
 REID_SAME_MINERAL_THRESHOLD = 0.65
@@ -144,6 +167,7 @@ CHEM_EMBED_DIM = 32
 
 CHEMICAL_CSV = BASE_DIR / "dataset" / "chemical.csv"
 MULTIMODAL_CALIBRATION_JSON = BASE_DIR / "dataset" / "multimodal_calibration.json"
+OOD_CONFIG_JSON = BASE_DIR / "dataset" / "ood_config.json"
 MINERAL_GATE_MODEL_PATH = BASE_DIR / "dataset" / "mineral_gate_model.pt"
 MINERAL_GATE_CONFIG_PATH = BASE_DIR / "dataset" / "mineral_gate_config.json"
 chemical_means = {}
@@ -198,6 +222,43 @@ def _validate_scaler_or_raise(scaler: StandardScaler) -> None:
     """Ensure scaler can transform 5 chemical features before serving requests."""
     probe = np.array([[0.0, 0.0, 0.0, 0.0, 0.0]], dtype=np.float64)
     _ = scaler.transform(probe)
+
+
+def load_ood_thresholds_from_config() -> None:
+    """Load OOD thresholds from JSON config when available."""
+    global OOD_CONFIDENCE_THRESHOLD, OOD_EMBEDDING_SIM_THRESHOLD
+    global AUDIO_OOD_MIN_DURATION_SEC, AUDIO_OOD_MIN_RMS, AUDIO_OOD_MIN_DYNAMIC_STD
+    global AUDIO_OOD_MAX_PEAK, AUDIO_OOD_EMBEDDING_SIM_THRESHOLD, AUDIO_OOD_MIN_REF_COUNT
+
+    if not OOD_CONFIG_JSON.exists():
+        print(" OOD config file not found. Using in-code defaults")
+        return
+
+    try:
+        with open(OOD_CONFIG_JSON, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+
+        OOD_CONFIDENCE_THRESHOLD = float(cfg.get("ood_confidence_threshold", OOD_CONFIDENCE_THRESHOLD))
+        OOD_EMBEDDING_SIM_THRESHOLD = float(cfg.get("ood_embedding_similarity_threshold", OOD_EMBEDDING_SIM_THRESHOLD))
+
+        AUDIO_OOD_MIN_DURATION_SEC = float(cfg.get("audio_ood_min_duration_sec", AUDIO_OOD_MIN_DURATION_SEC))
+        AUDIO_OOD_MIN_RMS = float(cfg.get("audio_ood_min_rms", AUDIO_OOD_MIN_RMS))
+        AUDIO_OOD_MIN_DYNAMIC_STD = float(cfg.get("audio_ood_min_dynamic_std", AUDIO_OOD_MIN_DYNAMIC_STD))
+        AUDIO_OOD_MAX_PEAK = float(cfg.get("audio_ood_max_peak", AUDIO_OOD_MAX_PEAK))
+        AUDIO_OOD_EMBEDDING_SIM_THRESHOLD = float(
+            cfg.get("audio_ood_embedding_similarity_threshold", AUDIO_OOD_EMBEDDING_SIM_THRESHOLD)
+        )
+        AUDIO_OOD_MIN_REF_COUNT = int(cfg.get("audio_ood_min_reference_count", AUDIO_OOD_MIN_REF_COUNT))
+
+        print(f" Loaded OOD config from: {OOD_CONFIG_JSON}")
+        print(
+            " OOD thresholds: "
+            f"conf={OOD_CONFIDENCE_THRESHOLD:.3f}, "
+            f"embed_sim={OOD_EMBEDDING_SIM_THRESHOLD:.3f}, "
+            f"audio_embed_sim={AUDIO_OOD_EMBEDDING_SIM_THRESHOLD:.3f}"
+        )
+    except Exception as _e:
+        print(f" Failed to load OOD config: {_e}")
 
 def load_chemical_means():
     global chemical_means, chemical_overall_mean
@@ -394,6 +455,9 @@ async def startup_event():
         multimodal_temperature = 1.0
         print(f" Failed to load multimodal calibration: {_e}")
 
+    # Load tunable OOD thresholds
+    load_ood_thresholds_from_config()
+
     print("Startup complete")
 
     
@@ -431,6 +495,69 @@ def process_audio(file_bytes, sr=16000, n_mfcc=20):
     mfcc = (mfcc - mfcc.mean()) / (mfcc.std() + 1e-8)
 
     return torch.tensor(mfcc, dtype=torch.float32).unsqueeze(0)
+
+
+def analyze_audio_input(file_bytes, sr=16000, n_mfcc=20) -> Tuple[Optional[torch.Tensor], Dict[str, float | bool | str]]:
+    """
+    Process audio into MFCC and compute lightweight OOD-oriented quality metrics.
+    """
+    if file_bytes is None:
+        return None, {
+            "provided": False,
+            "duration_sec": 0.0,
+            "rms": 0.0,
+            "peak": 0.0,
+            "dynamic_std": 0.0,
+            "is_structural_ood": False,
+            "quality_reason": "no_audio",
+        }
+
+    try:
+        y, loaded_sr = librosa.load(io.BytesIO(file_bytes), sr=sr, mono=True)
+    except Exception:
+        return None, {
+            "provided": True,
+            "duration_sec": 0.0,
+            "rms": 0.0,
+            "peak": 0.0,
+            "dynamic_std": 0.0,
+            "is_structural_ood": True,
+            "quality_reason": "audio_decode_failed",
+        }
+
+    duration_sec = float(len(y) / max(1, loaded_sr))
+    rms = float(np.sqrt(np.mean(np.square(y)))) if y.size > 0 else 0.0
+    peak = float(np.max(np.abs(y))) if y.size > 0 else 0.0
+    dynamic_std = float(np.std(y)) if y.size > 0 else 0.0
+
+    structural_ood = False
+    quality_reason = "ok"
+    if duration_sec < AUDIO_OOD_MIN_DURATION_SEC:
+        structural_ood = True
+        quality_reason = "too_short"
+    elif rms < AUDIO_OOD_MIN_RMS:
+        structural_ood = True
+        quality_reason = "too_silent"
+    elif dynamic_std < AUDIO_OOD_MIN_DYNAMIC_STD:
+        structural_ood = True
+        quality_reason = "low_dynamic_range"
+    elif peak >= AUDIO_OOD_MAX_PEAK:
+        structural_ood = True
+        quality_reason = "possible_clipping"
+
+    mfcc = librosa.feature.mfcc(y=y, sr=loaded_sr, n_mfcc=n_mfcc)
+    mfcc = (mfcc - mfcc.mean()) / (mfcc.std() + 1e-8)
+    tensor = torch.tensor(mfcc, dtype=torch.float32).unsqueeze(0)
+
+    return tensor, {
+        "provided": True,
+        "duration_sec": round(duration_sec, 4),
+        "rms": round(rms, 6),
+        "peak": round(peak, 6),
+        "dynamic_std": round(dynamic_std, 6),
+        "is_structural_ood": bool(structural_ood),
+        "quality_reason": quality_reason,
+    }
 
 
 def evaluate_mineral_gate(probs_tensor: torch.Tensor) -> dict:
@@ -634,6 +761,55 @@ def compute_class_centroids(records: List[dict]) -> Dict[str, List[float]]:
     return centroids
 
 
+def compute_audio_embedding_similarity(
+    query_vector: List[float],
+    records: List[dict],
+) -> Dict[str, float | int]:
+    """
+    Compare query audio embedding against stored audio-enabled references.
+    """
+    query_audio = split_fingerprint_vector(query_vector)["audio"]
+    if query_audio.size == 0 or float(np.linalg.norm(query_audio)) <= 1e-12:
+        return {
+            "max_similarity": 0.0,
+            "mean_similarity": 0.0,
+            "reference_count": 0,
+        }
+
+    sims: List[float] = []
+    for record in records:
+        vector = record.get("fingerprint")
+        if not isinstance(vector, list) or not vector:
+            continue
+
+        has_audio_flag = bool((record.get("modalities_used") or {}).get("audio", False))
+        ref_audio = split_fingerprint_vector(vector)["audio"]
+        if ref_audio.size == 0:
+            continue
+        if float(np.linalg.norm(ref_audio)) <= 1e-12:
+            continue
+
+        # Keep backward compatibility: if modality flags are missing, rely on non-zero audio slice.
+        if not has_audio_flag and "modalities_used" in record:
+            continue
+
+        sim = cosine_similarity(query_audio.tolist(), ref_audio.tolist())
+        sims.append(float(sim))
+
+    if not sims:
+        return {
+            "max_similarity": 0.0,
+            "mean_similarity": 0.0,
+            "reference_count": 0,
+        }
+
+    return {
+        "max_similarity": float(max(sims)),
+        "mean_similarity": float(sum(sims) / len(sims)),
+        "reference_count": int(len(sims)),
+    }
+
+
 def compute_sample_mean_vectors(records: List[dict], target_mineral: Optional[str] = None) -> Dict[str, List[float]]:
     grouped: Dict[str, List[np.ndarray]] = {}
     target = (target_mineral or "").strip().lower()
@@ -727,6 +903,17 @@ def load_audit_chain() -> List[dict]:
     return records
 
 
+def save_audit_chain(records: List[dict]) -> None:
+    """
+    Persist blockchain-style audit blocks as JSONL.
+    """
+    AUDIT_CHAIN_DB.parent.mkdir(parents=True, exist_ok=True)
+    with _AUDIT_CHAIN_LOCK:
+        with open(AUDIT_CHAIN_DB, "w", encoding="utf-8") as f:
+            for record in records:
+                f.write(json.dumps(record) + "\n")
+
+
 def compute_audit_hash(block_payload: dict) -> str:
     canonical = json.dumps(block_payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
@@ -768,6 +955,9 @@ def append_audit_event(
         "hash": block_hash,
     }
 
+    anchor_result = anchor_audit_block_hash(block)
+    block.update(anchor_result)
+
     AUDIT_CHAIN_DB.parent.mkdir(parents=True, exist_ok=True)
     with open(AUDIT_CHAIN_DB, "a", encoding="utf-8") as f:
         f.write(json.dumps(block) + "\n")
@@ -795,6 +985,242 @@ def record_audit_event(
         )
     except Exception as audit_error:
         logger.log_error(audit_error, {"endpoint": "audit_chain_append", "action": action})
+
+
+def _get_blockchain_client() -> Web3:
+    global _W3_CLIENT
+
+    if _W3_CLIENT is not None:
+        return _W3_CLIENT
+
+    if not BLOCKCHAIN_RPC_URL:
+        raise ValueError("Missing BLOCKCHAIN_RPC_URL")
+
+    with _W3_LOCK:
+        if _W3_CLIENT is None:
+            client = Web3(Web3.HTTPProvider(BLOCKCHAIN_RPC_URL, request_kwargs={"timeout": 30}))
+            if not client.is_connected():
+                raise RuntimeError("Could not connect to blockchain RPC provider")
+            _W3_CLIENT = client
+
+    return _W3_CLIENT
+
+
+def _reset_cached_nonce() -> None:
+    global _NEXT_NONCE
+    with _NONCE_LOCK:
+        _NEXT_NONCE = None
+
+
+def _reserve_next_nonce(w3: Web3, sender: str) -> int:
+    global _NEXT_NONCE
+
+    with _NONCE_LOCK:
+        pending_nonce = int(w3.eth.get_transaction_count(sender, "pending"))
+        if _NEXT_NONCE is None or _NEXT_NONCE < pending_nonce:
+            _NEXT_NONCE = pending_nonce
+
+        nonce = _NEXT_NONCE
+        _NEXT_NONCE += 1
+        return nonce
+
+
+def _is_retryable_nonce_error(exc: Exception) -> bool:
+    message = str(exc).lower()
+    return (
+        "nonce too low" in message
+        or "could not replace existing tx" in message
+        or "replacement transaction underpriced" in message
+        or "already known" in message
+    )
+
+
+def anchor_audit_block_hash(block: Dict[str, Any], include_bootstrap: bool = False) -> Dict[str, Any]:
+    """
+    Optionally anchor the audit block hash on-chain and return metadata.
+    This never raises; failures are returned as status fields.
+    """
+    default_result = {
+        "anchor_enabled": BLOCKCHAIN_ANCHOR_ENABLED,
+        "anchor_status": "disabled",
+        "anchor_tx_hash": None,
+        "anchor_chain_id": None,
+        "anchor_explorer_url": None,
+        "anchor_error": None,
+    }
+
+    if not BLOCKCHAIN_ANCHOR_ENABLED:
+        return default_result
+
+    source = str(block.get("source") or "").strip().lower()
+    if source.startswith("bootstrap") and not include_bootstrap:
+        return {
+            "anchor_enabled": True,
+            "anchor_status": "skipped_bootstrap",
+            "anchor_tx_hash": None,
+            "anchor_chain_id": None,
+            "anchor_explorer_url": None,
+            "anchor_error": None,
+        }
+
+    try:
+        private_key = BLOCKCHAIN_PRIVATE_KEY
+        configured_from = BLOCKCHAIN_FROM_ADDRESS
+        if not private_key:
+            raise ValueError("Missing BLOCKCHAIN_PRIVATE_KEY")
+        if not configured_from:
+            raise ValueError("Missing BLOCKCHAIN_FROM_ADDRESS")
+
+        w3 = _get_blockchain_client()
+        sender = Account.from_key(private_key).address
+        if sender.lower() != configured_from.lower():
+            raise ValueError("BLOCKCHAIN_FROM_ADDRESS does not match private key")
+
+        block_index = block.get("block_index")
+        block_hash = str(block.get("hash") or "")
+        block_timestamp = str(block.get("timestamp") or "")
+        payload_text = f"audit-block|{block_index}|{block_hash}|{block_timestamp}"
+        payload_hex = "0x" + payload_text.encode("utf-8").hex()
+
+        chain_id = int(w3.eth.chain_id)
+        last_error: Optional[Exception] = None
+
+        for attempt in range(2):
+            try:
+                nonce = _reserve_next_nonce(w3, sender)
+                gas_price = int(w3.eth.gas_price)
+                tx = {
+                    "chainId": chain_id,
+                    "nonce": nonce,
+                    "to": sender,
+                    "value": 0,
+                    "gas": int(BLOCKCHAIN_ANCHOR_GAS_LIMIT),
+                    "gasPrice": gas_price,
+                    "data": payload_hex,
+                }
+
+                signed = w3.eth.account.sign_transaction(tx, private_key=private_key)
+                tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction).hex()
+                return {
+                    "anchor_enabled": True,
+                    "anchor_status": "submitted",
+                    "anchor_tx_hash": tx_hash,
+                    "anchor_chain_id": chain_id,
+                    "anchor_explorer_url": f"{BLOCKCHAIN_EXPLORER_BASE}{tx_hash}",
+                    "anchor_error": None,
+                }
+            except Exception as exc:
+                last_error = exc
+                if attempt == 0 and _is_retryable_nonce_error(exc):
+                    _reset_cached_nonce()
+                    time.sleep(0.4)
+                    continue
+                raise
+
+        raise last_error if last_error is not None else RuntimeError("Unknown blockchain anchor failure")
+    except Exception as exc:
+        return {
+            "anchor_enabled": True,
+            "anchor_status": "failed",
+            "anchor_tx_hash": None,
+            "anchor_chain_id": None,
+            "anchor_explorer_url": None,
+            "anchor_error": str(exc),
+        }
+
+
+@app.post("/audit-trail/anchor-missing")
+async def anchor_missing_audit_entries(
+    limit: int = 25,
+    include_bootstrap: bool = False,
+    retry_failed: bool = True,
+):
+    """
+    Anchor missing audit events to the configured blockchain in controlled batches.
+    """
+    try:
+        records = load_audit_chain()
+        if not records:
+            return {
+                "status": "success",
+                "message": "No audit records found",
+                "processed": 0,
+                "submitted": 0,
+                "failed": 0,
+                "skipped": 0,
+                "remaining": 0,
+                "updated_blocks": [],
+            }
+
+        requested_limit = max(1, int(limit or 25))
+        batch_limit = min(requested_limit, 100)
+
+        candidate_indices: List[int] = []
+        for idx, block in enumerate(records):
+            tx_hash = str(block.get("anchor_tx_hash") or "").strip()
+            if tx_hash:
+                continue
+
+            source = str(block.get("source") or "").strip().lower()
+            if source.startswith("bootstrap") and not include_bootstrap:
+                continue
+
+            anchor_status = str(block.get("anchor_status") or "").strip().lower()
+            if anchor_status == "failed" and not retry_failed:
+                continue
+
+            candidate_indices.append(idx)
+
+        target_indices = candidate_indices[:batch_limit]
+        submitted = 0
+        failed = 0
+        skipped = 0
+        updated_blocks: List[Dict[str, Any]] = []
+
+        for idx in target_indices:
+            block = records[idx]
+            anchor_result = anchor_audit_block_hash(block, include_bootstrap=include_bootstrap)
+            block.update(anchor_result)
+
+            status = str(anchor_result.get("anchor_status") or "").strip().lower()
+            if status == "submitted":
+                submitted += 1
+            elif status.startswith("skipped"):
+                skipped += 1
+            else:
+                failed += 1
+
+            updated_blocks.append({
+                "block_index": block.get("block_index"),
+                "anchor_status": block.get("anchor_status"),
+                "anchor_tx_hash": block.get("anchor_tx_hash"),
+                "anchor_error": block.get("anchor_error"),
+            })
+
+            # Basic pacing to reduce RPC throttling risk on public endpoints.
+            time.sleep(0.2)
+
+        if target_indices:
+            save_audit_chain(records)
+
+        remaining = max(0, len(candidate_indices) - len(target_indices))
+        return {
+            "status": "success",
+            "processed": len(target_indices),
+            "submitted": submitted,
+            "failed": failed,
+            "skipped": skipped,
+            "remaining": remaining,
+            "batch_limit": batch_limit,
+            "total_candidates": len(candidate_indices),
+            "include_bootstrap": include_bootstrap,
+            "retry_failed": retry_failed,
+            "last_updated": datetime.utcnow().isoformat(),
+            "updated_blocks": updated_blocks,
+        }
+    except Exception as e:
+        logger.log_error(e, {"endpoint": "/audit-trail/anchor-missing"})
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def verify_audit_chain(records: List[dict]) -> Dict[str, Any]:
@@ -1658,7 +2084,13 @@ async def predict(
         audio_bytes = await audio.read() if audio else None
 
         img = process_image(image_bytes)
-        aud = process_audio(audio_bytes)
+        aud, audio_quality = analyze_audio_input(audio_bytes)
+
+        if img is None and aud is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Could not decode any valid modality from inputs (image/audio)."
+            )
 
         if img is not None:
             img = img.to(DEVICE)
@@ -1758,9 +2190,25 @@ async def predict(
         max_embedding_similarity = max(centroid_similarities.values()) if centroid_similarities else 0.0
         predicted_centroid_similarity = centroid_similarities.get(predicted_mineral.lower(), 0.0)
 
+        audio_embed_metrics = compute_audio_embedding_similarity(fingerprint_vector, records) if aud is not None else {
+            "max_similarity": 0.0,
+            "mean_similarity": 0.0,
+            "reference_count": 0,
+        }
+        audio_max_similarity = float(audio_embed_metrics["max_similarity"])
+        audio_ref_count = int(audio_embed_metrics["reference_count"])
+        audio_quality_ood = bool(audio_quality.get("is_structural_ood", False)) if aud is not None else False
+        audio_similarity_ood = (
+            aud is not None and
+            audio_ref_count >= AUDIO_OOD_MIN_REF_COUNT and
+            audio_max_similarity < AUDIO_OOD_EMBEDDING_SIM_THRESHOLD
+        )
+        audio_ood = bool(audio_quality_ood or audio_similarity_ood)
+
         is_ood = (
             float(confidence) < OOD_CONFIDENCE_THRESHOLD or
-            float(max_embedding_similarity) < OOD_EMBEDDING_SIM_THRESHOLD
+            float(max_embedding_similarity) < OOD_EMBEDDING_SIM_THRESHOLD or
+            audio_ood
         )
         ood_status = "unknown" if is_ood else "known"
 
@@ -1771,6 +2219,9 @@ async def predict(
         )
 
         if is_ood:
+            rejection_reason = "Input rejected as unknown/non-mineral-like by OOD rules."
+            if audio_ood:
+                rejection_reason = "Input rejected by audio OOD checks (out-of-domain or low-quality audio)."
             return {
                 "is_mineral": False,
                 "predicted_mineral": "unknown",
@@ -1791,8 +2242,17 @@ async def predict(
                     "margin": gate["margin"],
                     "normalized_entropy": gate["normalized_entropy"],
                     "max_embedding_similarity": round(float(max_embedding_similarity), 4),
+                    "audio_ood": audio_ood,
+                    "audio_quality_ood": audio_quality_ood,
+                    "audio_similarity_ood": audio_similarity_ood,
+                    "audio_embedding_similarity": round(float(audio_max_similarity), 4),
+                    "audio_reference_count": audio_ref_count,
                 },
-                "rejection_reason": "Input rejected as unknown/non-mineral-like by OOD rules.",
+                "audio_ood": audio_ood,
+                "audio_quality": audio_quality,
+                "audio_embedding_similarity": round(float(audio_max_similarity), 4),
+                "audio_reference_count": audio_ref_count,
+                "rejection_reason": rejection_reason,
                 "modalities_used": modalities_used,
                 "chemical_used": {
                     "Au": used_chem[0],
@@ -1858,6 +2318,10 @@ async def predict(
             "matched_sample_id": best_sample_id,
             "reid_status": reid_info["status"] if best_sample_id else "no_reference_sample",
             "gate_confidence": gate_confidence,
+            "audio_ood": audio_ood,
+            "audio_quality": audio_quality,
+            "audio_embedding_similarity": round(float(audio_max_similarity), 4),
+            "audio_reference_count": audio_ref_count,
             "modalities_used": modalities_used,
             "chemical_used": {
                 "Au": used_chem[0],
@@ -2112,7 +2576,21 @@ async def fingerprint(
         audio_bytes = await audio.read() if audio else None
 
         img = process_image(image_bytes)
-        aud = process_audio(audio_bytes)
+        aud, audio_quality = analyze_audio_input(audio_bytes)
+
+        if img is None and aud is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Could not decode any valid modality from inputs (image/audio)."
+            )
+
+        if aud is not None:
+            # Enforce same audio OOD policy at storage time to keep DB clean.
+            if bool(audio_quality.get("is_structural_ood", False)):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Audio rejected by quality checks: {audio_quality.get('quality_reason', 'invalid_audio')}"
+                )
         
         if img is not None:
             img = img.to(DEVICE)
@@ -2170,6 +2648,23 @@ async def fingerprint(
         predicted_mineral = MINERAL_LABELS[pred]
 
         records = load_fingerprints()
+
+        if aud is not None:
+            audio_embed_metrics = compute_audio_embedding_similarity(fingerprint_vector, records)
+            audio_max_similarity = float(audio_embed_metrics.get("max_similarity", 0.0))
+            audio_ref_count = int(audio_embed_metrics.get("reference_count", 0))
+            if (
+                audio_ref_count >= AUDIO_OOD_MIN_REF_COUNT and
+                audio_max_similarity < AUDIO_OOD_EMBEDDING_SIM_THRESHOLD
+            ):
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        "Audio rejected as out-of-domain by embedding similarity "
+                        f"(sim={audio_max_similarity:.4f}, refs={audio_ref_count})."
+                    ),
+                )
+
         duplicate_match = find_similar_fingerprint(
             query_vector=fingerprint_vector,
             records=records,
@@ -2223,6 +2718,7 @@ async def fingerprint(
                 "S": S,
                 "O": O
             },
+            "audio_quality": audio_quality,
             "modalities_used": modalities_used,
             "fingerprint_dim": len(fingerprint_vector),
             "fingerprint": fingerprint_vector,
@@ -2795,6 +3291,7 @@ async def root():
             "GET /stats": "Get dashboard statistics",
             "GET /audit-trail/chain": "Get blockchain-backed audit trail",
             "POST /audit-trail/backfill": "Backfill blockchain audit trail from existing records",
+            "POST /audit-trail/anchor-missing": "Anchor missing audit blocks to chain in controlled batches",
             "GET /analytics/realtime": "Get live analytics payload for dashboard charts",
             "GET /metrics": "Get model evaluation metrics",
             "GET /health": "Health check endpoint",

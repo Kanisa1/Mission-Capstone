@@ -231,6 +231,44 @@ Notes:
 </script>
 ```
 
+### Optional: Public Blockchain Hash Anchoring (Polygon)
+
+This project can optionally anchor record/file hashes to a public blockchain
+as a side-layer proof mechanism. This does not alter your core model logic.
+
+#### A) One-time setup (testnet first)
+
+1. Copy `API/.env.example` to `API/.env`.
+2. In `API/.env`, set:
+   - `BLOCKCHAIN_ANCHOR_ENABLED=true`
+   - `BLOCKCHAIN_RPC_URL=<your Polygon Amoy RPC URL>`
+   - `BLOCKCHAIN_PRIVATE_KEY=<wallet private key>`
+   - `BLOCKCHAIN_FROM_ADDRESS=<wallet address>`
+3. Install API dependencies:
+
+```bash
+cd API
+pip install -r requirements.txt
+```
+
+#### B) Send one test anchor transaction
+
+```bash
+cd API
+python blockchain_anchor_test.py --message "mission-capstone-test-anchor"
+```
+
+Expected output includes:
+- `anchored_sha256`
+- `tx_hash`
+- `explorer` URL (Polygonscan link)
+
+#### C) Important notes
+
+- Start on Polygon Amoy testnet (free faucet gas), then switch to Polygon mainnet.
+- Never commit `API/.env` or private keys.
+- The script stores only a SHA-256 digest payload on-chain, not raw sensitive files.
+
 ### Phase 1: Development (Current)
 - ✅ ML model training and validation
 - ✅ FAST API development

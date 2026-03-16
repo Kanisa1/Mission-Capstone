@@ -5,6 +5,7 @@ import '../../config/constants.dart';
 import '../../services/api_service.dart';
 import '../../services/storage_service.dart';
 import '../../models/scan.dart';
+import '../../widgets/scan_details_bottom_sheet.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -379,134 +380,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.7,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
-          child: Column(
-            children: [
-              // Handle
-              Container(
-                margin: const EdgeInsets.only(top: 12),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppTheme.textLight,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-
-              // Content
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Scan Details',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-
-                      _buildDetailItem('Mineral', scan.mineral),
-                      _buildDetailItem('Confidence', scan.confidencePercent),
-                      _buildDetailItem(
-                          'Location', scan.location.replaceAll('_', ' ')),
-                      _buildDetailItem(
-                        'Date',
-                        DateFormat('MMM dd, yyyy • HH:mm:ss')
-                            .format(scan.timestamp),
-                      ),
-                      _buildDetailItem('Scan ID', scan.scanId),
-                      _buildDetailItem(
-                        'Verified',
-                        scan.verified ? 'Yes' : 'No',
-                        valueColor: scan.verified
-                            ? AppTheme.successColor
-                            : AppTheme.textSecondary,
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      // Actions
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () {
-                                // TODO: Export scan
-                              },
-                              icon: const Icon(Icons.download_outlined),
-                              label: const Text('Export'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppTheme.primaryColor,
-                                side: const BorderSide(
-                                    color: AppTheme.primaryColor),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 14),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                // TODO: Share scan
-                              },
-                              icon: const Icon(Icons.share_outlined),
-                              label: const Text('Share'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppTheme.primaryColor,
-                                foregroundColor: Colors.white,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 14),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildDetailItem(String label, String value, {Color? valueColor}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppTheme.textSecondary,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: valueColor ?? AppTheme.textPrimary,
-            ),
-          ),
-        ],
-      ),
+      builder: (context) => ScanDetailsBottomSheet(scan: scan),
     );
   }
 }
