@@ -13,8 +13,11 @@ The solution includes a mobile application built with Flutter, a REST API backen
 
 ## 🔗 GitHub Repository
 
-**Repository Link**: [https://github.com/Kanisa1/Mission-Capstone.git](https://github.com/Kanisa1/Mission-Capstone.git)
-**Video Link**: [https://drive.google.com/drive/folders/1KC0v2hzOp7aRtW1xYXqLRPu3endTTd_o?usp=drive_link](https://drive.google.com/drive/folders/1KC0v2hzOp7aRtW1xYXqLRPu3endTTd_o?usp=drive_link)
+**Deployed web app**:  [Admin dashboard on Render](https://mineraltrace-web.onrender.com/)
+
+**Deployed FastAPI**:  [FastAPI on Render](https://mineraltrace-api.onrender.com/docs)
+
+**Video Link**: [Demo video](https://drive.google.com/drive/folders/1KC0v2hzOp7aRtW1xYXqLRPu3endTTd_o?usp=drive_link)
 
 ---
 
