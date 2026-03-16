@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/curved_app_bar.dart';
+import '../../widgets/chat_assistant_button.dart';
 import '../home/home_screen.dart';
 import '../scan/scan_screen.dart';
 import '../history/history_screen.dart';
@@ -49,6 +50,14 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Map screen index to context for the chat assistant
+    final contextMap = {
+      0: 'general',
+      1: 'scanning',
+      2: 'results',
+      3: 'general',
+    };
+
     return Scaffold(
       appBar: CurvedAppBar(
         title: 'MineralTrace',
@@ -60,6 +69,9 @@ class _MainScreenState extends State<MainScreen>
           setState(() => _currentIndex = index);
         },
         children: _screens,
+      ),
+      floatingActionButton: ChatAssistantButton(
+        currentContext: contextMap[_currentIndex] ?? 'general',
       ),
       bottomNavigationBar: NavigationBar(
         backgroundColor: Colors.white,
@@ -100,3 +112,4 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 }
+

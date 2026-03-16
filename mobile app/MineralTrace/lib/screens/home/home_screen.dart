@@ -11,7 +11,7 @@ import '../../services/storage_service.dart';
 import '../../widgets/home_header.dart';
 import '../../widgets/section_header.dart';
 import '../../widgets/stat_card.dart';
-import '../../widgets/mineral_card.dart';
+import '../../widgets/minerals_carousel.dart';
 import '../../widgets/map_embed_widget.dart';
 import '../profile/notifications_screen.dart';
 import '../profile/profile_screen.dart';
@@ -246,12 +246,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                          height: 200,
+                          height: 260,
                           child: GridView.count(
                             crossAxisCount: 2,
                             mainAxisSpacing: AppTheme.spacingMd,
                             crossAxisSpacing: AppTheme.spacingMd,
-                            childAspectRatio: 1.6,
+                            childAspectRatio: 1.45,
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             StatCard(
@@ -292,59 +292,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               // Featured Minerals Section
-              if (_recentScans.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppTheme.spacingLg,
-                        ),
-                        child: SectionHeaderWidget(
-                          title: 'Recent Scans',
-                          subtitle: 'Your latest mineral identifications',
-                          actionLabel: 'View All',
-                          onActionTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: AppTheme.spacingMd),
-                      SizedBox(
-                        height: 280,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppTheme.spacingLg,
-                          ),
-                          itemCount: math.min(3, _recentScans.length),
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(width: AppTheme.spacingMd),
-                          itemBuilder: (context, index) {
-                            final scan = _recentScans[index];
-                            return SizedBox(
-                              width: 240,
-                              child: MineralCard(
-                                name: scan.mineral,
-                                image: '',
-                                confidence:
-                                    scan.confidencePercent.replaceAll('%', ''),
-                                location: scan.location.isEmpty ? 'Unknown location' : scan.location,
-                                status: scan.verified ? 'Verified' : 'Pending',
-                                onTap: () {},
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+              // Accepted Minerals Carousel
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const MineralsCarouselWidget(),
+                  ],
                 ),
+              ),
 
               const SliverToBoxAdapter(
                 child: SizedBox(height: AppTheme.spacingLg),

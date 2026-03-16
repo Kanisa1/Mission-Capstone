@@ -102,4 +102,72 @@ class _StatCardState extends State<StatCard> with SingleTickerProviderStateMixin
                       widget.label,
                       style: TextStyle(
                         fontSize: 11,
- 
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.textSecondary,
+                        letterSpacing: 0.3,
+                        height: 1.2,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (widget.icon != null)
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            accentColor.withValues(alpha: 0.15),
+                            accentColor.withValues(alpha: 0.08),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        widget.icon,
+                        color: accentColor,
+                        size: 14,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: AppTheme.spacingSm),
+              
+              // Value
+              Text(
+                widget.value,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: accentColor,
+                  letterSpacing: -0.8,
+                  height: 1.0,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              
+              // Subtitle
+              if (widget.subtitle != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  widget.subtitle!,
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.textSecondary,
+                    height: 1.2,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

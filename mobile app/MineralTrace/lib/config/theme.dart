@@ -58,44 +58,71 @@ class AppTheme {
     end: Alignment.bottomRight,
   );
 
-  // Shadows - Modern & Clean
+  // Shadows - Modern & Premium
   static List<BoxShadow> get elevationShadow => [
         BoxShadow(
-          color: primaryColor.withValues(alpha: 0.08),
-          blurRadius: 12,
-          offset: const Offset(0, 4),
+          color: primaryColor.withValues(alpha: 0.10),
+          blurRadius: 16,
+          offset: const Offset(0, 6),
+          spreadRadius: 0,
         ),
       ];
 
   static List<BoxShadow> get softCardShadow => [
         BoxShadow(
-          color: primaryColor.withValues(alpha: 0.06),
-          blurRadius: 16,
-          offset: const Offset(0, 2),
+          color: primaryColor.withValues(alpha: 0.08),
+          blurRadius: 18,
+          offset: const Offset(0, 4),
+          spreadRadius: 0,
         ),
       ];
 
   static List<BoxShadow> get mediumCardShadow => [
         BoxShadow(
-          color: primaryColor.withValues(alpha: 0.10),
-          blurRadius: 22,
-          offset: const Offset(0, 10),
+          color: primaryColor.withValues(alpha: 0.12),
+          blurRadius: 24,
+          offset: const Offset(0, 12),
+          spreadRadius: 0,
+        ),
+        BoxShadow(
+          color: primaryColor.withValues(alpha: 0.04),
+          blurRadius: 44,
+          offset: const Offset(0, 20),
+          spreadRadius: 0,
         ),
       ];
 
   static List<BoxShadow> get heavyCardShadow => [
         BoxShadow(
-          color: primaryColor.withValues(alpha: 0.12),
-          blurRadius: 28,
-          offset: const Offset(0, 12),
+          color: primaryColor.withValues(alpha: 0.15),
+          blurRadius: 32,
+          offset: const Offset(0, 16),
+          spreadRadius: 0,
+        ),
+        BoxShadow(
+          color: primaryColor.withValues(alpha: 0.05),
+          blurRadius: 56,
+          offset: const Offset(0, 28),
+          spreadRadius: 0,
         ),
       ];
 
   static List<BoxShadow> get accentShadow => [
         BoxShadow(
-          color: accentColor.withValues(alpha: 0.25),
+          color: accentColor.withValues(alpha: 0.20),
+          blurRadius: 24,
+          offset: const Offset(0, 10),
+          spreadRadius: 0,
+        ),
+      ];
+
+  // Premium shadows for UI elements
+  static List<BoxShadow> get premiumElevation => [
+        BoxShadow(
+          color: primaryColor.withValues(alpha: 0.09),
           blurRadius: 20,
           offset: const Offset(0, 8),
+          spreadRadius: 0,
         ),
       ];
 

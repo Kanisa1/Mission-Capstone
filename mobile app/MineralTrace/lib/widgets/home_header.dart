@@ -68,19 +68,20 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget>
                       Text(
                         'Welcome back, ${widget.userName}',
                         style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w800,
                           color: AppTheme.textPrimary,
-                          letterSpacing: -0.3,
+                          letterSpacing: -0.5,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(
                         widget.subtitle,
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: AppTheme.textSecondary,
                           fontWeight: FontWeight.w500,
+                          letterSpacing: -0.1,
                         ),
                       ),
                     ],
@@ -92,14 +93,25 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget>
                   color: Colors.transparent,
                   child: Ink(
                     decoration: BoxDecoration(
-                      color: AppTheme.accentColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppTheme.accentColor.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: AppTheme.accentColor.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.accentColor.withValues(alpha: 0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: InkWell(
                       onTap: widget.onNotificationTap,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(14),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         child: Icon(
                           Icons.notifications_outlined,
                           color: AppTheme.primaryColor,
@@ -109,20 +121,31 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget>
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 // Settings button
                 Material(
                   color: Colors.transparent,
                   child: Ink(
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(12),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.10),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.15),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: InkWell(
                       onTap: widget.onSettingsTap,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(14),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         child: Icon(
                           Icons.settings_outlined,
                           color: AppTheme.primaryColor,

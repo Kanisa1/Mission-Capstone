@@ -63,7 +63,20 @@ class _MineralCardState extends State<MineralCard>
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppTheme.radiusXL),
-            boxShadow: AppTheme.softCardShadow,
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.primaryColor.withValues(alpha: 0.15),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: AppTheme.primaryColor.withValues(alpha: 0.04),
+                blurRadius: 48,
+                offset: const Offset(0, 24),
+                spreadRadius: 0,
+              ),
+            ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(AppTheme.radiusXL),
@@ -79,7 +92,16 @@ class _MineralCardState extends State<MineralCard>
                             widget.image,
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) => Container(
-                              color: AppTheme.surfaceLighter,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    AppTheme.primaryColor.withValues(alpha: 0.08),
+                                    AppTheme.secondaryColor.withValues(alpha: 0.05),
+                                  ],
+                                ),
+                              ),
                               child: Center(
                                 child: Icon(
                                   Icons.image_not_supported_outlined,
@@ -89,16 +111,28 @@ class _MineralCardState extends State<MineralCard>
                               ),
                             ),
                           )
-                        : Center(
-                            child: Icon(
-                              Icons.diamond_outlined,
-                              color: AppTheme.textLight,
-                              size: 48,
+                        : Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  AppTheme.primaryColor.withValues(alpha: 0.1),
+                                  AppTheme.secondaryColor.withValues(alpha: 0.06),
+                                ],
+                              ),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.diamond_outlined,
+                                color: AppTheme.textLight,
+                                size: 48,
+                              ),
                             ),
                           ),
                   ),
 
-                  // Gradient overlay
+                  // Enhanced gradient overlay
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -107,10 +141,10 @@ class _MineralCardState extends State<MineralCard>
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withValues(alpha: 0.20),
-                            Colors.black.withValues(alpha: 0.40),
+                            Colors.black.withValues(alpha: 0.15),
+                            Colors.black.withValues(alpha: 0.50),
                           ],
-                          stops: const [0.0, 0.5, 1.0],
+                          stops: const [0.0, 0.55, 1.0],
                         ),
                       ),
                     ),
@@ -119,7 +153,7 @@ class _MineralCardState extends State<MineralCard>
                   // Content
                   Positioned.fill(
                     child: Padding(
-                      padding: const EdgeInsets.all(AppTheme.spacingMd),
+                      padding: const EdgeInsets.all(AppTheme.spacingLg),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,32 +165,52 @@ class _MineralCardState extends State<MineralCard>
                               if (widget.status != null)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: AppTheme.spacingSm,
-                                    vertical: AppTheme.spacingXs,
+                                    horizontal: 12,
+                                    vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.accentColor
-                                        .withValues(alpha: 0.95),
-                                    borderRadius: BorderRadius.circular(999),
+                                    color: Colors.white.withValues(alpha: 0.95),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: 0.15),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
                                   ),
                                   child: Text(
                                     widget.status!,
-                                    style: const TextStyle(
-                                      color: AppTheme.textPrimary,
-                                      fontSize: 11,
+                                    style: TextStyle(
+                                      color: AppTheme.primaryColor,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w700,
-                                      letterSpacing: 0.2,
+                                      letterSpacing: 0.3,
                                     ),
                                   ),
                                 ),
                               if (widget.isLoading)
-                                const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      AppTheme.accentColor,
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.9),
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: 0.15),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        AppTheme.primaryColor,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -166,58 +220,76 @@ class _MineralCardState extends State<MineralCard>
                           // Bottom content
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 widget.name,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -0.3,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.5,
+                                  height: 1.1,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: AppTheme.spacingXs),
+                              const SizedBox(height: 8),
                               if (widget.confidence != null)
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.check_circle,
-                                      color: AppTheme.accentColor,
-                                      size: 14,
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.accentColor.withValues(alpha: 0.25),
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(alpha: 0.3),
+                                      width: 1,
                                     ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      '${widget.confidence}% Confidence',
-                                      style: const TextStyle(
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle,
                                         color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
+                                        size: 14,
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        '${widget.confidence}%',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               if (widget.location != null)
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                    top: AppTheme.spacingXs,
+                                    top: 8,
                                   ),
                                   child: Row(
                                     children: [
                                       const Icon(
                                         Icons.location_on,
-                                        color: AppTheme.accentColor,
+                                        color: Colors.white,
                                         size: 14,
                                       ),
                                       const SizedBox(width: 6),
                                       Expanded(
                                         child: Text(
                                           widget.location!,
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                          style: TextStyle(
+                                            color: Colors.white.withValues(alpha: 0.95),
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
+                                            height: 1.2,
                                           ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,

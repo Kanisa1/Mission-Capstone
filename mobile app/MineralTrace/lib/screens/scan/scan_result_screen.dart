@@ -46,12 +46,23 @@ class ScanResultScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(
+                    color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                    width: 1,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 20,
-                      offset: const Offset(0, 4),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.12),
+                      blurRadius: 24,
+                      offset: const Offset(0, 10),
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: AppTheme.primaryColor.withValues(alpha: 0.04),
+                      blurRadius: 44,
+                      offset: const Offset(0, 20),
+                      spreadRadius: 0,
                     ),
                   ],
                 ),
@@ -61,8 +72,12 @@ class ScanResultScreen extends StatelessWidget {
                       width: 120,
                       height: 120,
                       decoration: BoxDecoration(
-                        color: (isMineral ? AppTheme.successColor : AppTheme.errorColor).withOpacity(0.1),
+                        color: (isMineral ? AppTheme.successColor : AppTheme.errorColor).withOpacity(0.12),
                         shape: BoxShape.circle,
+                        border: Border.all(
+                          color: (isMineral ? AppTheme.successColor : AppTheme.errorColor).withOpacity(0.25),
+                          width: 2,
+                        ),
                       ),
                       child: Icon(
                         isMineral ? Icons.check_circle : Icons.warning_amber_rounded,
@@ -76,9 +91,10 @@ class ScanResultScreen extends StatelessWidget {
                     Text(
                       isMineral ? 'Identification Complete' : 'Non-Mineral Detected',
                       style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w800,
                         color: AppTheme.textPrimary,
+                        letterSpacing: -0.3,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -87,12 +103,20 @@ class ScanResultScreen extends StatelessWidget {
                     
                     // Mineral Name
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                       decoration: BoxDecoration(
-                        color: mineralColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        gradient: LinearGradient(
+                          colors: [
+                            mineralColor.withOpacity(0.12),
+                            mineralColor.withOpacity(0.06),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: mineralColor.withOpacity(0.3),
+                          color: mineralColor.withOpacity(0.2),
+                          width: 1,
                         ),
                       ),
                       child: Text(
@@ -101,8 +125,9 @@ class ScanResultScreen extends StatelessWidget {
                             : 'NOT A MINERAL SAMPLE',
                         style: TextStyle(
                           fontSize: isMineral ? 28 : 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                           color: mineralColor,
+                          letterSpacing: -0.3,
                         ),
                       ),
                     ),
@@ -124,7 +149,8 @@ class ScanResultScreen extends StatelessWidget {
                               ? 'Confidence: ${result.confidencePercent}'
                               : 'Gate confidence: ${result.gateConfidencePercent}',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
                             color: AppTheme.textSecondary,
                           ),
                         ),
@@ -150,95 +176,120 @@ class ScanResultScreen extends StatelessWidget {
               
                 // Probabilities
                 Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                      width: 1,
                     ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      isMineral ? 'Mineral Probabilities' : 'Mineral Likelihoods',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.textPrimary,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.10),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                        spreadRadius: 0,
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    ...result.probabilities.entries.map((entry) {
-                      final percentage = (entry.value * 100);
-                      final color = Color(
-                        AppConstants.mineralColors[entry.key.toLowerCase()] ?? 0xFFCCCCCC,
-                      );
-                      
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  entry.key,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.textPrimary,
-                                  ),
-                                ),
-                                Text(
-                                  '${percentage.toStringAsFixed(1)}%',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: color,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: LinearProgressIndicator(
-                                value: entry.value,
-                                backgroundColor: AppTheme.backgroundColor,
-                                color: color,
-                                minHeight: 8,
-                              ),
-                            ),
-                          ],
+                      BoxShadow(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.03),
+                        blurRadius: 40,
+                        offset: const Offset(0, 16),
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isMineral ? 'Mineral Probabilities' : 'Mineral Likelihoods',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: AppTheme.textPrimary,
+                          letterSpacing: -0.2,
                         ),
-                      );
-                    }).toList(),
-                  ],
+                      ),
+                      const SizedBox(height: 18),
+                      
+                      ...result.probabilities.entries.map((entry) {
+                        final percentage = (entry.value * 100);
+                        final color = Color(
+                          AppConstants.mineralColors[entry.key.toLowerCase()] ?? 0xFFCCCCCC,
+                        );
+                        
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    entry.key,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppTheme.textPrimary,
+                                      letterSpacing: -0.1,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${percentage.toStringAsFixed(1)}%',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: color,
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: LinearProgressIndicator(
+                                  value: entry.value,
+                                  backgroundColor: AppTheme.backgroundColor,
+                                  color: color,
+                                  minHeight: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                  ),
                 ),
-              ),
               ],
               
               const SizedBox(height: 24),
               
               // Details
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                    width: 1,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.10),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: AppTheme.primaryColor.withValues(alpha: 0.03),
+                      blurRadius: 40,
+                      offset: const Offset(0, 16),
+                      spreadRadius: 0,
                     ),
                   ],
                 ),
@@ -249,11 +300,12 @@ class ScanResultScreen extends StatelessWidget {
                       'Scan Details',
                       style: TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                         color: AppTheme.textPrimary,
+                        letterSpacing: -0.2,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 18),
                     
                     _buildDetailRow('Scan ID', result.scanId ?? 'N/A'),
                     _buildDetailRow(
@@ -283,15 +335,26 @@ class ScanResultScreen extends StatelessWidget {
               // Chemical composition used
               if (result.chemicalUsed != null)
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                      width: 1,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.10),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.03),
+                        blurRadius: 40,
+                        offset: const Offset(0, 16),
+                        spreadRadius: 0,
                       ),
                     ],
                   ),
@@ -302,11 +365,12 @@ class ScanResultScreen extends StatelessWidget {
                         'Chemical Composition Used',
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                           color: AppTheme.textPrimary,
+                          letterSpacing: -0.2,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
                       ...['Au', 'Cu', 'Fe', 'S', 'O'].map((el) {
                         final val = result.chemicalUsed![el];
                         return _buildDetailRow(el, val != null ? val.toString() : 'N/A');
@@ -439,6 +503,7 @@ class ScanResultScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
@@ -447,12 +512,18 @@ class ScanResultScreen extends StatelessWidget {
               color: AppTheme.textSecondary,
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.textPrimary,
+          const SizedBox(width: 12),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.textPrimary,
+              ),
             ),
           ),
         ],

@@ -101,17 +101,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
                   decoration: BoxDecoration(
-                    gradient: AppTheme.primaryGradient,
-                    boxShadow: AppTheme.softCardShadow,
+                    color: Colors.white,
                     borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(32),
+                      bottom: Radius.circular(24),
                     ).copyWith(
-                      topLeft: const Radius.circular(24),
-                      topRight: const Radius.circular(24),
+                      topLeft: const Radius.circular(0),
+                      topRight: const Radius.circular(0),
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: const EdgeInsets.all(24),
                     child: Column(
                       children: [
                         // Avatar
@@ -121,12 +120,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                              width: 2,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: AppTheme.primaryColor
-                                    .withValues(alpha: 0.18),
-                                blurRadius: 20,
-                                offset: const Offset(0, 5),
+                                    .withValues(alpha: 0.12),
+                                blurRadius: 16,
+                                offset: const Offset(0, 4),
                               ),
                             ],
                             image: _profilePicturePath != null
@@ -145,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         : 'U',
                                     style: const TextStyle(
                                       fontSize: 40,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w800,
                                       color: AppTheme.primaryColor,
                                     ),
                                   ),
@@ -159,9 +162,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           _userName,
                           style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w800,
+                            color: AppTheme.textPrimary,
+                            letterSpacing: -0.4,
                           ),
                         ),
 
@@ -172,26 +176,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _userEmail,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white.withOpacity(0.9),
+                            color: AppTheme.textSecondary,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
 
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
 
                         // Role badge
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 6),
+                              horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: AppTheme.primaryColor.withValues(alpha: 0.15),
+                              width: 1,
+                            ),
                           ),
                           child: Text(
                             _userRole.toUpperCase(),
                             style: const TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.primaryColor,
+                              letterSpacing: 0.2,
                             ),
                           ),
                         ),

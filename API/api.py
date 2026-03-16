@@ -25,6 +25,12 @@ import csv
 from web3 import Web3
 from eth_account import Account
 
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+
 # Email utilities
 try:
     from .email_utils import (
@@ -457,6 +463,17 @@ async def startup_event():
 
     # Load tunable OOD thresholds
     load_ood_thresholds_from_config()
+
+    # Check OpenAI configuration for chat assistant
+    if OPENAI_AVAILABLE:
+        openai_api_key = os.getenv("OPENAI_API_KEY", "").strip()
+        if openai_api_key:
+            print(" ✓ OpenAI API configured - Chat assistant will use GPT-3.5-turbo")
+        else:
+            print(" ⚠ OpenAI not configured (OPENAI_API_KEY env var missing) - Chat will use knowledge base fallback")
+    else:
+        print(" ⚠ OpenAI client not installed - Chat will use knowledge base fallback")
+        print("   To enable: pip install openai")
 
     print("Startup complete")
 
@@ -936,7 +953,7 @@ def append_audit_event(
     block_index = int(previous.get("block_index", 0)) + 1 if previous else 1
     previous_hash = str(previous.get("hash") or "GENESIS") if previous else "GENESIS"
     ts_value = str(timestamp).strip() if timestamp is not None else ""
-    block_timestamp = ts_value if ts_value else datetime.utcnow().isoformat()
+    block_timestamp = ts_value if ts_value else datetime.now().isoformat()
 
     payload = {
         "block_index": block_index,
@@ -1278,16 +1295,16 @@ def verify_audit_chain(records: List[dict]) -> Dict[str, Any]:
 
 def parse_event_timestamp(value: Optional[str]) -> datetime:
     if not value:
-        return datetime.utcnow()
+        return datetime.now()
     text = str(value).strip()
     if not text:
-        return datetime.utcnow()
+        return datetime.now()
     try:
         if text.endswith("Z"):
             text = text[:-1] + "+00:00"
         return datetime.fromisoformat(text)
     except Exception:
-        return datetime.utcnow()
+        return datetime.now()
 
 
 def bootstrap_audit_chain_from_existing_data(force: bool = False) -> Dict[str, Any]:
@@ -1310,7 +1327,7 @@ def bootstrap_audit_chain_from_existing_data(force: bool = False) -> Dict[str, A
     timeline: List[Dict[str, Any]] = []
 
     for record in load_fingerprints():
-        ts = str(record.get("timestamp") or datetime.utcnow().isoformat())
+        ts = str(record.get("timestamp") or datetime.now().isoformat())
         actor = str(record.get("user_name") or record.get("user_id") or "system")
         timeline.append({
             "timestamp": ts,
@@ -1377,7 +1394,7 @@ def bootstrap_audit_chain_from_existing_data(force: bool = False) -> Dict[str, A
             "backfilled_events": len(timeline),
         },
         source="bootstrap",
-        timestamp=(timeline[0].get("timestamp") if timeline else datetime.utcnow().isoformat()),
+        timestamp=(timeline[0].get("timestamp") if timeline else datetime.now().isoformat()),
     )
 
     inserted = 1
@@ -1915,7 +1932,7 @@ async def approve_user(request: ApprovalRequest):
             if u['id'] == request.user_id:
                 user = u
                 u['approval_status'] = 'approved'
-                u['approved_at'] = datetime.utcnow().isoformat()
+                u['approved_at'] = datetime.now().isoformat()
                 break
         
         if user is None:
@@ -1988,7 +2005,7 @@ async def deny_user(request: DenyRequest):
             if u['id'] == request.user_id:
                 user = u
                 u['approval_status'] = 'denied'
-                u['denied_at'] = datetime.utcnow().isoformat()
+                u['denied_at'] = datetime.now().isoformat()
                 u['denied_reason'] = request.reason or "No reason provided"
                 break
         
@@ -2393,7 +2410,7 @@ async def verify(
                             status=str(match.get("status") or "verified"),
                             user_name=str(match.get("user_name") or "unknown"),
                             user_id=str(match.get("user_id") or "unknown"),
-                            scanned_at=str(match.get("timestamp") or datetime.utcnow().isoformat()),
+                            scanned_at=str(match.get("timestamp") or datetime.now().isoformat()),
                         )
                     )
                     if not admin_notified:
@@ -2462,7 +2479,7 @@ async def verify(
                                 status=str(r.get("status") or "verified"),
                                 user_name=str(r.get("user_name") or "unknown"),
                                 user_id=str(r.get("user_id") or "unknown"),
-                                scanned_at=str(r.get("timestamp") or datetime.utcnow().isoformat()),
+                                scanned_at=str(r.get("timestamp") or datetime.now().isoformat()),
                             )
                         )
                         if not admin_notified:
@@ -2722,7 +2739,7 @@ async def fingerprint(
             "modalities_used": modalities_used,
             "fingerprint_dim": len(fingerprint_vector),
             "fingerprint": fingerprint_vector,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now().isoformat()
         }
         
         # Add GPS coordinates if provided
@@ -3537,6 +3554,302 @@ async def get_metrics():
     
     except Exception as e:
         logger.log_error(e, {"endpoint": "/metrics"})
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# -------------------------------------------------
+# AI Chat Assistant endpoints
+# -------------------------------------------------
+
+# Knowledge base for different features
+CHAT_KNOWLEDGE_BASE = {
+    "scanning": {
+        "title": "How to Perform a Scan",
+        "description": "Guide on using the mineral scanning feature",
+        "tips": [
+            "Make sure the mineral sample is clean and dry",
+            "Take a clear, well-lit photograph from directly above",
+            "Try to include audio from the mineral when possible for better accuracy",
+            "If you have chemical analysis data, include it for more precise results",
+            "The system works best with natural lighting",
+        ],
+        "help": """To perform a scan:
+1. Navigate to the Scanner screen
+2. Take a photo of your mineral sample in good lighting
+3. Optionally record a short audio clip (5-30 seconds)
+4. Enter chemical composition if available (Au, Cu, Fe, S, O percentages)
+5. Press 'Scan' to analyze the sample
+
+The AI will identify the mineral type and provide confidence scores.""",
+    },
+    "results": {
+        "title": "Understanding Scan Results",
+        "description": "How to interpret scan result metrics",
+        "tips": [
+            "Confidence Score shows how certain the AI is (higher is better)",
+            "Look at the probability distribution for all possible minerals",
+            "The Mineral Gate indicates if this is actually a mineral",
+            "OOD Status shows if the sample is known or unknown",
+            "Similarity Score measures how similar this is to stored samples",
+        ],
+        "help": """Scan Result Meanings:
+- Confidence: 0-100% - How certain the AI is about the identification
+- Probabilities: Likelihood of each mineral type
+- Mineral Gate: Passed = mineral detected, Rejected = not a mineral
+- OOD Status: Known = recognized mineral, Unknown = out-of-distribution
+- Similarity Score: How similar to previously scanned samples
+- Re-ID Status: Whether it matches a previously scanned sample
+
+Higher confidence (>80%) results are more reliable.""",
+    },
+    "verification": {
+        "title": "Verifying Samples",
+        "description": "How to verify and authenticate mineral samples",
+        "tips": [
+            "Verification uses the stored fingerprint database",
+            "More detailed scans provide better verification accuracy",
+            "Multiple modalities (image + audio) improve results",
+            "Chemical data helps confirm mineral identity",
+        ],
+        "help": """Verification Process:
+1. After getting a scan result, tap 'Verify'
+2. The system compares to stored mineral fingerprints
+3. It calculates a match score against known samples
+4. Higher match scores indicate better authentication
+
+Verification statuses:
+- Verified: Matches known sample (>80% confidence)
+- Not Verified: Differs from known samples
+- Pending: Needs more analysis""",
+    },
+    "chemical": {
+        "title": "Chemical Composition Data",
+        "description": "How to use and understand chemical data",
+        "tips": [
+            "Chemical elements can be Au (Gold), Cu (Copper), Fe (Iron), S (Sulfur), O (Oxygen)",
+            "Values should be percentages or atomic percentages",
+            "Not all elements may be present in every mineral",
+            "Chemical data helps disambiguate visually similar minerals",
+        ],
+        "help": """Chemical Composition Guide:
+- Au (Aurum/Gold): Often found in gold minerals
+- Cu (Copper): Common in copper minerals and sulfides
+- Fe (Iron): Present in many iron-bearing minerals
+- S (Sulfur): Key component of sulfide minerals
+- O (Oxygen): Found in oxides and silicates
+
+Enter percentages if available from lab analysis.
+If not available, the system uses typical values for the predicted mineral.""",
+    },
+    "general": {
+        "title": "General Help",
+        "description": "General app navigation and features",
+        "tips": [
+            "Use the navigation menu at the bottom to switch screens",
+            "Scan history shows all previous scans on the History tab",
+            "Your profile settings are in the Settings screen",
+            "Admin dashboard available for authorized users",
+        ],
+        "help": """MineralTrace App Overview:
+1. Scanner - Take and analyze mineral scans
+2. Results - View detailed scan information
+3. History - Browse previous scans
+4. Verification - Authenticate samples
+5. Profile - Manage your account
+6. Settings - Configure app preferences
+
+Use the AI Assistant (this chat) anytime for quick help!""",
+    },
+}
+
+class ChatRequest(BaseModel):
+    query: str
+    context: str = "general"
+    conversation_history: Optional[List[Dict[str, str]]] = None
+
+def generate_ai_response(query: str, context: str, conversation_history: Optional[List[dict]] = None) -> str:
+    """
+    Generate an AI response to user queries using OpenAI GPT.
+    Falls back to knowledge base if OpenAI is not available or properly configured.
+    """
+    # Try OpenAI first if available and configured
+    if OPENAI_AVAILABLE:
+        try:
+            openai_api_key = os.getenv("OPENAI_API_KEY", "").strip()
+            if not openai_api_key:
+                raise ValueError("OPENAI_API_KEY environment variable not set")
+            
+            client = OpenAI(api_key=openai_api_key)
+            
+            # Build system prompt with app context
+            system_prompt = """You are a helpful AI assistant for MineralTrace, a mineral identification and fingerprinting app.
+            
+The app helps users:
+1. Scan and identify mineral samples using image, audio, and chemical composition data
+2. Understand mineral scan results, confidence scores, and probabilities
+3. Verify and authenticate mineral samples against a database
+4. Track mineral samples across multiple sites
+
+Guidelines:
+- Keep responses concise and user-friendly (2-3 short paragraphs max)
+- Provide practical, actionable advice
+- Reference specific app features when relevant (Scanner, Results, Verification, History screens)
+- For technical questions, explain in simple terms
+- If unsure, suggest the user contact support or use the in-app help
+
+App Features to Reference:
+- Confidence Score: How sure the AI is about the identification (0-100%)
+- Mineral Gate: Whether the sample was recognized as a mineral
+- OOD Status: If the sample is known or unknown/out-of-distribution
+- Similarity Score: How similar to previously scanned samples
+- Verification: Authenticates samples against stored fingerprints
+- Chemical Data: Au (Gold), Cu (Copper), Fe (Iron), S (Sulfur), O (Oxygen) percentages"""
+            
+            # Build messages list
+            messages = [{"role": "system", "content": system_prompt}]
+            
+            # Add conversation history if available
+            if conversation_history:
+                for msg in conversation_history[-5:]:  # Keep last 5 messages for context
+                    messages.append({
+                        "role": msg.get("role", "user"),
+                        "content": msg.get("content", ""),
+                    })
+            
+            # Add current query
+            messages.append({"role": "user", "content": query})
+            
+            # Call OpenAI API
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=messages,
+                temperature=0.7,
+                max_tokens=500,
+                timeout=30
+            )
+            
+            return response.choices[0].message.content.strip()
+        
+        except Exception as openai_error:
+            # Log OpenAI error but fall back gracefully
+            logger.log_error(openai_error, {
+                "endpoint": "/api/chat/assist",
+                "phase": "openai_call",
+                "fallback": "knowledge_base"
+            })
+    
+    # Fallback to knowledge base approach
+    return generate_kb_response(query, context)
+
+def generate_kb_response(query: str, context: str) -> str:
+    """
+    Generate a response using the knowledge base (fallback if OpenAI is unavailable)
+    """
+    query_lower = query.lower().strip()
+    
+    # Try to match against knowledge base
+    kb = CHAT_KNOWLEDGE_BASE.get(context, CHAT_KNOWLEDGE_BASE.get("general"))
+    
+    # Smart keyword matching
+    scanning_keywords = ["scan", "take", "photo", "image", "camera", "mineral", "analyze"]
+    results_keywords = ["results", "confidence", "score", "probability", "understand", "mean"]
+    verification_keywords = ["verify", "verification", "authenticate", "match", "fingerprint"]
+    chemical_keywords = ["chemical", "composition", "element", "au", "cu", "fe", "s", "o"]
+    
+    score_scanning = sum(1 for kw in scanning_keywords if kw in query_lower)
+    score_results = sum(1 for kw in results_keywords if kw in query_lower)
+    score_verification = sum(1 for kw in verification_keywords if kw in query_lower)
+    score_chemical = sum(1 for kw in chemical_keywords if kw in query_lower)
+    
+    # Pick the most relevant topic
+    scores = {
+        "scanning": score_scanning,
+        "results": score_results,
+        "verification": score_verification,
+        "chemical": score_chemical,
+    }
+    best_topic = max(scores, key=scores.get) if max(scores.values()) > 0 else "general"
+    
+    # Get knowledge base entry
+    entry = CHAT_KNOWLEDGE_BASE.get(best_topic, CHAT_KNOWLEDGE_BASE["general"])
+    
+    # Generate response based on query type
+    if any(word in query_lower for word in ["how", "help", "explain", "what", "tutorial"]):
+        return entry["help"]
+    elif any(word in query_lower for word in ["tip", "advice", "best", "should", "recommend"]):
+        tips_text = "\n".join([f"• {tip}" for tip in entry["tips"]])
+        return f"**{entry['title']} Tips:**\n\n{tips_text}"
+    else:
+        response = f"{entry['help']}\n\n**Quick Tips:**\n"
+        response += "\n".join([f"• {tip}" for tip in entry["tips"][:3]])
+        return response
+
+@app.post("/api/chat/assist")
+async def chat_assist(request: ChatRequest):
+    """
+    AI assistant endpoint for chat queries
+    Uses OpenAI GPT with fallback to knowledge base
+    """
+    try:
+        if not request.query or not request.query.strip():
+            raise HTTPException(status_code=400, detail="Query cannot be empty")
+        
+        response = generate_ai_response(
+            query=request.query,
+            context=request.context,
+            conversation_history=request.conversation_history,
+        )
+        
+        return {
+            "status": "success",
+            "response": response,
+            "context": request.context,
+            "timestamp": datetime.now().isoformat(),
+            "ai_model": "gpt-3.5-turbo" if OPENAI_AVAILABLE else "knowledge_base",
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.log_error(e, {"endpoint": "/api/chat/assist"})
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/chat/tips")
+async def get_contextual_tips(screen: str = "general"):
+    """
+    Get tips for a specific screen/context
+    """
+    try:
+        entry = CHAT_KNOWLEDGE_BASE.get(screen, CHAT_KNOWLEDGE_BASE.get("general"))
+        return {
+            "status": "success",
+            "screen": screen,
+            "title": entry.get("title", "Tips"),
+            "tips": entry.get("tips", []),
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.log_error(e, {"endpoint": "/api/chat/tips"})
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/chat/help/{feature}")
+async def get_feature_help(feature: str):
+    """
+    Get detailed help for a specific feature
+    """
+    try:
+        entry = CHAT_KNOWLEDGE_BASE.get(feature.lower(), CHAT_KNOWLEDGE_BASE.get("general"))
+        return {
+            "status": "success",
+            "feature": feature,
+            "title": entry.get("title", "Help"),
+            "help": entry.get("help", "No help available for this feature."),
+            "description": entry.get("description", ""),
+            "tips": entry.get("tips", []),
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.log_error(e, {"endpoint": "/api/chat/help/{feature}"})
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -688,33 +688,26 @@ class _ScanScreenState extends State<ScanScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [AppTheme.primaryColor, AppTheme.secondaryColor],
-                    ),
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: AppTheme.softCardShadow,
-                  ),
-                  child: const Column(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Scan Mineral',
                         style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800,
+                          color: AppTheme.textPrimary,
+                          letterSpacing: -0.6,
                         ),
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 8),
                       Text(
                         'Capture image, collect context and run AI verification',
                         style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.white,
+                          fontSize: 14,
+                          color: AppTheme.textSecondary,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],

@@ -661,6 +661,29 @@ class ApiService {
     }
   }
 
+  // Clear all scans for a user
+  Future<void> clearAllScans(String? userId) async {
+    try {
+      if (userId == null || userId.isEmpty) {
+        throw Exception('User ID is required to clear scans');
+      }
+
+      final response = await http
+          .delete(
+            Uri.parse('$baseUrl${AppConstants.scansEndpoint}')
+                .replace(queryParameters: {'user_id': userId}),
+            headers: _getHeaders(),
+          )
+          .timeout(AppConstants.apiTimeout);
+
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        throw Exception('Failed to clear scans: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Clear scans error: $e');
+    }
+  }
+
   // Extract and store fingerprint
   Future<Map<String, dynamic>> extractFingerprint({
     required String sampleId,
