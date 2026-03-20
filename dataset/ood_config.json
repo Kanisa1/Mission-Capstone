@@ -4,7 +4,7 @@
   "audio_ood_min_duration_sec": 0.25,
   "audio_ood_min_rms": 0.003,
   "audio_ood_min_dynamic_std": 0.003,
-  "audio_ood_max_peak": 0.999,
+  "audio_ood_max_peak": 1.0,
   "audio_ood_embedding_similarity_threshold": 0.05,
   "audio_ood_min_reference_count": 5
 }
