@@ -27,3 +27,30 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# Large binary files - ML models and media
+*.pt
+*.pkl
+*.pth
+*.h5
+*.ckpt
+
+# Audio and image datasets
+dataset/audio/
+dataset/audio_organized/
+dataset/images/
+notebook_ml/audio/
+notebook_ml/audio_organized/
+notebook_ml/images/
+
+# Large data files
+*.wav
+*.mp3
+*.flac
+*.jpg
+*.jpeg
+*.png
+*.gif
+fingerprints.jsonl
+*.npy
+*.npz
