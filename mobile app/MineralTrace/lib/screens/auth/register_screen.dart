@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../config/constants.dart';
 import '../../config/theme.dart';
 import '../../services/api_service.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -511,7 +512,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const Text('Already have an account? '),
                     TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        // Safe pop: check if we can pop before popping
+                        if (Navigator.of(context).canPop()) {
+                          Navigator.of(context).pop();
+                        } else {
+                          // Fallback: navigate to login if no history
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        }
+                      },
                       child: const Text(
                         'Sign In',
                         style: TextStyle(

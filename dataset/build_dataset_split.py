@@ -6,10 +6,10 @@ IMAGE_DIR = "images"
 AUDIO_DIR = "audio"
 CHEM_FILE = "chemical.csv"
 
-SITES = ["Kapoeta_East", "Central_Equatoria", "Yei_River"]
+SITES = ["Kapoeta_East", "Central_Equatoria", "Yei_River", "Dataset"]
 MINERALS = ["gold", "chalcopyrite", "hematite"]
 
-TRAIN_SITES = ["Kapoeta_East", "Central_Equatoria"]
+TRAIN_SITES = ["Kapoeta_East", "Central_Equatoria", "Dataset"]
 TEST_SITES  = ["Yei_River"]
 
 

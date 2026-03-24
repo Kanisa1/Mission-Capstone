@@ -13,44 +13,16 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>
-    with SingleTickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-
-  late final List<Widget> _screens;
-  late PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _screens = [
-      const HomeScreen(),
-      const HistoryScreen(),
-      ScanScreen(onVerificationCompleted: _switchToHome),
-      const ProfileScreen(),
-    ];
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   void _switchToHome() {
     if (!mounted) return;
     setState(() => _currentIndex = 0);
-    _pageController.animateToPage(
-      0,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Map screen index to context for the chat assistant
     final contextMap = {
       0: 'general',
       1: 'scanning',
@@ -63,12 +35,14 @@ class _MainScreenState extends State<MainScreen>
         title: 'MineralTrace',
         showBackButton: false,
       ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() => _currentIndex = index);
-        },
-        children: _screens,
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          const HomeScreen(),
+          const HistoryScreen(),
+          ScanScreen(onVerificationCompleted: _switchToHome),
+          const ProfileScreen(),
+        ],
       ),
       floatingActionButton: ChatAssistantButton(
         currentContext: contextMap[_currentIndex] ?? 'general',
@@ -80,11 +54,6 @@ class _MainScreenState extends State<MainScreen>
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
           setState(() => _currentIndex = index);
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
         },
         destinations: const [
           NavigationDestination(

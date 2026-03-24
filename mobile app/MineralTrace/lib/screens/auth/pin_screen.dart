@@ -98,10 +98,16 @@ class _PinScreenState extends State<PinScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: widget.isSetup
+            ? null  // No back button during PIN setup
+            : IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
       ),
       body: SafeArea(
         child: Padding(

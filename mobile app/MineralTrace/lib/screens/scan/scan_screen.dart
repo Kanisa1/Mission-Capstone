@@ -37,15 +37,18 @@ class _ScanScreenState extends State<ScanScreen> {
       name: 'African Leadership University',
       latitude: -1.9439,
       longitude: 30.0928,
-      radiusMeters: 3000,
+      radiusMeters: 500,
     ),
     _KnownPlace(
       name: 'Kagarama',
       latitude: -1.9958,
       longitude: 30.1174,
-      radiusMeters: 2500,
+      radiusMeters: 500,
     ),
   ];
+  
+  // GPS accuracy threshold: only use known place match if accuracy is better than this
+  static const double GPS_ACCURACY_THRESHOLD_METERS = 50.0;
 
   File? _imageFile;
   File? _audioFile;
@@ -64,6 +67,11 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   String? _resolveKnownPlaceByCoordinates(Position position) {
+    // Only match known places if GPS accuracy is good
+    if (position.accuracy > GPS_ACCURACY_THRESHOLD_METERS) {
+      return null;
+    }
+    
     for (final place in _knownPlaces) {
       final distance = Geolocator.distanceBetween(
         position.latitude,
@@ -471,6 +479,11 @@ class _ScanScreenState extends State<ScanScreen> {
       );
 
       final locationName = await _resolveLocationName(position);
+      
+      // Check GPS accuracy and warn user if poor
+      final accuracyWarning = position.accuracy > GPS_ACCURACY_THRESHOLD_METERS
+          ? ' (Accuracy: ${position.accuracy.toStringAsFixed(1)}m - may be inaccurate)'
+          : '';
 
       setState(() {
         _currentPosition = position;
@@ -479,10 +492,12 @@ class _ScanScreenState extends State<ScanScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Location detected successfully'),
-          backgroundColor: AppTheme.successColor,
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text('Location detected: ${locationName ?? 'Unknown'}$accuracyWarning'),
+          backgroundColor: position.accuracy > GPS_ACCURACY_THRESHOLD_METERS 
+              ? Colors.orange 
+              : AppTheme.successColor,
+          duration: Duration(seconds: 3),
         ),
       );
     } catch (e) {

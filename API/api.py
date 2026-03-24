@@ -6,8 +6,11 @@ import hashlib
 import os
 import time
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from threading import Lock
+
+# CAT (Central Africa Time) is UTC+2
+CAT = timezone(timedelta(hours=2))
 
 import torch
 import numpy as np
@@ -953,7 +956,7 @@ def append_audit_event(
     block_index = int(previous.get("block_index", 0)) + 1 if previous else 1
     previous_hash = str(previous.get("hash") or "GENESIS") if previous else "GENESIS"
     ts_value = str(timestamp).strip() if timestamp is not None else ""
-    block_timestamp = ts_value if ts_value else datetime.now().isoformat()
+    block_timestamp = ts_value if ts_value else datetime.now(CAT).isoformat()
 
     payload = {
         "block_index": block_index,
@@ -1232,7 +1235,7 @@ async def anchor_missing_audit_entries(
             "total_candidates": len(candidate_indices),
             "include_bootstrap": include_bootstrap,
             "retry_failed": retry_failed,
-            "last_updated": datetime.utcnow().isoformat(),
+            "last_updated": datetime.now(CAT).isoformat(),
             "updated_blocks": updated_blocks,
         }
     except Exception as e:
@@ -1295,16 +1298,16 @@ def verify_audit_chain(records: List[dict]) -> Dict[str, Any]:
 
 def parse_event_timestamp(value: Optional[str]) -> datetime:
     if not value:
-        return datetime.now()
+        return datetime.now(CAT)
     text = str(value).strip()
     if not text:
-        return datetime.now()
+        return datetime.now(CAT)
     try:
         if text.endswith("Z"):
             text = text[:-1] + "+00:00"
         return datetime.fromisoformat(text)
     except Exception:
-        return datetime.now()
+        return datetime.now(CAT)
 
 
 def bootstrap_audit_chain_from_existing_data(force: bool = False) -> Dict[str, Any]:
@@ -1327,7 +1330,7 @@ def bootstrap_audit_chain_from_existing_data(force: bool = False) -> Dict[str, A
     timeline: List[Dict[str, Any]] = []
 
     for record in load_fingerprints():
-        ts = str(record.get("timestamp") or datetime.now().isoformat())
+        ts = str(record.get("timestamp") or datetime.now(CAT).isoformat())
         actor = str(record.get("user_name") or record.get("user_id") or "system")
         timeline.append({
             "timestamp": ts,
@@ -1394,7 +1397,7 @@ def bootstrap_audit_chain_from_existing_data(force: bool = False) -> Dict[str, A
             "backfilled_events": len(timeline),
         },
         source="bootstrap",
-        timestamp=(timeline[0].get("timestamp") if timeline else datetime.now().isoformat()),
+        timestamp=(timeline[0].get("timestamp") if timeline else datetime.now(CAT).isoformat()),
     )
 
     inserted = 1
@@ -1476,7 +1479,7 @@ def load_users():
                 "organization": "South Sudan Mining Authority",
                 "approval_status": "approved",
                 "photo_url": None,
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.now(CAT).isoformat()
             },
             {
                 "id": "2",
@@ -1487,7 +1490,7 @@ def load_users():
                 "organization": "Regulatory Commission",
                 "approval_status": "approved",
                 "photo_url": None,
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.now(CAT).isoformat()
             },
             {
                 "id": "admin",
@@ -1498,7 +1501,7 @@ def load_users():
                 "organization": "MineralTrace HQ",
                 "approval_status": "approved",
                 "photo_url": None,
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.now(CAT).isoformat()
             }
         ]
         save_users(default_users)
@@ -1593,7 +1596,7 @@ async def register(request: RegisterRequest):
             "role": request.role,
             "organization": request.organization,
             "approval_status": "pending",
-            "created_at": datetime.utcnow().isoformat(),
+            "created_at": datetime.now(CAT).isoformat(),
             "photo_url": None
         }
         
@@ -1753,7 +1756,7 @@ async def google_signin(request: GoogleSignInRequest):
                 "role": "operator",  # Default role
                 "organization": None,
                 "approval_status": "pending",
-                "created_at": datetime.utcnow().isoformat(),
+                "created_at": datetime.now(CAT).isoformat(),
                 "photo_url": request.photo_url,
                 "auth_provider": "google"
             }
@@ -1932,7 +1935,7 @@ async def approve_user(request: ApprovalRequest):
             if u['id'] == request.user_id:
                 user = u
                 u['approval_status'] = 'approved'
-                u['approved_at'] = datetime.now().isoformat()
+                u['approved_at'] = datetime.now(CAT).isoformat()
                 break
         
         if user is None:
@@ -2005,7 +2008,7 @@ async def deny_user(request: DenyRequest):
             if u['id'] == request.user_id:
                 user = u
                 u['approval_status'] = 'denied'
-                u['denied_at'] = datetime.now().isoformat()
+                u['denied_at'] = datetime.now(CAT).isoformat()
                 u['denied_reason'] = request.reason or "No reason provided"
                 break
         
@@ -2410,7 +2413,7 @@ async def verify(
                             status=str(match.get("status") or "verified"),
                             user_name=str(match.get("user_name") or "unknown"),
                             user_id=str(match.get("user_id") or "unknown"),
-                            scanned_at=str(match.get("timestamp") or datetime.now().isoformat()),
+                            scanned_at=str(match.get("timestamp") or datetime.now(CAT).isoformat()),
                         )
                     )
                     if not admin_notified:
@@ -2479,7 +2482,7 @@ async def verify(
                                 status=str(r.get("status") or "verified"),
                                 user_name=str(r.get("user_name") or "unknown"),
                                 user_id=str(r.get("user_id") or "unknown"),
-                                scanned_at=str(r.get("timestamp") or datetime.now().isoformat()),
+                                scanned_at=str(r.get("timestamp") or datetime.now(CAT).isoformat()),
                             )
                         )
                         if not admin_notified:
@@ -2739,7 +2742,7 @@ async def fingerprint(
             "modalities_used": modalities_used,
             "fingerprint_dim": len(fingerprint_vector),
             "fingerprint": fingerprint_vector,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now(CAT).isoformat()
         }
         
         # Add GPS coordinates if provided
@@ -3040,7 +3043,7 @@ async def create_user(
             "organization": organization.strip() if organization else None,
             "approval_status": "approved",
             "photo_url": None,
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": datetime.now(CAT).isoformat()
         }
         
         users.append(new_user)
@@ -3117,7 +3120,7 @@ async def update_user(
         if password:
             users[user_index]['password'] = password
         
-        users[user_index]['updated_at'] = datetime.utcnow().isoformat()
+        users[user_index]['updated_at'] = datetime.now(CAT).isoformat()
         updated_user = users[user_index]
         
         save_users(users)
@@ -3203,7 +3206,7 @@ async def update_profile(
         elif photo_url is not None:
             users[user_index]['photo_url'] = photo_url.strip() if photo_url.strip() else None
         
-        users[user_index]['updated_at'] = datetime.utcnow().isoformat()
+        users[user_index]['updated_at'] = datetime.now(CAT).isoformat()
         updated_user = users[user_index]
         
         save_users(users)
@@ -3351,7 +3354,7 @@ def build_live_analytics_payload(records: List[dict]) -> Dict[str, object]:
         return {
             "status": "no_data",
             "message": "No verification data available yet",
-            "last_updated": datetime.utcnow().isoformat(),
+            "last_updated": datetime.now(CAT).isoformat(),
             "refresh_seconds": 15,
             "total_samples": 0,
             "samples_with_predictions": 0,
@@ -3444,7 +3447,7 @@ def build_live_analytics_payload(records: List[dict]) -> Dict[str, object]:
 
     return {
         "status": "success",
-        "last_updated": datetime.utcnow().isoformat(),
+        "last_updated": datetime.now(CAT).isoformat(),
         "refresh_seconds": 15,
         "total_samples": len(records),
         "samples_with_predictions": len(valid_records),
@@ -3511,7 +3514,7 @@ async def get_audit_trail_chain(limit: Optional[int] = 200, auto_backfill: bool 
             "returned_events": len(ordered),
             "latest_block_hash": records[-1].get("hash") if records else None,
             "genesis_hash": records[0].get("hash") if records else None,
-            "last_updated": datetime.utcnow().isoformat(),
+            "last_updated": datetime.now(CAT).isoformat(),
             "backfill": backfill_info,
             "blocks": ordered,
         }
@@ -3535,7 +3538,7 @@ async def backfill_audit_trail(force: bool = False):
             "total_events": len(records),
             "chain_valid": bool(verification.get("is_valid", False)),
             "integrity": verification,
-            "last_updated": datetime.utcnow().isoformat(),
+            "last_updated": datetime.now(CAT).isoformat(),
         }
     except Exception as e:
         logger.log_error(e, {"endpoint": "/audit-trail/backfill"})
@@ -3804,7 +3807,7 @@ async def chat_assist(request: ChatRequest):
             "status": "success",
             "response": response,
             "context": request.context,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(CAT).isoformat(),
             "ai_model": "gpt-3.5-turbo" if OPENAI_AVAILABLE else "knowledge_base",
         }
     
@@ -3826,7 +3829,7 @@ async def get_contextual_tips(screen: str = "general"):
             "screen": screen,
             "title": entry.get("title", "Tips"),
             "tips": entry.get("tips", []),
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(CAT).isoformat(),
         }
     except Exception as e:
         logger.log_error(e, {"endpoint": "/api/chat/tips"})
@@ -3846,7 +3849,7 @@ async def get_feature_help(feature: str):
             "help": entry.get("help", "No help available for this feature."),
             "description": entry.get("description", ""),
             "tips": entry.get("tips", []),
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(CAT).isoformat(),
         }
     except Exception as e:
         logger.log_error(e, {"endpoint": "/api/chat/help/{feature}"})

@@ -37,8 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadData();
-    _startRealtimeOverviewUpdates();
+    // Defer API calls to next frame to prevent blocking UI
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
+      _startRealtimeOverviewUpdates();
+    });
   }
 
   @override

@@ -27,7 +27,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     super.initState();
-    _loadScans();
+    // Defer API calls to next frame to prevent blocking UI
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadScans();
+    });
   }
 
   @override

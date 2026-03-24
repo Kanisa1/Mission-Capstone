@@ -71,6 +71,16 @@ class MultiModalDataset(Dataset):
         # normalize per sample
         mfcc = (mfcc - mfcc.mean()) / (mfcc.std() + 1e-8)
 
+        # ✅ FIX: Pad/truncate to fixed length (130 frames ≈ 3 seconds at 16kHz)
+        # This ensures all audio tensors have shape (20, 130) for proper batching
+        fixed_length = 130
+        if mfcc.shape[1] < fixed_length:
+            # Pad with zeros on the right
+            mfcc = np.pad(mfcc, ((0, 0), (0, fixed_length - mfcc.shape[1])), mode='constant')
+        else:
+            # Truncate to fixed length
+            mfcc = mfcc[:, :fixed_length]
+
         return torch.tensor(mfcc, dtype=torch.float32)
 
     def load_chemical(self, row):
